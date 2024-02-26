@@ -1,0 +1,1 @@
+ALTER TABLE  cashierdeposit UPDATE COLUMN deposittype deposit_type VARCHAR(255) NOT NULL DEFAULT 'endoftheday';
