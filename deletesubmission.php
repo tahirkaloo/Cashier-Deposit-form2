@@ -16,14 +16,22 @@ if (!$conn) {
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if (isset($_GET['id']) && !empty($_GET['id'])) {
         $submission_id = $_GET['id'];
-
-        // Delete the submission from the database
-        $sql = "DELETE FROM cashierdeposit WHERE id = '$submission_id'";
-        if (mysqli_query($conn, $sql)) {
-            header("Location: supervisor.php");
-            exit;
+        echo "Submission ID: " . $submission_id; // Debug statement
+        
+        // Use prepared statement to delete the submission from the database
+        $sql = "DELETE FROM cashierdeposit WHERE id = ?";
+        $stmt = mysqli_prepare($conn, $sql);
+        if ($stmt) {
+            mysqli_stmt_bind_param($stmt, "i", $submission_id); // Assuming 'id' is an integer
+            if (mysqli_stmt_execute($stmt)) {
+                echo "Record deleted successfully"; // Debug statement
+                header("Location: supervisor.php");
+                exit;
+            } else {
+                echo "Error executing statement: " . mysqli_stmt_error($stmt); // Debug statement
+            }
         } else {
-            echo "Error deleting record: " . mysqli_error($conn);
+            echo "Error preparing statement: " . mysqli_error($conn); // Debug statement
         }
     } else {
         echo "Invalid submission ID.";
@@ -31,3 +39,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 }
 
 mysqli_close($conn);
+
