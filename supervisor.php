@@ -83,8 +83,8 @@ if (!$result) {
                             <td><?php echo $row['manual_check_deposit_amount']; ?></td>
                             <td><?php echo $row['manual_check_deposit_count']; ?></td>
                             <td><a href="verifysubmission.php?id=<?php echo $row['id']; ?>" class="btn btn-primary">Verify</a></td>
-                            <td><a href="deletesubmission.php?id='<?php echo $row['id']; ?>" class="btn btn-danger">Delete</a></td>
-                            <td><a href="viewsubmission.php?id='<?php echo $row['id']; ?>" class="btn btn-primary">View</a></td>
+                            <td><a href="deletesubmission.php?id=<?php echo $row['id']; ?>" class="btn btn-danger">Delete</a></td>
+                            <td><a href="viewsubmission.php?id=<?php echo $row['id']; ?>" class="btn btn-primary">View</a></td>
                         </tr>
                     <?php endwhile; ?>
                 </tbody>

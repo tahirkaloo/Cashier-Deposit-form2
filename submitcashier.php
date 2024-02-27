@@ -56,11 +56,18 @@ $sql = "INSERT INTO cashierdeposit (username, name, deposit_type, cash_amount, c
 // Attempt insert query execution
 if (mysqli_query($conn, $sql)) {
     echo "<br><span style='color: green; font-weight: bold; font-size: 24px;'>Thank you! Your deposit has been submitted for verification by a supervisor.</span><br>";
+    echo "<br><span style='color: green; font-weight: bold; font-size: 24px;'>Your transaction ID is: " . mysqli_insert_id($conn) . "</span><br>";
 } else {
     echo "Error: " . $sql . "<br>" . mysqli_error($conn);
 }
 
-echo "<br><br><a href='submitcashier.php' style='text-decoration: none; font-weight: bold; font-size: 24px; color: blue;'>Back</a>";
-
 mysqli_close($conn);
+
+//show countdown on the page
+echo "<br><span style='color: red; font-weight: bold; font-size: 24px;'>Redirecting in 3 seconds...</span><br>";
+
+// Redirect back to the cashier deposit page
+header("Refresh: 3; url=cashierdeposit.php");
+exit();
+
 

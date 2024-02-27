@@ -14,8 +14,9 @@ if (!$conn) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    if (isset($_GET['id']) && !empty($_GET['id'])) {
+    if (isset($_GET['id']) && !empty($_GET['id']) && is_numeric($_GET['id'])) {
         $submission_id = $_GET['id'];
+        
         echo "Submission ID: " . $submission_id; // Debug statement
         
         // Use prepared statement to delete the submission from the database
@@ -24,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         if ($stmt) {
             mysqli_stmt_bind_param($stmt, "i", $submission_id); // Assuming 'id' is an integer
             if (mysqli_stmt_execute($stmt)) {
-                echo "Record deleted successfully"; // Debug statement
+                // Record deleted successfully
                 header("Location: supervisor.php");
                 exit;
             } else {
@@ -39,4 +40,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 }
 
 mysqli_close($conn);
-
