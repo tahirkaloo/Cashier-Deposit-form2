@@ -46,7 +46,7 @@
 <body>
     <div class="admin-navbar">
         <div class="logo">
-            <a href="admin_dashboard.php">
+            <a href="../index.html">
                 <img src="https://reimbursement-instance-bucket.s3.amazonaws.com/Logo+files/logo-white.png" alt="Logo">
             </a>
         </div>
@@ -56,7 +56,7 @@
                 <li><a href="mileage_responses.php">Local Mileage Responses</a></li>
                 <li><a href="contact_responses.php" class="fa fa-envelope"> Contact Form Responses</a></li>
                 <li><a href="manage-users.php" class="fa fa-users"> Manage Users</a></li>
-		        <li><a href="../index.html" class="fa fa-home"> Go back to Website</a></li>
+		        <li><a href="../index.php" class="fa fa-home"> Go back to Website</a></li>
 		        <li><a href="../logout.php" class="fa fa-sign-out"> Logout</a></li>
             </ul>
         </div>
