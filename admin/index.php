@@ -2,7 +2,7 @@
 session_start();
 
 //Check if the user is admin and show error if not
-if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
+if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
   header("Location: ../404.html");
   exit;
 }

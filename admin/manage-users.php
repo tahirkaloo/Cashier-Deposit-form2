@@ -2,6 +2,14 @@
 session_start();
 require_once '../db_connect.php';
 
+
+//Check if the user is admin and show error if not
+if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
+    header("Location: ../404.html");
+    exit;
+}
+
+
 // Check if the database connection is successful
 $conn = mysqli_connect($db_host, $db_user, $db_password, $db_name);
 // Do reporting
