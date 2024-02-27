@@ -1,1 +1,0 @@
-DELETE FROM cashierdeposit WHERE id = 275
