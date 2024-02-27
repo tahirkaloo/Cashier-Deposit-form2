@@ -2,38 +2,42 @@
 session_start();
 require_once 'db_connect.php';
 
-// Check if the user is logged in and is a supervisor or admin
+// Check if the user is logged in
 if (!isset($_SESSION['user_id'])) {
-    // User is not logged in or is not a supervisor or admin
     header("Location: login.php");
     exit;
 }
 
+// Connect to the database
 $conn = mysqli_connect($db_host, $db_user, $db_password, $db_name);
 
 if (!$conn) {
     die("Connection failed: " . mysqli_connect_error());
 }
 
-// Define $isAdmin based on the user's role
+// Check if the user is a supervisor or admin
 $isAdmin = ($_SESSION['role'] === 'admin');
 $isSupervisor = ($_SESSION['role'] === 'supervisor');
 
-
-// Fetch unverified submissions from the database
-$sql = "SELECT * FROM cashierdeposit WHERE verified = 0";
+// Fetch all submissions from the database
+if ($isAdmin || $isSupervisor) {
+    $sql = "SELECT * FROM cashierdeposit";
+} else {
+    $sql = "SELECT * FROM cashierdeposit WHERE username = '" . $_SESSION['username'] . "'";
+}
 $result = mysqli_query($conn, $sql);
 
 if (!$result) {
     echo "Error: " . $sql . "<br>" . mysqli_error($conn);
 } else {
+    
     ?>
     <!DOCTYPE html>
     <html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Supervisor Interface</title>
+        <title>History</title>
         <!-- Add any CSS or Bootstrap here -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
         <style>
@@ -43,17 +47,12 @@ if (!$result) {
     <body>
     <!-- Navigation -->
     <?php include "navbar.php"; ?>
-
     <div class="container-fluid">
-        <h1>Supervisor Interface</h1>
-        <?php if (!$isAdmin && !$isSupervisor) : ?>
-        <h2>Access Denied</h2>
-        <p>You do not have permission to access this page.</p>
-        <?php else : ?>
-        <h2>List of Unverified Submissions:</h2>
+    <h1>History</h1>
+    <?php if (mysqli_num_rows($result) > 0) : ?>
         <table class="table">
             <thead>
-                <tr>
+            <tr>
                     <th>Submission ID</th>
                     <th>Username</th>
                     <th>Name</th>
@@ -95,19 +94,21 @@ if (!$result) {
                         <td><?php echo $row['credit_debit_cards_count']; ?></td>
                         <td><?php echo $row['pre_deposit_amount']; ?></td>
                         <td><?php echo $row['pre_deposit_count']; ?></td>
-                        <td><?php echo ($row['verified'] ? '<span style="color: green">Yes</span>' : '<span style="color: red">No</span>'); ?></td>
-                        <td><a href="verifysubmission.php?id=<?php echo $row['id']; ?>" class="btn btn-primary">Verify</a></td>
-                        <td><a href="deletesubmission.php?id=<?php echo $row['id']; ?>" class="btn btn-danger">Delete</a></td>
-                        <td><a href="viewsubmission.php?id=<?php echo $row['id']; ?>" class="btn btn-primary">View</a></td>
+                        <td><?php echo ($row['verified'] ? '<span style="color: green">Yes</span>' : '<span style="color: red">No</span>'); ?></td> 
+                        <td>
+                            <a href="edit_submission.php?id=<?php echo $row['id']; ?>" class="btn btn-primary">Edit</a>
+                            <a href="deletesubmission.php?id=<?php echo $row['id']; ?>" class="btn btn-danger">Delete</a>
+                        </td>
                     </tr>
                 <?php endwhile; ?>
             </tbody>
         </table>
-    </div>
+    <?php endif; ?>
+</div>
 </body>
 </html>
-<?php endif; // End if (!$isAdmin)
-}
 
+<?php
 mysqli_close($conn);
-?>
+}
+    

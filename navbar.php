@@ -16,10 +16,13 @@ $isLoggedIn = isset($_SESSION['user_id']);
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item <?php if(!$isLoggedIn) echo 'active'; ?>">
-        <a class="nav-link" href="index.html">Home</a>
+        <a class="nav-link" href="index.php">Home</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="cashierdeposit.php">Cashier Deposit</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="history.php">History</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="supervisor.php">Supervisor</a>
@@ -28,7 +31,7 @@ $isLoggedIn = isset($_SESSION['user_id']);
         <a class="nav-link" href="about.html">About</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="contact.html">Contact</a>
+        <a class="nav-link" href="contact.php">Contact</a>
       </li>
       <?php if ($isLoggedIn) { ?>
 
