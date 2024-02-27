@@ -96,7 +96,7 @@ if (!$result) {
                         <td><?php echo $row['pre_deposit_count']; ?></td>
                         <td><?php echo ($row['verified'] ? '<span style="color: green">Yes</span>' : '<span style="color: red">No</span>'); ?></td> 
                         <td>
-                            <a href="edit_submission.php?id=<?php echo $row['id']; ?>" class="btn btn-primary">Edit</a>
+                            <a href="editsubmission.php?id=<?php echo $row['id']; ?>" class="btn btn-primary">Edit</a>
                             <a href="deletesubmission.php?id=<?php echo $row['id']; ?>" class="btn btn-danger">Delete</a>
                         </td>
                     </tr>

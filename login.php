@@ -18,7 +18,7 @@ error_reporting(E_ALL);
 
 // Check if the user is already logged in
 if (isset($_SESSION['user_id'])) {
-    header("Location: index.html"); // Redirect to the home page or any other desired page
+    header("Location: index.php"); // Redirect to the home page or any other desired page
     exit;
 }
 
@@ -35,7 +35,7 @@ function loginUser($user)
     $_SESSION['role'] = $user['role'];
 
     // Redirect to the home page or any other desired page
-    header("Location: index.html");
+    header("Location: index.php");
     exit;
 }
 
@@ -219,7 +219,7 @@ if (isset($_POST['login'])) {
 </head>
 <body>
     <div class="navbar">
-        <a href="index.html">Home</a>
+        <a href="index.php">Home</a>
         <a href="register.php">Register</a>
     </div>
     <div class="container">

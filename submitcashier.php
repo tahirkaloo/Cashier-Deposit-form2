@@ -30,6 +30,8 @@ $creditDebitCardsAmount = isset($_POST['CreditDebitCardsAmount']) ? $_POST['Cred
 $creditDebitCardsCount = isset($_POST['CreditDebitCardsCount']) ? $_POST['CreditDebitCardsCount'] : null;
 $preDepositsAmount = isset($_POST['PreDepositsAmount']) ? $_POST['PreDepositsAmount'] : null;
 $preDepositsCount = isset($_POST['PreDepositsCount']) ? $_POST['PreDepositsCount'] : null;
+$totalamount = isset($_POST['TotalAmount']) ? $_POST['TotalAmount'] : null;
+$totalcount = isset($_POST['TotalCount']) ? $_POST['TotalCount'] : null;
 
 // Escape user inputs for security
 $deposittype = mysqli_real_escape_string($conn, $deposittype);
@@ -49,9 +51,33 @@ $creditDebitCardsCount = !empty($creditDebitCardsCount) ? mysqli_real_escape_str
 $preDepositsAmount = !empty($preDepositsAmount) ? mysqli_real_escape_string($conn, $preDepositsAmount) : 'NULL';
 $preDepositsCount = !empty($preDepositsCount) ? mysqli_real_escape_string($conn, $preDepositsCount) : 'NULL';
 
+// Convert string values to float for arithmetic operations
+$cashAmount = floatval($cashAmount);
+$check21DepositAmount = floatval($check21DepositAmount);
+$ceoCheckDepositAmount = floatval($ceoCheckDepositAmount);
+$manualCheckDepositAmount = floatval($manualCheckDepositAmount);
+$moneyOrderAmount = floatval($moneyOrderAmount);
+$creditDebitCardsAmount = floatval($creditDebitCardsAmount);
+$preDepositsAmount = floatval($preDepositsAmount);
+
+// Calculate total amount
+$totalamount = $cashAmount + $check21DepositAmount + $ceoCheckDepositAmount + $manualCheckDepositAmount + $moneyOrderAmount + $creditDebitCardsAmount + $preDepositsAmount;
+
+// Convert string values to integer for arithmetic operations
+$check21DepositCount = intval($check21DepositCount);
+$ceoCheckDepositCount = intval($ceoCheckDepositCount);
+$manualCheckDepositCount = intval($manualCheckDepositCount);
+$moneyOrderCount = intval($moneyOrderCount);
+$creditDebitCardsCount = intval($creditDebitCardsCount);
+$preDepositsCount = intval($preDepositsCount);
+
+// Calculate total count
+$totalcount = $check21DepositCount + $ceoCheckDepositCount + $manualCheckDepositCount + $moneyOrderCount + $creditDebitCardsCount + $preDepositsCount;
+
+
 // Build the SQL query
-$sql = "INSERT INTO cashierdeposit (username, name, deposit_type, cash_amount, check21_deposit_amount, check21_deposit_count, ceo_check_deposit_amount, ceo_check_deposit_count, manual_check_deposit_amount, manual_check_deposit_count, money_order_deposit_amount, money_order_deposit_count, credit_debit_cards_amount, credit_debit_cards_count, pre_deposit_amount, pre_deposit_count, verified) 
-        VALUES ('$username', '$name', '$deposittype', $cashAmount, $check21DepositAmount, $check21DepositCount, $ceoCheckDepositAmount, $ceoCheckDepositCount, $manualCheckDepositAmount, $manualCheckDepositCount, $moneyOrderAmount, $moneyOrderCount, $creditDebitCardsAmount, $creditDebitCardsCount, $preDepositsAmount, $preDepositsCount, 0)";
+$sql = "INSERT INTO cashierdeposit (username, name, deposit_type, cash_amount, check21_deposit_amount, check21_deposit_count, ceo_check_deposit_amount, ceo_check_deposit_count, manual_check_deposit_amount, manual_check_deposit_count, money_order_deposit_amount, money_order_deposit_count, credit_debit_cards_amount, credit_debit_cards_count, pre_deposit_amount, pre_deposit_count, total_amount, total_count, verified) 
+        VALUES ('$username', '$name', '$deposittype', $cashAmount, $check21DepositAmount, $check21DepositCount, $ceoCheckDepositAmount, $ceoCheckDepositCount, $manualCheckDepositAmount, $manualCheckDepositCount, $moneyOrderAmount, $moneyOrderCount, $creditDebitCardsAmount, $creditDebitCardsCount, $preDepositsAmount, $preDepositsCount, $totalamount, $totalcount, 0)";
 
 // Attempt insert query execution
 if (mysqli_query($conn, $sql)) {

@@ -44,7 +44,7 @@ if (!$result) {
     <!-- Navigation -->
     <?php include "navbar.php"; ?>
 
-    <div class="container-fluid">
+    <div class="container-wrapper">
         <h1>Supervisor Interface</h1>
         <?php if (!$isAdmin && !$isSupervisor) : ?>
         <h2>Access Denied</h2>
@@ -71,6 +71,8 @@ if (!$result) {
                     <th>Credit and Debit Cards Count</th>
                     <th>Pre-Deposit Amount</th>
                     <th>Pre-Deposit Count</th>
+                    <th>Total Amount</th>
+                    <th>Total Count</th>
                     <th>Verified</th>
                     <th>Action</th>
                 </tr>
@@ -95,10 +97,15 @@ if (!$result) {
                         <td><?php echo $row['credit_debit_cards_count']; ?></td>
                         <td><?php echo $row['pre_deposit_amount']; ?></td>
                         <td><?php echo $row['pre_deposit_count']; ?></td>
+                        <td><?php echo $row['total_amount']; ?></td>
+                        <td><?php echo $row['total_count']; ?></td>
                         <td><?php echo ($row['verified'] ? '<span style="color: green">Yes</span>' : '<span style="color: red">No</span>'); ?></td>
-                        <td><a href="verifysubmission.php?id=<?php echo $row['id']; ?>" class="btn btn-primary">Verify</a></td>
-                        <td><a href="deletesubmission.php?id=<?php echo $row['id']; ?>" class="btn btn-danger">Delete</a></td>
-                        <td><a href="viewsubmission.php?id=<?php echo $row['id']; ?>" class="btn btn-primary">View</a></td>
+                        <td>
+                            <a href="verifysubmission.php?id=<?php echo $row['id']; ?>" class="btn btn-primary">Verify</a>
+                            <a href="edit_submission.php?id=<?php echo $row['id']; ?>" class="btn btn-primary">Edit</a>
+                            <a href="deletesubmission.php?id=<?php echo $row['id']; ?>" class="btn btn-danger">Delete</a>
+                            <a href="viewsubmission.php?id=<?php echo $row['id']; ?>" class="btn btn-primary">View</a>
+                        </td>
                     </tr>
                 <?php endwhile; ?>
             </tbody>

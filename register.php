@@ -143,16 +143,7 @@ if (isset($_POST['register'])) {
     </style>
 </head>
 <body>
-    <!-- Login Navbar -->
-    <div class="navbar">
-        <div>
-            <a href="index.html">Home</a>
-        </div>
-        <div>
-            <a href="register.php">Register</a>
-            <a href="login.php">Login</a>
-        </div>
-    </div>
+<?php include 'navbar.php'; ?>
 
     <div class="container">
         <h2>Registration</h2>
