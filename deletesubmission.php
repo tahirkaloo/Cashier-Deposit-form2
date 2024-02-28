@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             mysqli_stmt_bind_param($stmt, "i", $submission_id); // Assuming 'id' is an integer
             if (mysqli_stmt_execute($stmt)) {
                 // Record deleted successfully
-                header("Location: supervisor.php");
+                header('Location: ' . $_SERVER['HTTP_REFERER']);
                 exit;
             } else {
                 echo "Error executing statement: " . mysqli_stmt_error($stmt); // Debug statement

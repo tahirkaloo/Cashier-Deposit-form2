@@ -90,75 +90,104 @@ mysqli_close($conn);
                 <tr>
                     <td>Deposit type</td>
                     <td>
-                        <?php echo isset($row['DepositType']) ? htmlspecialchars($row['DepositType']) : ''; ?>
+                        <?php echo isset($row['deposit_type']) ? htmlspecialchars($row['deposit_type']) : ''; ?>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Drawer Number</td>
+                    <td>
+                        <?php echo isset($row['drawer_number']) ? htmlspecialchars($row['drawer_number']) : ''; ?>
                     </td>
                     <td></td>
                 </tr>
                 <tr>
                     <td>Cash</td>
                     <td>
-                        <?php echo isset($row['Cash']) ? htmlspecialchars($row['Cash']) : ''; ?>
+                        <?php echo isset($row['cash_amount']) ? htmlspecialchars($row['cash_amount']) : ''; ?>
                     </td>
                     <td></td>
                 </tr>
                 <tr>
                     <td>Check 21 - Deposit</td>
                     <td>
-                        <?php echo isset($row['Check21DepositAmount']) ? htmlspecialchars($row['Check21DepositAmount']) : ''; ?>
+                        <?php echo isset($row['check21_deposit_amount']) ? htmlspecialchars($row['check21_deposit_amount']) : ''; ?>
                     </td>
                     <td>
-                        <?php echo isset($row['Check21DepositCount']) ? htmlspecialchars($row['Check21DepositCount']) : ''; ?>
+                        <?php echo isset($row['check21_deposit_count']) ? htmlspecialchars($row['check21_deposit_count']) : ''; ?>
                     </td>
                 </tr>
                 <tr>
                     <td>CEO Check Deposit</td>
                     <td>
-                        <?php echo isset($row['CEOCheckDepositAmount']) ? htmlspecialchars($row['CEOCheckDepositAmount']) : ''; ?>
+                        <?php echo isset($row['ceo_deposit_amount']) ? htmlspecialchars($row['ceo_deposit_amount']) : ''; ?>
                     </td>
                     <td>
-                        <?php echo isset($row['CEOCheckDepositCount']) ? htmlspecialchars($row['CEOCheckDepositCount']) : ''; ?>
+                        <?php echo isset($row['ceo_deposit_count']) ? htmlspecialchars($row['ceo_deposit_count']) : ''; ?>
                     </td>
                 </tr>
                 <tr>
                     <td>Manual Check Deposit</td>
                     <td>
-                        <?php echo isset($row['ManualCheckDepositAmount']) ? htmlspecialchars($row['ManualCheckDepositAmount']) : ''; ?>
+                        <?php echo isset($row['manual_deposit_amount']) ? htmlspecialchars($row['manual_deposit_amount']) : ''; ?>
                     </td>
                     <td>
-                        <?php echo isset($row['ManualCheckDepositCount']) ? htmlspecialchars($row['ManualCheckDepositCount']) : ''; ?>
+                        <?php echo isset($row['manual_deposit_count']) ? htmlspecialchars($row['manual_deposit_count']) : ''; ?>
                     </td>
                 </tr>
                 <tr>
                     <td>Money Order</td>
                     <td>
-                        <?php echo isset($row['MoneyOrderAmount']) ? htmlspecialchars($row['MoneyOrderAmount']) : ''; ?>
+                        <?php echo isset($row['money_order_deposit_amount']) ? htmlspecialchars($row['money_order_deposit_amount']) : ''; ?>
                     </td>
                     <td>
-                        <?php echo isset($row['MoneyOrderCount']) ? htmlspecialchars($row['MoneyOrderCount']) : ''; ?>
+                        <?php echo isset($row['money_order_deposit_count']) ? htmlspecialchars($row['money_order_deposit_count']) : ''; ?>
                     </td>
                 </tr>
                 <tr>
                     <td>Credit and Debit Cards</td>
                     <td>
-                        <?php echo isset($row['CreditDebitCardsAmount']) ? htmlspecialchars($row['CreditDebitCardsAmount']) : ''; ?>
+                        <?php echo isset($row['credit_debit_cards_amount']) ? htmlspecialchars($row['credit_debit_cards_amount']) : ''; ?>
                     </td>
                     <td>
-                        <?php echo isset($row['CreditDebitCardsCount']) ? htmlspecialchars($row['CreditDebitCardsCount']) : ''; ?>
+                        <?php echo isset($row['credit_debit_cards_count']) ? htmlspecialchars($row['credit_debit_cards_count']) : ''; ?>
                     </td>
                 </tr>
                 <tr>
                     <td>Pre-Deposits</td>
                     <td>
-                        <?php echo isset($row['PreDepositsAmount']) ? htmlspecialchars($row['PreDepositsAmount']) : ''; ?>
+                        <?php echo isset($row['pre_deposit_amount']) ? htmlspecialchars($row['pre_deposit_amount']) : ''; ?>
                     </td>
                     <td>
-                        <?php echo isset($row['PreDepositsCount']) ? htmlspecialchars($row['PreDepositsCount']) : ''; ?>
+                        <?php echo isset($row['pre_deposit_count']) ? htmlspecialchars($row['pre_deposit_count']) : ''; ?>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Total</td>
+                    <td>
+                        <?php echo isset($row['total_amount']) ? htmlspecialchars($row['total_amount']) : ''; ?>
+                    </td>
+                    <td>
+                        <?php echo isset($row['total_count']) ? htmlspecialchars($row['total_count']) : ''; ?>
                     </td>
                 </tr>
             </tbody>
     </table>
+            <!-- Print Button -->
+            <button onclick="printForm()" class="btn btn-lg btn-primary btn-block" id="printButton">Print Form</button>
     </form>
 </div>
+
+
+
+
+<!-- JavaScript -->
+<script>
+    function printForm() {
+        window.print();
+    }
+</script>
 
 <!-- JavaScript -->
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>

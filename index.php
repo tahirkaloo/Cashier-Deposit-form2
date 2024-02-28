@@ -56,7 +56,7 @@
     </div>
 
     <div class="banner banner3">
-      <a href="admin.php">
+      <a href="/admin/index.php">
         <div class="banner-overlay">
           <h2>Admin</h2>
           <i class="fas fa-user-shield" style="font-size: 32px;"></i>

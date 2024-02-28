@@ -59,8 +59,12 @@ $name = $_SESSION['name'];
                     </td>
                 </tr>
                 <tr>
+                    <td>Drawer Number</td>
+                    <td><input type="number" name="DrawerNumber" class="form-control" step="1" minlength="4" maxlength="4"></td>
+                </tr>
+                <tr>
                     <td>Cash</td>
-                    <td><input type="number" name="Cash" class="form-control amount"></td>
+                    <td><input type="number" name="Cash" class="form-control amount" step="0.01"></td>
                 </tr>
                 <tr>
                     <td>Check 21 - Deposit</td>
@@ -69,28 +73,28 @@ $name = $_SESSION['name'];
                 </tr>
                 <tr>
                     <td>CEO Check Deposit</td>
-                    <td><input type="number" name="CEOCheckDepositAmount" class="form-control amount"></td>
-                    <td><input type="number" name="CEOCheckDepositCount" class="form-control count"></td>
+                    <td><input type="number" name="CEOCheckDepositAmount" class="form-control amount" step="0.01"></td>
+                    <td><input type="number" name="CEOCheckDepositCount" class="form-control count" step="1"></td>
                 </tr>
                 <tr>
                     <td>Manual Check Deposit</td>
-                    <td><input type="number" name="ManualCheckDepositAmount" class="form-control amount"></td>
-                    <td><input type="number" name="ManualCheckDepositCount" class="form-control count"></td>
+                    <td><input type="number" name="ManualCheckDepositAmount" class="form-control amount" step="0.01"></td>
+                    <td><input type="number" name="ManualCheckDepositCount" class="form-control count" step="1"></td>
                 </tr>
                 <tr>
                     <td>Money Order</td>
-                    <td><input type="number" name="MoneyOrderAmount" class="form-control amount"></td>
-                    <td><input type="number" name="MoneyOrderCount" class="form-control count"></td>
+                    <td><input type="number" name="MoneyOrderAmount" class="form-control amount" step="0.01"></td>
+                    <td><input type="number" name="MoneyOrderCount" class="form-control count" step="1"></td>
                 </tr>
                 <tr>
                     <td>Credit and Debit Cards</td>
-                    <td><input type="number" name="CreditDebitCardsAmount" class="form-control amount"></td>
-                    <td><input type="number" name="CreditDebitCardsCount" class="form-control count"></td>
+                    <td><input type="number" name="CreditDebitCardsAmount" class="form-control amount" step="0.01"></td>
+                    <td><input type="number" name="CreditDebitCardsCount" class="form-control count" step="1"></td>
                 </tr>
                 <tr>
                     <td>Pre-Deposits</td>
-                    <td><input type="number" name="PreDepositsAmount" class="form-control amount"></td>
-                    <td><input type="number" name="PreDepositsCount" class="form-control count"></td>
+                    <td><input type="number" name="PreDepositsAmount" class="form-control amount" step="0.01"></td>
+                    <td><input type="number" name="PreDepositsCount" class="form-control count" step="1"></td>
                 </tr>
             </tbody>
             <tfoot>

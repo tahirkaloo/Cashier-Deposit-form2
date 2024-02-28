@@ -73,12 +73,14 @@ if (isset($_POST['register'])) {
 <head>
     <title>Registration</title>
     <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
     <style>
-        /* Additional CSS styles for registration page */
+        /* Additional CSS styles for login page */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
+            background-color: #f2f2f2;
         }
 
         .navbar {
@@ -106,6 +108,17 @@ if (isset($_POST['register'])) {
             padding: 40px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             border-radius: 10px;
+            background-color: #fff;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo img {
+            width: 100px;
+            height: auto;
         }
 
         .form-group {
@@ -116,19 +129,21 @@ if (isset($_POST['register'])) {
             display: block;
             font-weight: bold;
             margin-bottom: 5px;
+            color: #555;
         }
 
         .form-group input {
             width: 100%;
             padding: 10px;
-            border: 1px solid #ccc;
+            border: none;
             border-radius: 5px;
+            background-color: #f5f5f5;
         }
 
         .form-group input:focus {
             outline: none;
-            border-color: #6c63ff;
-            box-shadow: 0 0 10px rgba(108, 99, 255, 0.2);
+            background-color: #e1e1e1;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
         }
 
         .error-message {
@@ -136,14 +151,81 @@ if (isset($_POST['register'])) {
             margin-top: 5px;
         }
 
+        .login-button {
+            display: block;
+            width: 100%;
+            padding: 12px 0;
+            margin-top: 20px;
+            background-color: #6c63ff;
+            color: #fff;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .login-button:hover {
+            background-color: #524bc7;
+            cursor: pointer;
+            box-shadow: 0 0 20px #6c63ff;
+        }
+
+        .login-button:not(:hover) {
+            background-color: #6c63ff; /* Change the background color when not hovering */
+        }
+
+        .resetpassword-button {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .resetpassword-button a {
+            color: #6c63ff;
+            text-decoration: none;
+        }
+
+        .resetpassword-button a:hover {
+            text-decoration: underline;
+            text-shadow: 0 0 20px #6c63ff;
+        }
+
+        .register-button {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .register-button a {
+            color: #6c63ff;
+            text-decoration: none;
+        }
+
+        .register-button a:hover {
+            text-decoration: underline;
+            text-shadow: 0 0 20px #6c63ff;
+        }
+
         .success-message {
             color: green;
             margin-top: 5px;
+            background-color: #f5f5f5;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 20px;
         }
+
+
     </style>
-</head>
 <body>
-<?php include 'navbar.php'; ?>
+
+
+<div class="navbar">
+    <a href="index.php">Home</a>
+    <a href="register.php">Register</a>
+</div>
 
     <div class="container">
         <h2>Registration</h2>
@@ -176,7 +258,7 @@ if (isset($_POST['register'])) {
                 <input type="password" name="confirm_password" id="confirm_password" autocomplete="confirm_password" required placeholder="Confirm your password">
             </div>
             <div class="form-group">
-                <button type="submit" name="register">Register</button>
+                <button class="login-button" type="submit" name="register">Register</button>
             </div>
             <div class="form-group">
                 <p>Already have an account? <a href="login.php">Login</a></p>

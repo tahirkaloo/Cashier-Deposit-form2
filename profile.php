@@ -142,6 +142,16 @@ if (isset($_POST['update_details'])) {
                 <label for="email">Email:</label>
                 <input type="email" class="form-control" id="email" name="email" value="<?php echo $email; ?>" required>
             </div>
+            <div class="form-group">
+                <label for="role">Role:</label>
+                <input type="text" class="form-control" id="role" name="role" value="<?php echo $role; ?>" readonly>
+            </div>
+            <?php if (isset($errorMessage)) : ?>
+                <div class="alert alert-danger" role="alert">
+                    <?php echo $errorMessage; ?>
+                </div>
+            <?php endif; ?>
+            
             <button type="submit" class="btn btn-primary" name="update_details">Update Details</button>
         </form>
 

@@ -36,6 +36,7 @@ if (!$result) {
         <title>Supervisor Interface</title>
         <!-- Add any CSS or Bootstrap here -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="styles.css">
         <style>
             /* Additional styles can be added here */
         </style>
@@ -58,6 +59,7 @@ if (!$result) {
                     <th>Username</th>
                     <th>Name</th>
                     <th>Deposit Type</th>
+                    <th>Drawer Number</th>
                     <th>Cash Amount</th>
                     <th>Check21 Deposit Amount</th>
                     <th>Check21 Deposit Count</th>
@@ -84,6 +86,7 @@ if (!$result) {
                         <td><?php echo $row['username']; ?></td>
                         <td><?php echo $row['name']; ?></td>
                         <td><?php echo $row['deposit_type']; ?></td>
+                        <td><?php echo $row['drawer_number']; ?></td>
                         <td><?php echo $row['cash_amount']; ?></td>
                         <td><?php echo $row['check21_deposit_amount']; ?></td>
                         <td><?php echo $row['check21_deposit_count']; ?></td>
@@ -102,9 +105,9 @@ if (!$result) {
                         <td><?php echo ($row['verified'] ? '<span style="color: green">Yes</span>' : '<span style="color: red">No</span>'); ?></td>
                         <td>
                             <a href="verifysubmission.php?id=<?php echo $row['id']; ?>" class="btn btn-primary">Verify</a>
-                            <a href="edit_submission.php?id=<?php echo $row['id']; ?>" class="btn btn-primary">Edit</a>
+                            <a href="editsubmission.php?id=<?php echo $row['id']; ?>" class="btn btn-warning">Edit</a>
                             <a href="deletesubmission.php?id=<?php echo $row['id']; ?>" class="btn btn-danger">Delete</a>
-                            <a href="viewsubmission.php?id=<?php echo $row['id']; ?>" class="btn btn-primary">View</a>
+                            <a href="viewsubmission.php?id=<?php echo $row['id']; ?>" class="btn btn-success">View</a>
                         </td>
                     </tr>
                 <?php endwhile; ?>

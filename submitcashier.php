@@ -15,6 +15,7 @@ if (!$conn) {
 
 // Assign form values to variables
 $deposittype = isset($_POST['DepositType']) ? $_POST['DepositType'] : null;
+$drawerNumber = isset($_POST['DrawerNumber']) ? $_POST['DrawerNumber'] : null;
 $username = isset($_POST['username']) ? $_POST['username'] : null;
 $name = isset($_POST['name']) ? $_POST['name'] : null;
 $cashAmount = isset($_POST['Cash']) ? $_POST['Cash'] : null;
@@ -35,6 +36,7 @@ $totalcount = isset($_POST['TotalCount']) ? $_POST['TotalCount'] : null;
 
 // Escape user inputs for security
 $deposittype = mysqli_real_escape_string($conn, $deposittype);
+$drawerNumber = mysqli_real_escape_string($conn, $drawerNumber);
 $username = mysqli_real_escape_string($conn, $username);
 $name = mysqli_real_escape_string($conn, $name);
 $cashAmount = !empty($cashAmount) ? mysqli_real_escape_string($conn, $cashAmount) : 'NULL';
@@ -76,8 +78,8 @@ $totalcount = $check21DepositCount + $ceoCheckDepositCount + $manualCheckDeposit
 
 
 // Build the SQL query
-$sql = "INSERT INTO cashierdeposit (username, name, deposit_type, cash_amount, check21_deposit_amount, check21_deposit_count, ceo_check_deposit_amount, ceo_check_deposit_count, manual_check_deposit_amount, manual_check_deposit_count, money_order_deposit_amount, money_order_deposit_count, credit_debit_cards_amount, credit_debit_cards_count, pre_deposit_amount, pre_deposit_count, total_amount, total_count, verified) 
-        VALUES ('$username', '$name', '$deposittype', $cashAmount, $check21DepositAmount, $check21DepositCount, $ceoCheckDepositAmount, $ceoCheckDepositCount, $manualCheckDepositAmount, $manualCheckDepositCount, $moneyOrderAmount, $moneyOrderCount, $creditDebitCardsAmount, $creditDebitCardsCount, $preDepositsAmount, $preDepositsCount, $totalamount, $totalcount, 0)";
+$sql = "INSERT INTO cashierdeposit (username, name, deposit_type, drawer_number, cash_amount, check21_deposit_amount, check21_deposit_count, ceo_check_deposit_amount, ceo_check_deposit_count, manual_check_deposit_amount, manual_check_deposit_count, money_order_deposit_amount, money_order_deposit_count, credit_debit_cards_amount, credit_debit_cards_count, pre_deposit_amount, pre_deposit_count, total_amount, total_count, verified) 
+        VALUES ('$username', '$name', '$deposittype', '$drawerNumber', $cashAmount, $check21DepositAmount, $check21DepositCount, $ceoCheckDepositAmount, $ceoCheckDepositCount, $manualCheckDepositAmount, $manualCheckDepositCount, $moneyOrderAmount, $moneyOrderCount, $creditDebitCardsAmount, $creditDebitCardsCount, $preDepositsAmount, $preDepositsCount, $totalamount, $totalcount, 0)";
 
 // Attempt insert query execution
 if (mysqli_query($conn, $sql)) {

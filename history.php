@@ -53,10 +53,11 @@ if (!$result) {
         <table class="table">
             <thead>
             <tr>
-                    <th>Submission ID</th>
+                    <th>ID</th>
                     <th>Username</th>
                     <th>Name</th>
                     <th>Deposit Type</th>
+                    <th>Drawer Number</th>
                     <th>Cash Amount</th>
                     <th>Check21 Deposit Amount</th>
                     <th>Check21 Deposit Count</th>
@@ -70,6 +71,8 @@ if (!$result) {
                     <th>Credit and Debit Cards Count</th>
                     <th>Pre-Deposit Amount</th>
                     <th>Pre-Deposit Count</th>
+                    <th>Total Amount</th>
+                    <th>Total Count</th>
                     <th>Verified</th>
                     <th>Action</th>
                 </tr>
@@ -81,6 +84,7 @@ if (!$result) {
                         <td><?php echo $row['username']; ?></td>
                         <td><?php echo $row['name']; ?></td>
                         <td><?php echo $row['deposit_type']; ?></td>
+                        <td><?php echo $row['drawer_number']; ?></td>
                         <td><?php echo $row['cash_amount']; ?></td>
                         <td><?php echo $row['check21_deposit_amount']; ?></td>
                         <td><?php echo $row['check21_deposit_count']; ?></td>
@@ -94,10 +98,15 @@ if (!$result) {
                         <td><?php echo $row['credit_debit_cards_count']; ?></td>
                         <td><?php echo $row['pre_deposit_amount']; ?></td>
                         <td><?php echo $row['pre_deposit_count']; ?></td>
+                        <td><?php echo $row['total_amount']; ?></td>
+                        <td><?php echo $row['total_count']; ?></td>
                         <td><?php echo ($row['verified'] ? '<span style="color: green">Yes</span>' : '<span style="color: red">No</span>'); ?></td> 
                         <td>
-                            <a href="editsubmission.php?id=<?php echo $row['id']; ?>" class="btn btn-primary">Edit</a>
-                            <a href="deletesubmission.php?id=<?php echo $row['id']; ?>" class="btn btn-danger">Delete</a>
+                            <?php if (!$row['verified'] || $isAdmin || $isSupervisor): ?>
+                                <a href="editsubmission.php?id=<?php echo $row['id']; ?>" class="btn btn-primary">Edit</a>
+                                <a href="viewsubmission.php?id=<?php echo $row['id']; ?>" class="btn btn-secondary">View</a>
+                                <a href="deletesubmission.php?id=<?php echo $row['id']; ?>" class="btn btn-danger">Delete</a>
+                            <?php endif; ?>
                         </td>
                     </tr>
                 <?php endwhile; ?>
@@ -110,5 +119,4 @@ if (!$result) {
 
 <?php
 mysqli_close($conn);
-}
-    
+}   
