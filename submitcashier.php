@@ -89,13 +89,10 @@ if (mysqli_query($conn, $sql)) {
     echo "Error: " . $sql . "<br>" . mysqli_error($conn);
 }
 
-mysqli_close($conn);
-
-//show countdown on the page
-echo "<br><span style='color: red; font-weight: bold; font-size: 24px;'>Redirecting in 3 seconds...</span><br>";
 
 // Redirect back to the cashier deposit page
-header("Refresh: 3; url=cashierdeposit.php");
+header("Location:viewsubmission.php?id=" . mysqli_insert_id($conn));
+mysqli_close($conn);
 exit();
 
 
