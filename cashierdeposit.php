@@ -55,13 +55,13 @@ $name = $_SESSION['name'];
                     <td>Deposit type</td>
                     <td>
                         <select name="DepositType" class="form-control">
-                        <option value="endoftheday">End of Day</option>
-                        <option value="midday">Mid Day</option>
+                        <option value="End of the day">End of Day</option>
+                        <option value="Mid day">Mid Day</option>
                     </td>
                 </tr>
                 <tr>
                     <td>Drawer Number</td>
-                    <td><input type="number" name="DrawerNumber" class="form-control" step="1" minlength="4" maxlength="4" required></td>
+                    <td><input type="text" pattern="\d{4}" title="Please enter your 4-digit drawer number from RevenueOne" name="DrawerNumber" class="form-control" required></td>
                 </tr>
                 <tr>
                     <td>Cash</td>
