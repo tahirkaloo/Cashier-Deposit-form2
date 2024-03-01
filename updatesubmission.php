@@ -2,6 +2,9 @@
 session_start();
 require_once 'db_connect.php';
 
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 $error_message = ''; // Initialize error message variable
 $success_message = ''; // Initialize success message variable
 
@@ -28,7 +31,6 @@ if (!isset($_SESSION['user_id'])) {
 
             // Validate and sanitize form inputs if needed
 
-
             // Update the record in the database
             $conn = mysqli_connect($db_host, $db_user, $db_password, $db_name);
             if (!$conn) {
@@ -49,6 +51,8 @@ if (!isset($_SESSION['user_id'])) {
             } else {
                 // Handle the case when 'total_amount' is not provided in the form
                 $error_message = "Total amount is required.";
+                // Add a return statement to stop further execution
+                return;
             }
 
             // Example SQL update query:
@@ -74,14 +78,4 @@ if (!isset($_SESSION['user_id'])) {
     } else {
         $error_message = "Invalid request method.";
     }
-}
-
-// If there's an error message, display it
-if (!empty($error_message)) {
-    echo "<p>Error: $error_message</p>";
-}
-
-// If there's a success message, display it
-if (!empty($success_message)) {
-    echo "<p>Success: $success_message</p>";
 }

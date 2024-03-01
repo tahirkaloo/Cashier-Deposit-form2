@@ -22,6 +22,32 @@ $isSupervisor = ($_SESSION['role'] === 'supervisor');
 
 // Fetch unverified submissions from the database
 $sql = "SELECT * FROM cashierdeposit WHERE verified = 0";
+
+// Handle form submission
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $search = isset($_POST['search']) ? mysqli_real_escape_string($conn, $_POST['search']) : '';
+    $filterUser = isset($_POST['user']) ? mysqli_real_escape_string($conn, $_POST['user']) : '';
+    $date = isset($_POST['date']) ? mysqli_real_escape_string($conn, $_POST['date']) : '';
+
+    // Handle search
+    if (!empty($search)) {
+        $sql .= " AND (id LIKE '%$search%' OR username LIKE '%$search%' OR name LIKE '%$search%')";
+    }
+    // Handle user filter
+    if (!empty($filterUser)) {
+        $sql .= " AND username = '$filterUser'";
+    }
+    //Handle date filter
+    if (!empty($date)) {
+        // Check if the date format submitted matches the expected format
+        if (strtotime($date)) {
+            $sql .= " AND DATE(created_at) = '$date'";
+        } else {
+            echo "Error: Invalid date format.";
+        }
+    }
+}
+
 $result = mysqli_query($conn, $sql);
 
 if (!$result) {
@@ -36,10 +62,10 @@ if (!$result) {
         <title>Supervisor Interface</title>
         <!-- Add any CSS or Bootstrap here -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="styles.css">
-        <style>
-            /* Additional styles can be added here */
-        </style>
     </head>
     <body>
     <!-- Navigation -->
@@ -52,10 +78,44 @@ if (!$result) {
         <p>You do not have permission to access this page.</p>
         <?php else : ?>
         <h2>List of Unverified Submissions:</h2>
+
+        <!-- Filter and search form -->
+        <form action="" method="post" class="mb-3">
+            <div class="form-row">
+                <div class="col-md-3">
+                    <input type="text" name="search" class="form-control" placeholder="Search by ID, Username, or Name" value="<?php echo isset($search) ? htmlspecialchars($search) : ''; ?>">
+                </div>
+                <div class="col-md-3">
+                    <select name="user" class="form-control">
+                        <option value="">Filter by User</option>
+                        <?php
+                        // Fetch distinct usernames from the database for user dropdown
+                        $userQuery = "SELECT DISTINCT username FROM cashierdeposit";
+                        $userResult = mysqli_query($conn, $userQuery);
+                        if ($userResult && mysqli_num_rows($userResult) > 0) {
+                            while ($userRow = mysqli_fetch_assoc($userResult)) {
+                                echo "<option value=\"" . $userRow['username'] . "\"" . ($filterUser == $userRow['username'] ? " selected" : "") . ">" . $userRow['username'] . "</option>";
+                            }
+                        }
+                        ?>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <input type="date" name="date" class="form-control" placeholder="Filter by Date" value="<?php echo isset($date) ? htmlspecialchars($date) : ''; ?>">
+                </div>
+
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary">Apply Filters</button>
+                    <a href="history.php" class="btn btn-secondary">Reset Filters</a>
+                </div>
+            </div>
+        </form>
+
         <table class="table">
             <thead>
                 <tr>
                     <th>Submission ID</th>
+                    <th>Date/time</th>
                     <th>Username</th>
                     <th>Name</th>
                     <th>Deposit Type</th>
@@ -83,6 +143,7 @@ if (!$result) {
                 <?php while ($row = mysqli_fetch_assoc($result)) : ?>
                     <tr>
                         <td><?php echo $row['id']; ?></td>
+                        <td><?php echo $row['created_at']; ?></td>
                         <td><?php echo $row['username']; ?></td>
                         <td><?php echo $row['name']; ?></td>
                         <td><?php echo $row['deposit_type']; ?></td>
@@ -113,11 +174,10 @@ if (!$result) {
                 <?php endwhile; ?>
             </tbody>
         </table>
+        <?php endif; // End if (!$isAdmin)
+    }
+    mysqli_close($conn);
+    ?>
     </div>
-</body>
-</html>
-<?php endif; // End if (!$isAdmin)
-}
-
-mysqli_close($conn);
-?>
+    </body>
+    </html>

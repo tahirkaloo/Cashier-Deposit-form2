@@ -93,37 +93,37 @@ if (!empty($error_message)) {
                 </tr>
                 <tr>
                     <td>Cash</td>
-                    <td><input type="number" class="form-control" id="cash" name="cash" value="<?php echo $row['cash_amount']; ?>"> </td>
+                    <td><input type="number" class="form-control" id="cash" name="cash" value="<?php echo $row['cash_amount']; ?>" step="0.01"> </td>
                 </tr>
                 <tr>
                     <td>Check 21 - Deposit</td>
-                    <td><input type="number" class="form-control" id="check21DepositAmount" name="check21DepositAmount" value="<?php echo $row['check21_deposit_amount']; ?>"></td>
-                    <td><input type="number" class="form-control" id="check21DepositCount" name="check21DepositCount" value="<?php echo $row['check21_deposit_count']; ?>"></td>
+                    <td><input type="number" class="form-control" id="check21DepositAmount" name="check21DepositAmount" value="<?php echo $row['check21_deposit_amount']; ?>" step="0.01"></td>
+                    <td><input type="number" class="form-control" id="check21DepositCount" name="check21DepositCount" value="<?php echo $row['check21_deposit_count']; ?>" step="1"></td>
                 </tr>
                 <tr>
                     <td>CEO Check Deposit</td>
-                    <td><input type="number" class="form-control" id="ceoCheckDepositAmount" name="ceoCheckDepositAmount" value="<?php echo $row['ceo_check_deposit_amount']; ?>"></td>
-                    <td><input type="number" class="form-control" id="ceoCheckDepositCount" name="ceoCheckDepositCount" value="<?php echo $row['ceo_check_deposit_count']; ?>"></td>
+                    <td><input type="number" class="form-control" id="ceoCheckDepositAmount" name="ceoCheckDepositAmount" value="<?php echo $row['ceo_check_deposit_amount']; ?>" step="0.01"></td>
+                    <td><input type="number" class="form-control" id="ceoCheckDepositCount" name="ceoCheckDepositCount" value="<?php echo $row['ceo_check_deposit_count']; ?>" step="1"></td>
                 </tr>
                 <tr>
                     <td>Manual Check Deposit</td>
-                    <td><input type="number" class="form-control" id="manualCheckDepositAmount" name="manualCheckDepositAmount" value="<?php echo $row['manual_check_deposit_amount']; ?>"></td>
-                    <td><input type="number" class="form-control" id="manualCheckDepositCount" name="manualCheckDepositCount" value="<?php echo $row['manual_check_deposit_count']; ?>"></td> 
+                    <td><input type="number" class="form-control" id="manualCheckDepositAmount" name="manualCheckDepositAmount" value="<?php echo $row['manual_check_deposit_amount']; ?>" step="0.01"></td>
+                    <td><input type="number" class="form-control" id="manualCheckDepositCount" name="manualCheckDepositCount" value="<?php echo $row['manual_check_deposit_count']; ?>" step="1"></td> 
                 </tr>
                 <tr>
                     <td>Money Order</td>
-                    <td><input type="number" class="form-control" id="moneyOrderDepositAmount" name="moneyOrderDepositAmount" value="<?php echo $row['money_order_deposit_amount']; ?>"></td>
-                    <td><input type="number" class="form-control" id="moneyOrderDepositCount" name="moneyOrderDepositCount" value="<?php echo $row['money_order_deposit_count']; ?>"></td>
+                    <td><input type="number" class="form-control" id="moneyOrderDepositAmount" name="moneyOrderDepositAmount" value="<?php echo $row['money_order_deposit_amount']; ?>" step="0.01"></td>
+                    <td><input type="number" class="form-control" id="moneyOrderDepositCount" name="moneyOrderDepositCount" value="<?php echo $row['money_order_deposit_count']; ?>" step="1"></td>
                 </tr>
                 <tr>
                     <td>Credit and Debit Cards</td>
-                    <td><input type="number" class="form-control" id="creditDebitCardAmount" name="creditDebitCardAmount" value="<?php echo $row['credit_debit_cards_amount']; ?>"></td>
-                    <td><input type="number" class="form-control" id="creditDebitCardCount" name="creditDebitCardCount" value="<?php echo $row['credit_debit_cards_count']; ?>"></td>
+                    <td><input type="number" class="form-control" id="creditDebitCardAmount" name="creditDebitCardAmount" value="<?php echo $row['credit_debit_cards_amount']; ?>" step="0.01"></td>
+                    <td><input type="number" class="form-control" id="creditDebitCardCount" name="creditDebitCardCount" value="<?php echo $row['credit_debit_cards_count']; ?>" step="1"></td>
                 </tr>
                 <tr>
                     <td>Pre-Deposits</td>
-                    <td><input type="number" class="form-control" id="preDepositAmount" name="preDepositAmount" value="<?php echo $row['pre_deposit_amount']; ?>"></td>
-                    <td><input type="number" class="form-control" id="preDepositCount" name="preDepositCount" value="<?php echo $row['pre_deposit_count']; ?>"></td>
+                    <td><input type="number" class="form-control" id="preDepositAmount" name="preDepositAmount" value="<?php echo $row['pre_deposit_amount']; ?>" step="0.01"></td>
+                    <td><input type="number" class="form-control" id="preDepositCount" name="preDepositCount" value="<?php echo $row['pre_deposit_count']; ?>" step="1"></td>
                 </tr>
             </tbody>
             <tfoot>

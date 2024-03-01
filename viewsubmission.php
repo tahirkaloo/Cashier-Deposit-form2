@@ -88,6 +88,13 @@ mysqli_close($conn);
                     <td></td>
                 </tr>
                 <tr>
+                    <td>Date/time</td>
+                    <td>
+                        <?php echo isset($row['created_at']) ? htmlspecialchars($row['created_at']) : ''; ?>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
                     <td>Deposit type</td>
                     <td>
                         <?php echo isset($row['deposit_type']) ? htmlspecialchars($row['deposit_type']) : ''; ?>
@@ -120,21 +127,22 @@ mysqli_close($conn);
                 <tr>
                     <td>CEO Check Deposit</td>
                     <td>
-                        <?php echo isset($row['ceo_deposit_amount']) ? htmlspecialchars($row['ceo_deposit_amount']) : ''; ?>
+                        <?php echo isset($row['ceo_check_deposit_amount']) ? htmlspecialchars($row['ceo_check_deposit_amount']) : ''; ?>
                     </td>
                     <td>
-                        <?php echo isset($row['ceo_deposit_count']) ? htmlspecialchars($row['ceo_deposit_count']) : ''; ?>
+                        <?php echo isset($row['ceo_check_deposit_count']) ? htmlspecialchars($row['ceo_check_deposit_count']) : ''; ?>
                     </td>
                 </tr>
                 <tr>
                     <td>Manual Check Deposit</td>
                     <td>
-                        <?php echo isset($row['manual_deposit_amount']) ? htmlspecialchars($row['manual_deposit_amount']) : ''; ?>
+                        <?php echo isset($row['manual_check_deposit_amount']) ? htmlspecialchars($row['manual_check_deposit_amount']) : ''; ?>
                     </td>
                     <td>
-                        <?php echo isset($row['manual_deposit_count']) ? htmlspecialchars($row['manual_deposit_count']) : ''; ?>
+                        <?php echo isset($row['manual_check_deposit_count']) ? htmlspecialchars($row['manual_check_deposit_count']) : ''; ?>
                     </td>
                 </tr>
+
                 <tr>
                     <td>Money Order</td>
                     <td>
@@ -164,29 +172,27 @@ mysqli_close($conn);
                 </tr>
 
                 <tr>
-                    <td>Total</td>
+                    <td><strong>Total</strong></td>
                     <td>
-                        <?php echo isset($row['total_amount']) ? htmlspecialchars($row['total_amount']) : ''; ?>
+                        <strong><?php echo isset($row['total_amount']) ? htmlspecialchars($row['total_amount']) : ''; ?></strong>
                     </td>
                     <td>
-                        <?php echo isset($row['total_count']) ? htmlspecialchars($row['total_count']) : ''; ?>
+                        <strong><?php echo isset($row['total_count']) ? htmlspecialchars($row['total_count']) : ''; ?></strong>
                     </td>
                 </tr>
             </tbody>
     </table>
             <!-- Print Button -->
-            <button onclick="printForm()" class="btn btn-lg btn-primary btn-block" id="printButton">Print Form</button>
+            <button type="button" onclick="printForm()" class="btn btn-lg btn-primary btn-block" id="printButton">Print Form</button>
     </form>
 </div>
-
-
-
 
 <!-- JavaScript -->
 <script>
     function printForm() {
         window.print();
     }
+
 </script>
 
 <!-- JavaScript -->

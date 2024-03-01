@@ -18,6 +18,7 @@ $name = $_SESSION['name'];
     <title>Cashier Deposit</title>
     <!-- CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles.css">
     <style>
         /* Additional styles can be added here */
         .total {
@@ -60,7 +61,7 @@ $name = $_SESSION['name'];
                 </tr>
                 <tr>
                     <td>Drawer Number</td>
-                    <td><input type="number" name="DrawerNumber" class="form-control" step="1" minlength="4" maxlength="4"></td>
+                    <td><input type="number" name="DrawerNumber" class="form-control" step="1" minlength="4" maxlength="4" required></td>
                 </tr>
                 <tr>
                     <td>Cash</td>
@@ -142,6 +143,119 @@ $name = $_SESSION['name'];
             $('#totalCount').text(totalCount);
         }
     });
+
+
+    $(document).ready(function(){
+    $('.amount').on('input', function() {
+        var check21Amount = parseFloat($('input[name="Check21DepositAmount"]').val());
+        var ceoAmount = parseFloat($('input[name="CEOCheckDepositAmount"]').val());
+        var manualAmount = parseFloat($('input[name="ManualCheckDepositAmount"]').val());
+        var moneyOrderAmount = parseFloat($('input[name="MoneyOrderAmount"]').val());
+        var creditDebitAmount = parseFloat($('input[name="CreditDebitCardsAmount"]').val());
+        var preDepositsAmount = parseFloat($('input[name="PreDepositsAmount"]').val());
+        
+        var check21CountInput = $('input[name="Check21DepositCount"]');
+        var ceoCountInput = $('input[name="CEOCheckDepositCount"]');
+        var manualCountInput = $('input[name="ManualCheckDepositCount"]');
+        var moneyOrderCountInput = $('input[name="MoneyOrderCount"]');
+        var creditDebitCountInput = $('input[name="CreditDebitCardsCount"]');
+        var preDepositsCountInput = $('input[name="PreDepositsCount"]');
+        
+        if (!isNaN(check21Amount)) {
+            check21CountInput.attr('required', 'required');
+        } else {
+            check21CountInput.removeAttr('required');
+        }
+        
+        if (!isNaN(ceoAmount)) {
+            ceoCountInput.attr('required', 'required');
+        } else {
+            ceoCountInput.removeAttr('required');
+        }
+        
+        if (!isNaN(manualAmount)) {
+            manualCountInput.attr('required', 'required');
+        } else {
+            manualCountInput.removeAttr('required');
+        }
+        
+        if (!isNaN(moneyOrderAmount)) {
+            moneyOrderCountInput.attr('required', 'required');
+        } else {
+            moneyOrderCountInput.removeAttr('required');
+        }
+        
+        if (!isNaN(creditDebitAmount)) {
+            creditDebitCountInput.attr('required', 'required');
+        } else {
+            creditDebitCountInput.removeAttr('required');
+        }
+        
+        if (!isNaN(preDepositsAmount)) {
+            preDepositsCountInput.attr('required', 'required');
+        } else {
+            preDepositsCountInput.removeAttr('required');
+        }
+
+    });
+});
+
+
+$(document).ready(function(){
+    $('.amount, .count').on('input', function() {
+        var check21AmountInput = $('input[name="Check21DepositAmount"]');
+        var ceoAmountInput = $('input[name="CEOCheckDepositAmount"]');
+        var manualAmountInput = $('input[name="ManualCheckDepositAmount"]');
+        var moneyOrderAmountInput = $('input[name="MoneyOrderAmount"]');
+        var creditDebitAmountInput = $('input[name="CreditDebitCardsAmount"]');
+        var preDepositsAmountInput = $('input[name="PreDepositsAmount"]');
+        
+        var check21Count = parseInt($('input[name="Check21DepositCount"]').val());
+        var ceoCount = parseInt($('input[name="CEOCheckDepositCount"]').val());
+        var manualCount = parseInt($('input[name="ManualCheckDepositCount"]').val());
+        var moneyOrderCount = parseInt($('input[name="MoneyOrderCount"]').val());
+        var creditDebitCount = parseInt($('input[name="CreditDebitCardsCount"]').val());
+        var preDepositsCount = parseInt($('input[name="PreDepositsCount"]').val());
+        
+        if (!isNaN(check21Count) && check21Count > 0) {
+            check21AmountInput.attr('required', 'required');
+        } else {
+            check21AmountInput.removeAttr('required');
+        }
+        
+        if (!isNaN(ceoCount) && ceoCount > 0) {
+            ceoAmountInput.attr('required', 'required');
+        } else {
+            ceoAmountInput.removeAttr('required');
+        }
+        
+        if (!isNaN(manualCount) && manualCount > 0) {
+            manualAmountInput.attr('required', 'required');
+        } else {
+            manualAmountInput.removeAttr('required');
+        }
+        
+        if (!isNaN(moneyOrderCount) && moneyOrderCount > 0) {
+            moneyOrderAmountInput.attr('required', 'required');
+        } else {
+            moneyOrderAmountInput.removeAttr('required');
+        }
+        
+        if (!isNaN(creditDebitCount) && creditDebitCount > 0) {
+            creditDebitAmountInput.attr('required', 'required');
+        } else {
+            creditDebitAmountInput.removeAttr('required');
+        }
+        
+        if (!isNaN(preDepositsCount) && preDepositsCount > 0) {
+            preDepositsAmountInput.attr('required', 'required');
+        } else {
+            preDepositsAmountInput.removeAttr('required');
+        }
+    });
+});
 </script>
+
+
 </body>
 </html>
