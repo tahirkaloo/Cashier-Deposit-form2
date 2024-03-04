@@ -19,7 +19,6 @@ if (!$conn) {
 $isAdmin = ($_SESSION['role'] === 'admin');
 $isSupervisor = ($_SESSION['role'] === 'supervisor');
 
-
 // Fetch unverified submissions from the database
 $sql = "SELECT * FROM cashierdeposit WHERE verified = 0";
 
@@ -73,46 +72,46 @@ if (!$result) {
 
     <div class="container-wrapper">
         <h1>Supervisor Interface</h1>
-        <?php if (!$isAdmin && !$isSupervisor) : ?>
-        <h2>Access Denied</h2>
-        <p>You do not have permission to access this page.</p>
-        <?php else : ?>
-        <h2>List of Unverified Submissions:</h2>
+        <?php if (!$isAdmin && !$isSupervisor) {
+            header("Location: accessdenied.html");
+            exit; // Make sure to exit after redirecting
+        } else { ?>
+            <h2>List of Unverified Submissions:</h2>
 
-        <!-- Filter and search form -->
-        <form action="" method="post" class="mb-3">
-            <div class="form-row">
-                <div class="col-md-3">
-                    <input type="text" name="search" class="form-control" placeholder="Search by ID, Username, or Name" value="<?php echo isset($search) ? htmlspecialchars($search) : ''; ?>">
-                </div>
-                <div class="col-md-3">
-                    <select name="user" class="form-control">
-                        <option value="">Filter by User</option>
-                        <?php
-                        // Fetch distinct usernames from the database for user dropdown
-                        $userQuery = "SELECT DISTINCT username FROM cashierdeposit";
-                        $userResult = mysqli_query($conn, $userQuery);
-                        if ($userResult && mysqli_num_rows($userResult) > 0) {
-                            while ($userRow = mysqli_fetch_assoc($userResult)) {
-                                echo "<option value=\"" . $userRow['username'] . "\"" . ($filterUser == $userRow['username'] ? " selected" : "") . ">" . $userRow['username'] . "</option>";
+            <!-- Filter and search form -->
+            <form action="" method="post" class="mb-3">
+                <div class="form-row">
+                    <div class="col-md-3">
+                        <input type="text" name="search" class="form-control" placeholder="Search by ID, Username, or Name" value="<?php echo isset($search) ? htmlspecialchars($search) : ''; ?>">
+                    </div>
+                    <div class="col-md-3">
+                        <select name="user" class="form-control">
+                            <option value="">Filter by User</option>
+                            <?php
+                            // Fetch distinct usernames from the database for user dropdown
+                            $userQuery = "SELECT DISTINCT username FROM cashierdeposit";
+                            $userResult = mysqli_query($conn, $userQuery);
+                            if ($userResult && mysqli_num_rows($userResult) > 0) {
+                                while ($userRow = mysqli_fetch_assoc($userResult)) {
+                                    echo "<option value=\"" . $userRow['username'] . "\"" . ($filterUser == $userRow['username'] ? " selected" : "") . ">" . $userRow['username'] . "</option>";
+                                }
                             }
-                        }
-                        ?>
-                    </select>
-                </div>
-                <div class="col-md-3">
-                    <input type="date" name="date" class="form-control" placeholder="Filter by Date" value="<?php echo isset($date) ? htmlspecialchars($date) : ''; ?>">
-                </div>
+                            ?>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <input type="date" name="date" class="form-control" placeholder="Filter by Date" value="<?php echo isset($date) ? htmlspecialchars($date) : ''; ?>">
+                    </div>
 
-                <div class="col-md-2">
-                    <button type="submit" class="btn btn-primary">Apply Filters</button>
-                    <a href="history.php" class="btn btn-secondary">Reset Filters</a>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-primary">Apply Filters</button>
+                        <a href="supervisor.php" class="btn btn-secondary">Reset Filters</a>
+                    </div>
                 </div>
-            </div>
-        </form>
+            </form>
 
-        <table class="table">
-            <thead>
+            <table class="table">
+                <thead>
                 <tr>
                     <th>Submission ID</th>
                     <th>Date/time</th>
@@ -136,10 +135,9 @@ if (!$result) {
                     <th>Total Amount</th>
                     <th>Total Count</th>
                     <th>Verified</th>
-                    <th>Action</th>
                 </tr>
-            </thead>
-            <tbody>
+                </thead>
+                <tbody>
                 <?php while ($row = mysqli_fetch_assoc($result)) : ?>
                     <tr>
                         <td><?php echo $row['id']; ?></td>
@@ -164,17 +162,34 @@ if (!$result) {
                         <td><?php echo $row['total_amount']; ?></td>
                         <td><?php echo $row['total_count']; ?></td>
                         <td><?php echo ($row['verified'] ? '<span style="color: green">Yes</span>' : '<span style="color: red">No</span>'); ?></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
                         <td>
-                            <a href="verifysubmission.php?id=<?php echo $row['id']; ?>" class="btn btn-primary">Verify</a>
+                            <a href="verifysubmission.php?id=<?php echo $row['id']; ?>" class="btn btn-lg btn-primary">Verify</a>
+                        </td>
+                        <td>
                             <a href="editsubmission.php?id=<?php echo $row['id']; ?>" class="btn btn-warning">Edit</a>
+                        </td>
+                        <td>
                             <a href="deletesubmission.php?id=<?php echo $row['id']; ?>" class="btn btn-danger">Delete</a>
+                        </td>
+                        <td>
                             <a href="viewsubmission.php?id=<?php echo $row['id']; ?>" class="btn btn-success">View</a>
                         </td>
                     </tr>
                 <?php endwhile; ?>
-            </tbody>
-        </table>
-        <?php endif; // End if (!$isAdmin)
+                </tbody>
+            </table>
+        <?php } // End if (!$isAdmin)
     }
     mysqli_close($conn);
     ?>

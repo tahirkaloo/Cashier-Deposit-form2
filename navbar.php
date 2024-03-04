@@ -7,6 +7,12 @@ if (session_status() == PHP_SESSION_NONE) {
 $isLoggedIn = isset($_SESSION['user_id']);
 ?>
 
+<!-- JavaScript Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css">
+
 <nav class="navbar navbar-expand-md navbar-dark bg-dark">
   <img src="https://reimbursement-instance-bucket.s3.amazonaws.com/Logo+files/logo-no-background.png" alt="Logo" height="100">
   <a class="navbar-brand" href="#">Deposit Portal</a>
@@ -26,6 +32,9 @@ $isLoggedIn = isset($_SESSION['user_id']);
       </li>
       <li class="nav-item">
         <a class="nav-link" href="supervisor.php">Supervisor</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="depositform.php">Deposit Forms</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="about.html">About</a>

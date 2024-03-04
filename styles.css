@@ -110,7 +110,7 @@
 /* Button styles */
 .btn {
   padding: 12px 24px;
-  border-radius: 30px;
+  border-radius: 30px !important;
   cursor: pointer;
   transition: background-color 0.3s, color 0.3s, border-color 0.3s;
   border: 2px solid transparent; /* Add border for a more modern look */
@@ -123,6 +123,13 @@
   vertical-align: middle;
   margin-right: 10px;
   margin-bottom: 10px;
+  box-shadow: 5px 8px 16px rgba(50, 50, 93, 0.755), 0 1px 3px rgba(0, 0, 0, 0.485);
+}
+
+.btn:hover {
+  box-shadow: 5px 8px 16px rgba(5, 195, 75, 0.755), 0 2px 6px rgba(0, 0, 0, 0.485);
+  animation-duration: 0.5s;
+  animation-name: btn-hover;  
 }
 
 /* Primary button styles */

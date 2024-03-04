@@ -107,6 +107,7 @@ if (isset($_POST['update_details'])) {
     <title>User Profile</title>
     <!-- CSS only -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <!-- Navigation -->
@@ -136,7 +137,7 @@ if (isset($_POST['update_details'])) {
             </div>
             <div class="form-group">
                 <label for="username">Username:</label>
-                <input type="text" class="form-control" id="username" name="username" value="<?php echo $username; ?>" required maxlength="5">
+                <input type="text" class="form-control" id="username" name="username" value="<?php echo $username; ?>" required maxlength="5" readonly>
             </div>
             <div class="form-group">
                 <label for="email">Email:</label>

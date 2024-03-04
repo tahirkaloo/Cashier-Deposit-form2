@@ -184,15 +184,30 @@ mysqli_close($conn);
     </table>
             <!-- Print Button -->
             <button type="button" onclick="printForm()" class="btn btn-lg btn-primary btn-block" id="printButton">Print Form</button>
+            <!-- Open history button -->
+            <a href="history.php" class="btn btn-lg btn-dark btn-block" id="openHistoryButton">Open history</a>
     </form>
 </div>
 
 <!-- JavaScript -->
 <script>
+    window.onbeforeprint = function() {
+        var openHistoryButton = document.getElementById('openHistoryButton');
+        var printButton = document.getElementById('printButton');
+        printButton.style.display = 'none';
+        openHistoryButton.style.display = 'none';
+    }
+
     function printForm() {
         window.print();
     }
 
+    window.onafterprint = function() {
+        var openHistoryButton = document.getElementById('openHistoryButton');
+        var printButton = document.getElementById('printButton');
+        printButton.style.display = 'block';
+        openHistoryButton.style.display = 'block';
+    }
 </script>
 
 <!-- JavaScript -->

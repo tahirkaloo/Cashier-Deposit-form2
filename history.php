@@ -20,7 +20,11 @@ $isAdmin = ($_SESSION['role'] === 'admin');
 $isSupervisor = ($_SESSION['role'] === 'supervisor');
 
 // Fetch all submissions from the database
-$sql = "SELECT * FROM cashierdeposit";
+if ($isAdmin || $isSupervisor) {
+    $sql = "SELECT * FROM cashierdeposit";
+} else {
+    $sql = "SELECT * FROM cashierdeposit WHERE username = '" . $_SESSION['username'] . "'";
+}
 $search = "";
 $filterUser = "";
 
@@ -70,12 +74,17 @@ if (!$result) {
     <?php include "navbar.php"; ?>
     <div class="container-fluid">
     <h1>History</h1>
-<!-- Filter and search form -->
+    <!-- Filter and search form -->
     <form action="" method="post" class="mb-3">
         <div class="form-row">
+            <?php
+            // Check if the user is an admin or supervisor
+            if ($isAdmin || $isSupervisor) {
+            ?>
             <div class="col-md-3">
                 <input type="text" name="search" class="form-control" placeholder="Search by ID, Username, or Name" value="<?php echo htmlspecialchars($search); ?>">
             </div>
+
             <div class="col-md-3">
                 <select name="user" class="form-control">
                     <option value="">Filter by User</option>
@@ -85,12 +94,16 @@ if (!$result) {
                     $userResult = mysqli_query($conn, $userQuery);
                     if ($userResult && mysqli_num_rows($userResult) > 0) {
                         while ($userRow = mysqli_fetch_assoc($userResult)) {
-                            echo "<option value=\"" . $userRow['username'] . "\"" . ($filterUser == $userRow['username'] ? " selected" : "") . ">" . $userRow['username'] . "</option>";
+                            echo "<option value=\"" . $userRow['username'] . "\">" . $userRow['username'] . "</option>";
                         }
                     }
                     ?>
                 </select>
             </div>
+            <?php
+            }
+            ?>
+
             <div class="col-md-3">
                 <input type="date" name="date" class="form-control" placeholder="Filter by Date" value="<?php echo htmlspecialchars($date); ?>">
             </div>
@@ -157,11 +170,11 @@ if (!$result) {
                         <td><?php echo $row['total_count']; ?></td>
                         <td><?php echo ($row['verified'] ? '<span style="color: green">Yes</span>' : '<span style="color: red">No</span>'); ?></td> 
                         <td>
-                            <?php if (!$row['verified'] || $isAdmin || $isSupervisor): ?>
-                                <a href="editsubmission.php?id=<?php echo $row['id']; ?>" class="btn btn-primary">Edit</a>
-                                <a href="viewsubmission.php?id=<?php echo $row['id']; ?>" class="btn btn-secondary">View</a>
-                                <a href="deletesubmission.php?id=<?php echo $row['id']; ?>" class="btn btn-danger">Delete</a>
-                            <?php endif; ?>
+                        <a href="viewsubmission.php?id=<?php echo $row['id']; ?>" class="btn btn-primary">View</a>
+                        <?php if (!$row['verified'] || $isAdmin || $isSupervisor): ?>
+                            <a href="editsubmission.php?id=<?php echo $row['id']; ?>" class="btn btn-secondary">Edit</a>
+                            <a href="deletesubmission.php?id=<?php echo $row['id']; ?>" class="btn btn-danger">Delete</a>
+                        <?php endif; ?>
                         </td>
                     </tr>
                 <?php endwhile; ?>
