@@ -3,7 +3,7 @@ session_start();
 
 //Check if the user is admin and show error if not
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
-  header("Location: ../404.html");
+  header("Location: ../accessdenied.html");
   exit;
 }
 

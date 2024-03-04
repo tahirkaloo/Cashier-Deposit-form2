@@ -110,7 +110,7 @@ $name = $_SESSION['name'];
                 </tr>
             </tfoot>
         </table>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-lg btn-primary btn-block">Submit</button>
     </form>
 </div>
 

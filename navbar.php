@@ -31,6 +31,9 @@ $isLoggedIn = isset($_SESSION['user_id']);
         <a class="nav-link" href="history.php">History</a>
       </li>
       <li class="nav-item">
+        <a class="nav-link" href="coinexchange.php">Coin Exchange</a>
+      </li>
+      <li class="nav-item">
         <a class="nav-link" href="supervisor.php">Supervisor</a>
       </li>
       <li class="nav-item">

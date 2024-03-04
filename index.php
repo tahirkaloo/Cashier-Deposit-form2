@@ -4,14 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Deposit Portal</title>
-  <!-- CSS only -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css">
+  <!-- Add any CSS or Bootstrap here -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <!-- JavaScript Bundle with Popper -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <link rel="stylesheet" href="styles.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
   <div id="navbar"></div>
@@ -46,6 +45,16 @@
     </div>
 
     <div class="banner banner3">
+      <a href="depositform.php">
+        <div class="banner-overlay">
+          <h2>Deposit Form</h2>
+          <i class="fas fa-user" style="font-size: 32px;"></i>
+          <i class="fas fa-arrow-right" style="font-size: 32px;"></i>
+        </div>
+      </a>
+    </div>
+
+    <div class="banner banner3">
       <a href="supervisor.php">
         <div class="banner-overlay">
           <h2>Supervisor</h2>
@@ -73,9 +82,6 @@
     </div>
   </footer>
 
-  <!-- Bootstrap JavaScript -->
-  <script src="bootstrap/js/jquery.min.js"></script>
-  <script src="bootstrap/js/bootstrap.min.js"></script>
 </body>
 </html>
 

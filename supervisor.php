@@ -110,7 +110,7 @@ if (!$result) {
                 </div>
             </form>
 
-            <table class="table">
+            <table class="table table-striped table-condensed table-hover animate__animated animate__fadeIn animate__faster table-responsive">
                 <thead>
                 <tr>
                     <th>Submission ID</th>
