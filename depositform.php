@@ -138,7 +138,7 @@ mysqli_close($conn);
                     <td id="billAmountcdt"><?php echo floor($cashierRow['cash_amount']); ?></td>
                     <td id="cashAmountcdt"><?php echo $cashierRow['cash_amount']; ?></td>
                     <td id="checkAmountcdt"><?php echo $cashierRow['check21_deposit_amount']; ?></td>
-                    <td id="totalamountcdt"><?php echo $cashierRow['total_amount']; ?></td>
+                    <td id="totalamountcdt"><?php echo $cashierRow['cash_amount'] + $cashierRow['check21_deposit_amount']; ?></td>
                 </tr>
             <?php endwhile; ?>
         </tbody>
@@ -168,8 +168,8 @@ mysqli_close($conn);
                     <td>
                         <?php
                             $totalBillAmount = 0;
-                            mysqli_data_seek($resultdcs, 0); // Reset result pointer
-                            while ($row = mysqli_fetch_assoc($resultdcs)) {
+                            mysqli_data_seek($result, 0); // Reset result pointer
+                            while ($row = mysqli_fetch_assoc($result)) {
                                 $totalBillAmount += $row['cash_amount'];
                             }
                             echo floor($totalBillAmount);
@@ -185,7 +185,7 @@ mysqli_close($conn);
                             echo $totalCashAmount;
                         ?>
                     </td>
-                    <td>
+                    <td>    
                         <?php
                             $totalCheckAmount = 0;
                             mysqli_data_seek($result, 0); // Reset result pointer
@@ -200,7 +200,7 @@ mysqli_close($conn);
                             $totalAmount = 0;
                             mysqli_data_seek($result, 0); // Reset result pointer
                             while ($row = mysqli_fetch_assoc($result)) {
-                                $totalAmount += $row['total_amount'];
+                                $totalAmount += $row['cash_amount'] + $row['check21_deposit_amount'];
                             }
                             echo $totalAmount;
                         ?>
@@ -212,7 +212,7 @@ mysqli_close($conn);
         </tfoot>
     </table>
 
-    <button id="printcdf" class="btn btn-secondary">Print Cashier Deposit Form</button>
+    <button id="printcdf" class="btn btn-primary" onclick="printcdf()">Print Cashier Deposit Form</button>
 </div>
 
 <div id="dailyCStableDiv">
@@ -245,9 +245,8 @@ mysqli_close($conn);
                     <td id="check21depositamountdcs"><?php echo $row['check21_deposit_amount']; ?></td>
                     <td id="ceocheckdepositamountdcs"><?php echo $row['ceo_check_deposit_amount']; ?></td>
                     <td id="manualcheckdepositamountdcs"><?php echo $row['manual_check_deposit_amount']; ?></td>
-                    <td id="totalamountdcs"><?php echo $row['cash_amount'] + $row['check21_deposit_amount']; ?></td>
-                    <td id="moneyorderdepositamountdcs"><?php echo $row['money_order_deposit_amount']; ?></td>
-                    <td id="totalcashandcheckdcs"><?php echo $row['total_amount']; ?></td>
+                    <td id="totalamountdcs"><?php echo ($row['cash_amount'] ?? 0) + ($row['check21_deposit_amount'] ?? 0) + ($row['ceo_check_deposit_amount'] ?? 0) + ($row['manual_check_deposit_amount'] ?? 0);?></td>                    <td id="moneyorderdepositamountdcs"><?php echo $row['money_order_deposit_amount']; ?></td>
+                    <td id="totalcashandcheckdcs"><?php echo $row['cash_amount'] + $row['check21_deposit_amount']; ?></td>
                     <td id="creditcarddepositamountdcs"><?php echo $row['credit_debit_cards_amount']; ?></td>
                     <td id="predepositamountdcs"><?php echo $row['pre_deposit_amount']; ?></td>
                     <td id="grandtotalamountdcs"><?php echo $row['total_amount']; ?></td>
@@ -313,7 +312,7 @@ mysqli_close($conn);
                         $totalTotalAmount = 0;
                         mysqli_data_seek($resultdcs, 0); // Reset result pointer
                         while ($row = mysqli_fetch_assoc($resultdcs)) {
-                            $totalTotalAmount += $row['total_amount'];
+                            $totalTotalAmount += $row['cash_amount'] + $row['check21_deposit_amount'] + $row['ceo_check_deposit_amount'] + $row['manual_check_deposit_amount'];
                         }
                         echo $totalTotalAmount;
                     ?>
@@ -333,7 +332,7 @@ mysqli_close($conn);
                         $totalTotalCashAndCheck = 0;
                         mysqli_data_seek($resultdcs, 0); // Reset result pointer
                         while ($row = mysqli_fetch_assoc($resultdcs)) {
-                            $totalTotalCashAndCheck += $row['total_amount'];
+                            $totalTotalCashAndCheck += $row['cash_amount'] + $row['check21_deposit_amount'];
                         }
                         echo $totalTotalCashAndCheck;
                     ?>
@@ -371,6 +370,8 @@ mysqli_close($conn);
             </tr>
         </tfoot>
     </table>
+
+    <button id="printdcs" class="btn btn-primary">Print all to Laserfiche</button>
 </div>
 
 <?php endif; ?>
@@ -378,32 +379,41 @@ mysqli_close($conn);
 
 </body>
 
+
+<!-- Footer -->
+<?php include 'footer.php'; ?>
+
 <script>
-
-/**This function handles the before print event for the window. It hides the print button and daily CS table div.*/
-window.onbeforeprint = function() {
-    var cashierDepositTableDiv = document.getElementById('cashierDepositTableDiv');
-    var dailyCStableDiv = document.getElementById('dailyCStableDiv');
-    var printButton = document.getElementById('printcdf');
-    printButton.style.display = 'none';
-    dailyCStableDiv.style.display = 'none';
-}
-
-function printcdf() {
-    window.print();
-}
-
-window.onafterprint = function() {
-    var cashierDepositTableDiv = document.getElementById('cashierDepositTableDiv');
-    var dailyCStableDiv = document.getElementById('dailyCStableDiv');
-    var printButton = document.getElementById('printcdf');
-    printButton.style.display = 'block';
-    dailyCStableDiv.style.display = 'block';
-}
-
-var printcdfButton = document.getElementById('printcdf');
-printcdfButton.addEventListener('click', printcdf);
-
+    document.getElementById('printdcs').addEventListener('click', function() {
+        window.print();
+    });
 </script>
+
+
+<script>
+    /** This function handles the print event for the window. It hides the print button and daily CS table div. Only when the button with id printcdf is clicked, it will print the Cashier Deposit Form */
+    window.onbeforeprint = function() {
+        var cashierDepositTableDiv = document.getElementById('cashierDepositTableDiv');
+        var dailyCStableDiv = document.getElementById('dailyCStableDiv');
+        var printButton = document.getElementById('printcdf');
+        var footer = document.getElementById('footer');
+        printButton.style.display = 'none';
+        dailyCStableDiv.style.display = 'none';
+    }
+
+    function printcdf() {
+        window.print();
+    }
+
+    window.onafterprint = function() {
+        var cashierDepositTableDiv = document.getElementById('cashierDepositTableDiv');
+        var dailyCStableDiv = document.getElementById('dailyCStableDiv');
+        var printButton = document.getElementById('printcdf');
+        printButton.style.display = 'block';
+        dailyCStableDiv.style.display = 'block';
+    }
+</script>
+
+
 
 </html>

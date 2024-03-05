@@ -261,4 +261,5 @@ $(document).ready(function(){
 
 
 </body>
+<?php include 'footer.php'; ?>
 </html>

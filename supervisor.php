@@ -180,7 +180,7 @@ if (!$result) {
                             <a href="editsubmission.php?id=<?php echo $row['id']; ?>" class="btn btn-warning">Edit</a>
                         </td>
                         <td>
-                            <a href="deletesubmission.php?id=<?php echo $row['id']; ?>" class="btn btn-danger">Delete</a>
+                            <a href="deletesubmission.php?id=<?php echo $row['id']; ?>&table=cashierdeposit" class="btn btn-danger">Delete</a>
                         </td>
                         <td>
                             <a href="viewsubmission.php?id=<?php echo $row['id']; ?>" class="btn btn-success">View</a>

@@ -113,5 +113,9 @@ mysqli_close($conn);
             echo "<td><a href='deletesubmission.php?id=" . $row['id'] . "&table=coinexchange' class='btn btn-danger'>Delete</a></td>";            echo "</tr>";
         }
         ?>
+      </tbody>
+    </table>
+  </div>
 </body>
+<?php include 'footer.php'; ?>
 </html>

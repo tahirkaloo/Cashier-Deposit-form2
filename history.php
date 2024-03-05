@@ -173,7 +173,7 @@ if (!$result) {
                         <a href="viewsubmission.php?id=<?php echo $row['id']; ?>" class="btn btn-primary">View</a>
                         <?php if (!$row['verified'] || $isAdmin || $isSupervisor): ?>
                             <a href="editsubmission.php?id=<?php echo $row['id']; ?>" class="btn btn-secondary">Edit</a>
-                            <a href="deletesubmission.php?id=<?php echo $row['id']; ?>" class="btn btn-danger">Delete</a>
+                            <a href="deletesubmission.php?id=<?php echo $row['id']; ?>&table=cashierdeposit" class="btn btn-danger">Delete</a>
                         <?php endif; ?>
                         </td>
                     </tr>
@@ -183,6 +183,7 @@ if (!$result) {
     <?php endif; ?>
 </div>
 </body>
+<?php include 'footer.php'; ?>
 </html>
 
 <?php
