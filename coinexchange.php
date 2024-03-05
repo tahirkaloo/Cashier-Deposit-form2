@@ -48,6 +48,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
+//Show data in table
+$sql = "SELECT * FROM coinexchange";
+$result = mysqli_query($conn, $sql);
+
+if (!$result) {
+    echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+    exit;
+}
+
+
 // Close the database connection
 mysqli_close($conn);
 ?>
@@ -80,5 +90,28 @@ mysqli_close($conn);
       </div>
     </form>
   </div>
+
+  <div class="container mt-5">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Name</th>
+          <th>Username</th>
+          <th>Bill Amount</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <?php
+        while ($row = mysqli_fetch_assoc($result)) {
+            echo "<tr>";
+            echo "<td>" . $row['date'] . "</td>";
+            echo "<td>" . $row['name'] . "</td>";
+            echo "<td>" . $row['username'] . "</td>";
+            echo "<td>" . $row['bill_amount_exchanged'] . "</td>";
+            echo "<td><a href='deletesubmission.php?id=" . $row['id'] . "&table=coinexchange' class='btn btn-danger'>Delete</a></td>";            echo "</tr>";
+        }
+        ?>
 </body>
 </html>
