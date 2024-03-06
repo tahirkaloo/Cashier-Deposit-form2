@@ -45,7 +45,7 @@
     </div>
 
     <div class="banner banner3">
-      <a href="admin/coinexchange.php">
+      <a href="coinexchange.php">
         <div class="banner-overlay">
           <h2>Coin Exchange</h2>
           <i class="fas fa-user-shield" style="font-size: 32px;"></i>

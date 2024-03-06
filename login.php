@@ -235,7 +235,7 @@ if (isset($_POST['login'])) {
         <form method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
             <div class="form-group">
                 <label for="username">Username</label>
-                <input type="text" id="username" name="username" placeholder="Enter your username" autocomplete="username" required>
+                <input type="text" id="username" name="username" placeholder="Enter your username" autocomplete="username" required maxlength="5">
             </div>
             <div class="form-group">
                 <label for="password">Password</label>
