@@ -43,12 +43,13 @@ if (!isset($_SESSION['user_id'])) {
             // Record is verified, only supervisors or admins can edit verified records
             $error_message = "You are not authorized to edit verified submissions.";
         } else {
-            // Display submission details for editing
-            // Your HTML form for editing submission details goes here
+            // No error, proceed to display the form for editing
             mysqli_stmt_close($stmt);
-            mysqli_close($conn);
         }
     }
+
+    // Close the database connection
+    mysqli_close($conn);
 }
 
 // If there's an error message, display it
@@ -71,6 +72,16 @@ if (!empty($error_message)) {
 <div class="container">
     <h1>Edit Submission</h1>
     <form action="updatesubmission.php" method="post">
+    <div class="container">
+        <!-- Display the error message if it's present -->
+        <?php if (isset($_GET['error_message'])): ?>
+            <div class="alert alert-danger" role="alert">
+                <?php echo htmlspecialchars($_GET['error_message']); ?>
+            </div>
+        <?php endif; ?>
+
+        <!-- Your form and other content here -->
+    </div>
         <input type="hidden" name="id" value="<?php echo $id; ?>">
         <!-- Display existing data for editing -->
         <table class="table">
@@ -129,6 +140,7 @@ if (!empty($error_message)) {
             <tfoot>
                 <tr class="total">
                         <td>Total</td>
+                        <input type="hidden" id="totalAmountInput" name="totalAmount" value="<?php echo $row['total_amount']; ?>">
                         <td><span id="totalAmount"><?php echo $row['total_amount']; ?></span></td>
                         <td><span id="totalCount"><?php echo $row['total_count']; ?></span></td>
                     </tr>
@@ -170,9 +182,16 @@ if (!empty($error_message)) {
     inputs.forEach(function(input) {
         input.addEventListener('input', calculateTotal);
     });
+
+
+    // Update total amount input field
+    document.getElementById("totalAmountInput").value = totalAmount.toFixed(2);
+
+    // Update displayed total amount and total count
+    document.getElementById("totalAmount").textContent = totalAmount.toFixed(2);
+    document.getElementById("totalCount").textContent = totalCount;
+
 </script>
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
 </body>
 </html>

@@ -28,7 +28,6 @@ if (!$isAdmin && !$isSupervisor) {
 $username = $_SESSION['username'];
 $name = $_SESSION['name'];
 
-
 // Initialize SQL query
 $sql = "SELECT * FROM cashierdeposit WHERE 1=1";
 
@@ -47,6 +46,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
+// Default filter: Today's date
+if (!isset($_POST['date']) || empty($_POST['date'])) {
+    $date = date('Y-m-d');
+    $sql .= " AND DATE(created_at) = '$date'";
+}
+
 $result = mysqli_query($conn, $sql);
 
 if (!$result) {
@@ -63,10 +68,46 @@ if (!$resultdcs) {
     exit;
 }
 
-// Your existing code for fetching coin exchange data and assigning bill_amount_exchanged...
+// Handle deposit type filter
+$deposit_type = '';
+if (isset($_POST['deposit_type']) && !empty($_POST['deposit_type'])) {
+    $deposit_type = mysqli_real_escape_string($conn, $_POST['deposit_type']);
+    $sql .= " AND deposit_type = '$deposit_type'";
+    $sql_dcs .= " AND deposit_type = '$deposit_type'";
+} else {
+    $deposit_type = 'End of the Day';
+    $sql .= " AND deposit_type = 'End of the Day'";
+    $sql_dcs .= " AND deposit_type = 'End of the Day'";
+}
+
+//Handle date filter
+if (isset($_POST['date']) && !empty($_POST['date'])) {
+    $date = mysqli_real_escape_string($conn, $_POST['date']);
+    $sql .= " AND DATE(date) = '$date'";
+    $sql_dcs .= " AND DATE(date) = '$date'"; 
+} else {
+    $date = date('Y-m-d');
+    $sql .= " AND DATE(date) = '$date'";
+    $sql_dcs .= " AND DATE(date) = '$date'";
+}
+
+// Fetch data for the third table
+$sqlce = "SELECT * FROM coinexchange WHERE deposit_type = '$deposit_type' AND DATE(date) = '$date'";
+
+
+$resultce = mysqli_query($conn, $sqlce);
+
+if (!$resultce) {
+    echo "Error: " . $sqlce . "<br>" . mysqli_error($conn);
+    exit;
+}
+
 
 mysqli_close($conn);
 ?>
+
+<!-- Your HTML code for displaying the tables... -->
+
 
 <!-- Your HTML code for displaying the tables... -->
 
@@ -81,20 +122,21 @@ mysqli_close($conn);
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
 <?php include 'navbar.php'; ?>
-
+<div class="container-fluid bg-light rounded shadow animate__animated animate__fadeIn animate__faster text-dark mb-5">
 <h2>Cashier Deposit Form</h2>
 <h3>Avenity System</h3>
 
 <!-- Filter and search form -->
-<form action="" method="post" class="mb-3">
+<form action="" method="post" class="mb-3" id="filterForm">
     <div class="form-row">
-        <div class="col-md-2">
-            <input type="date" name="date" class="form-control" placeholder="Filter by Date" value="<?php echo isset($_POST['date']) ? htmlspecialchars($_POST['date']) : ''; ?>">
+        <div class="col-md-1">
+            <input type="date" name="date" class="form-control" placeholder="Filter by Date" value="<?php echo isset($_POST['date']) ? htmlspecialchars($_POST['date']) : date('Y-m-d'); ?>">
         </div>
         <div class="col-md-6">
             <div class="form-inline">
@@ -147,7 +189,15 @@ mysqli_close($conn);
                 <th>Coin Exchange</th>
                 <td></td>
                 <td></td>
-                <td><?php echo isset($bill_amount_exchanged) ? $bill_amount_exchanged : ''; ?></td>
+                <td><?php
+                        $totalbillamountexchanged = 0;
+                        mysqli_data_seek($resultce, 0); // Reset result pointer
+                        while ($row = mysqli_fetch_assoc($resultce)) {
+                            $totalbillamountexchanged += $row['bill_amount_exchanged'];
+                        }
+                        echo $totalbillamountexchanged;
+                    ?>
+                </td>
                 <td></td>
             </tr>
             <tr>
@@ -155,14 +205,16 @@ mysqli_close($conn);
                     <td><?php echo isset($deposit_type) ? $deposit_type : ''; ?></td>
                     <td>Supervisor: <?php echo isset($name) ? $name : ''; ?></td>
                     <td>
-                        <?php
-                            $totalCoinAmount = 0;
-                            mysqli_data_seek($result, 0); // Reset result pointer
-                            while ($row = mysqli_fetch_assoc($result)) {
-                                $totalCoinAmount += $row['cash_amount'];
-                            }
-                            
-                            echo '.' . explode('.', number_format($totalCoinAmount, 2))[1];
+                    <?php
+                        $totalCoinAmount = 0;
+                        // Calculate total coin amount based on data from coinexchange table
+                        while ($rowce = mysqli_fetch_assoc($resultce)) {
+                            $totalCoinAmount += $rowce['bill_amount_exchanged'];
+                        }
+                        // Subtract the total bill amount exchanged from the total coin amount
+                        $totalCoinAmount -= $totalbillamountexchanged;
+
+                        echo $totalCoinAmount;
                         ?>
                     </td>
                     <td>
@@ -170,11 +222,17 @@ mysqli_close($conn);
                             $totalBillAmount = 0;
                             mysqli_data_seek($result, 0); // Reset result pointer
                             while ($row = mysqli_fetch_assoc($result)) {
-                                $totalBillAmount += $row['cash_amount'];
+                                if (!empty($row['cash_amount'])) {
+                                    $totalBillAmount += floor($row['cash_amount']);
+                                }
                             }
-                            echo floor($totalBillAmount);
+                            
+                            $totalba = $totalBillAmount + $totalbillamountexchanged;
+
+                            echo $totalba;
                         ?>
                     </td>
+
                     <td>
                         <?php
                             $totalCashAmount = 0;
@@ -214,6 +272,8 @@ mysqli_close($conn);
 
     <button id="printcdf" class="btn btn-primary" onclick="printcdf()">Print Cashier Deposit Form</button>
 </div>
+<br>
+<br>
 
 <div id="dailyCStableDiv">
     <h2>Daily CS table</h2>
@@ -373,47 +433,42 @@ mysqli_close($conn);
 
     <button id="printdcs" class="btn btn-primary">Print all to Laserfiche</button>
 </div>
-
 <?php endif; ?>
-
-
+</div>
 </body>
-
-
 <!-- Footer -->
 <?php include 'footer.php'; ?>
 
 <script>
-    document.getElementById('printdcs').addEventListener('click', function() {
-        window.print();
-    });
-</script>
-
-
-<script>
-    /** This function handles the print event for the window. It hides the print button and daily CS table div. Only when the button with id printcdf is clicked, it will print the Cashier Deposit Form */
-    window.onbeforeprint = function() {
+    document.getElementById('printcdf').addEventListener('click', function() {
         var cashierDepositTableDiv = document.getElementById('cashierDepositTableDiv');
         var dailyCStableDiv = document.getElementById('dailyCStableDiv');
+        var filterForm = document.getElementById('filterForm');
         var printButton = document.getElementById('printcdf');
-        var footer = document.getElementById('footer');
+        filterForm.style.display = 'none';
         printButton.style.display = 'none';
         dailyCStableDiv.style.display = 'none';
-    }
-
-    function printcdf() {
         window.print();
-    }
-
-    window.onafterprint = function() {
-        var cashierDepositTableDiv = document.getElementById('cashierDepositTableDiv');
-        var dailyCStableDiv = document.getElementById('dailyCStableDiv');
-        var printButton = document.getElementById('printcdf');
+        filterForm.style.display = 'block';
         printButton.style.display = 'block';
+        cashierDepositTableDiv.style.display = 'block';
         dailyCStableDiv.style.display = 'block';
-    }
-</script>
+    });
 
+    document.getElementById('printdcs').addEventListener('click', function() {
+        var printButtoncdf = document.getElementById('printcdf');
+        var dailyCStableDiv = document.getElementById('dailyCStableDiv');
+        var filterForm = document.getElementById('filterForm');
+        var printButton = document.getElementById('printdcs');
+        filterForm.style.display = 'none';
+        printButton.style.display = 'none';
+        printButtoncdf.style.display = 'none';
+        dailyCStableDiv.style.display = 'block';
+        window.print();
+        printButton.style.display = 'block';
+        filterForm.style.display = 'block';
+    });
+</script>
 
 
 </html>

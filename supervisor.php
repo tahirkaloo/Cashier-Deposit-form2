@@ -110,7 +110,7 @@ if (!$result) {
                 </div>
             </form>
 
-            <table class="table table-striped table-condensed table-hover animate__animated animate__fadeIn animate__faster table-responsive">
+            <table class="table table-striped table-condensed table-bordered table-hover animate__animated animate__fadeIn animate__faster table-responsive">
                 <thead>
                 <tr>
                     <th>Submission ID</th>
@@ -185,6 +185,15 @@ if (!$result) {
                         <td>
                             <a href="viewsubmission.php?id=<?php echo $row['id']; ?>" class="btn btn-success">View</a>
                         </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
                     </tr>
                 <?php endwhile; ?>
                 </tbody>

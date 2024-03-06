@@ -76,7 +76,7 @@ if (!$result) {
     <h1>History</h1>
     <!-- Filter and search form -->
     <form action="" method="post" class="mb-3">
-        <div class="form-row">
+        <div class="form-row bg-light rounded shadow animate__animated animate__fadeIn animate__faster text-dark">
             <?php
             // Check if the user is an admin or supervisor
             if ($isAdmin || $isSupervisor) {
@@ -115,8 +115,9 @@ if (!$result) {
         </div>
     </form>
 
+    <div class="container-fluid bg-light rounded shadow animate__animated animate__fadeIn animate__faster text-dark">
     <?php if (mysqli_num_rows($result) > 0) : ?>
-        <table class="table table-striped table-condensed table-hover animate__animated animate__fadeIn animate__faster table-responsive">
+        <table class="table table-striped table-condensed table-bordered table-hover animate__animated animate__fadeIn animate__faster table-responsive">
             <thead>
             <tr>
                     <th>Submission ID</th>
@@ -182,6 +183,7 @@ if (!$result) {
         </table>
     <?php endif; ?>
 </div>
+</div>  
 </body>
 <?php include 'footer.php'; ?>
 </html>
