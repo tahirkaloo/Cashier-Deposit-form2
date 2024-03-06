@@ -37,13 +37,13 @@ if (isset($_POST['register'])) {
             $error = true;
             $errorMessage = "Passwords do not match.";
         } else {
-            // Check if the user already exists in the database
-            $checkStmt = $pdo->prepare("SELECT user_id FROM users WHERE username = ?");
-            $checkStmt->execute([$username]);
+            // Check if the username or the email already exists in the database
+            $checkStmt = $pdo->prepare("SELECT 1 FROM users WHERE username = ? OR email = ?");
+            $checkStmt->execute([$username, $email]);
 
             if ($checkStmt->rowCount() > 0) {
                 $error = true;
-                $errorMessage = "Username already exists. Please choose a different one.";
+                $errorMessage = "Username or email already exists.";
             } else {
                 // Hash the password using password_hash()
                 $hashedPassword = password_hash($password, PASSWORD_DEFAULT);

@@ -32,15 +32,14 @@
   width: 100%;
   height: 100%;
   padding: 20px;
-  background-color: rgba(255, 255, 255, 0.227);
-  opacity: 0.6;
+  opacity: 1;
   transition: opacity 0.3s ease;
   border-radius: 20px;
   z-index: -1; /* Adjusted z-index */
 }
 
 .banner:hover .banner-overlay {
-  opacity: 1;
+  background-color: #ffffff4d;
 }
 
 .banner h2 {

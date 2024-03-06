@@ -1,5 +1,25 @@
 <?php
 session_start();
+require_once '../db_connect.php';
+
+$conn = mysqli_connect($db_host, $db_user, $db_password, $db_name);
+
+if (!$conn) {
+  die("Connection failed: " . mysqli_connect_error());
+}
+
+
+
+// Check if the user is not logged in
+if (!isset($_SESSION['user_id'])) {
+  header("Location: ../login.php"); // Redirect to the login page
+  exit;
+}
+
+// If the user is logged in, retrieve the name from the session
+$name = $_SESSION['name'];
+$username = $_SESSION['username'];
+$role = $_SESSION['role'];
 
 //Check if the user is admin and show error if not
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
@@ -8,15 +28,22 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
 }
 
 
-// Check if the user is not logged in
-if (!isset($_SESSION['user_id'])) {
-    header("Location: ../login.php"); // Redirect to the login page
-    exit;
-}
 
 // Simulated total response counts for demonstration
 $totalMileageResponses = 10;
-$totalContactResponses = 5;
+
+//Get the total number of contact form responses from the database
+$sql = "SELECT COUNT(*) as total_contact_responses FROM contactresponses";
+$result = mysqli_query($conn, $sql);
+$row = mysqli_fetch_assoc($result);
+$totalContactResponses = $row['total_contact_responses'];
+
+
+//Get the total number of users from the database
+$sql = "SELECT COUNT(*) as total_users FROM users";
+$result = mysqli_query($conn, $sql);
+$row = mysqli_fetch_assoc($result);
+$totalusers = $row['total_users'];
 ?>
 
 <!DOCTYPE html>
@@ -113,7 +140,7 @@ $totalContactResponses = 5;
       <h1 class="admin-title">Admin Panel</h1>
     </div>
     <div class="admin-content">
-      <div class="admin-card" onclick="window.location.href='mileage_responses.php';">
+      <div class="admin-card" onclick="window.location.href='';">
         <div class="card-icon">
           <img src="https://reimbursement-instance-bucket.s3.amazonaws.com/admin-card-localmileageresponses.gif" alt="Mileage Icon">
         </div>
@@ -132,7 +159,7 @@ $totalContactResponses = 5;
         <div class="card-title">Manage Users</div>
       </div>
       <!-- Add more cards for other response pages -->
-    </div>
+
     <div class="admin-metrics">
       <div class="admin-metric">
         <p class="admin-metric-label">Mileage Responses</p>
@@ -142,8 +169,13 @@ $totalContactResponses = 5;
         <p class="admin-metric-label">Contact Form Responses</p>
         <p class="admin-metric-value"><?php echo $totalContactResponses; ?></p>
       </div>
+      <div class="admin-metric">
+        <p class="admin-metric-label">Total Users</p>
+        <p class="admin-metric-value"><?php echo $totalusers; ?></p>
+      </div>
       <!-- Add more metrics for other response pages -->
     </div>
+  </div>
   </div>
 </body>
 </html>

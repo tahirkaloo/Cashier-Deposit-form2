@@ -205,18 +205,27 @@ mysqli_close($conn);
                     <td><?php echo isset($deposit_type) ? $deposit_type : ''; ?></td>
                     <td>Supervisor: <?php echo isset($name) ? $name : ''; ?></td>
                     <td>
-                    <?php
+                        <?php
                         $totalCoinAmount = 0;
-                        // Calculate total coin amount based on data from coinexchange table
-                        while ($rowce = mysqli_fetch_assoc($resultce)) {
-                            $totalCoinAmount += $rowce['bill_amount_exchanged'];
+                        mysqli_data_seek($result, 0); // Reset result pointer
+                        while ($row = mysqli_fetch_assoc($result)) {
+                            // Extract the cents part from the cash amount and add it to the total coin amount
+                            $cents = explode('.', number_format($row['cash_amount'], 2))[1];
+                            $totalCoinAmount += $cents;
                         }
-                        // Subtract the total bill amount exchanged from the total coin amount
-                        $totalCoinAmount -= $totalbillamountexchanged;
+                        
+                        // Convert the total coin amount to dollars and cents
+                        $totalCoinAmountInDollars = $totalCoinAmount / 100; // Convert cents to dollars
+                        
+                        // Calculate the total amount of coins exchanged in dollars and cents
+                        $totalCoinAmountExchanged = $totalCoinAmountInDollars - $totalbillamountexchanged;
 
-                        echo $totalCoinAmount;
+                        // Display the result in dollars and cents format
+                        echo number_format($totalCoinAmountExchanged, 2); // Format the result to display dollars and cents
                         ?>
                     </td>
+
+
                     <td>
                         <?php
                             $totalBillAmount = 0;

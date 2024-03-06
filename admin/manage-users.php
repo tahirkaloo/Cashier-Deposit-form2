@@ -2,6 +2,11 @@
 session_start();
 require_once '../db_connect.php';
 
+// Check if the user is not logged in
+if (!isset($_SESSION['user_id'])) {
+    header("Location: ../login.php");
+    exit;
+}
 
 //Check if the user is admin and show error if not
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
@@ -19,11 +24,7 @@ if (!$conn) {
     error_log("Connected to MySQL successfully");
 }
 
-// Check if the user is not logged in
-if (!isset($_SESSION['user_id'])) {
-    header("Location: ../login.php");
-    exit;
-}
+
 
 // Check if the user is an admin
 // Replace the condition below with your own logic to determine if the user is an admin
@@ -53,16 +54,9 @@ if (isset($_POST['action']) && $_POST['action'] === 'resetPassword') {
     // Replace the following code with your own logic
     $query = "UPDATE users SET password = ? WHERE user_id = ?";
     $stmt = $conn->prepare($query);
-    $hashedPassword = md5($newPassword); // Hash the new password using md5
+    $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT); // Hash the new password
     $stmt->bind_param("si", $hashedPassword, $userId);
     $stmt->execute();
-
-    // Send the new password to the user via email or any other method
-    // Replace the following code with your own logic
-    $email = getUserEmail($userId); // Implement your own logic to retrieve the user's email
-    if ($email) {
-        sendEmail($email, $newPassword);
-    }
 }
 
 // Check if the form is submitted for deleting the user's account
@@ -111,26 +105,6 @@ function getUserEmail($userId)
     return $row['email'];
 }
 
-// Helper function to send email
-function sendEmail($email, $password)
-{
-    // Construct the AWS CLI command to send the email
-    $subject = "Password Reset";
-    $message = "Your new password: $password";
-    $senderEmail = "admin@tahirkaloo.tk"; // Replace with your sender email address
-    $awsCliCommand = "aws ses send-email --from $senderEmail --to $email --subject \"$subject\" --text \"$message\"";
-
-    // Execute the AWS CLI command
-    exec($awsCliCommand, $output, $returnCode);
-
-    // Check if the command executed successfully
-    if ($returnCode === 0) {
-        echo "Email sent successfully!";
-    } else {
-        echo "Failed to send email.";
-        // You can handle the failure scenario based on your requirements
-    }
-}
 ?>
 
 <!DOCTYPE html>
@@ -200,16 +174,24 @@ function sendEmail($email, $password)
 </head>
 <body>
     <?php include 'admin-navbar.php'; ?>
-
     <div class="container">
         <h1>Manage Users</h1>
-        <?php if (!$isAdmin) : ?>
-            <h2>Access Denied</h2>
-            <p>You do not have permission to access this page.</p>
-        <?php else : ?>
+        
+        <div id="password" class="container text-center mt-2 mb-3 p-2 shadow rounded bg-white text-dark w-50"><strong>
+        <?php
+        // Display the new password
+        if (isset($newPassword)) {
+            echo "New password for the user with ID " . $userId . " is: " . $newPassword;
+        }
+        ?>
+        </strong>
+        </div>
+
+
             <table>
                 <tr>
                     <th>ID</th>
+                    <th>Username</th>
                     <th>Name</th>
                     <th>Email</th>
                     <th>Role</th>
@@ -219,6 +201,7 @@ function sendEmail($email, $password)
                     <tr>
                         <td><?php echo $user['user_id']; ?></td>
                         <td><?php echo $user['username']; ?></td>
+                        <td><?php echo $user['name']; ?></td>
                         <td><?php echo $user['email']; ?></td>
                         <td>
                             <div class="dropdown" id="dropdown-<?php echo $user['user_id']; ?>">
@@ -226,7 +209,7 @@ function sendEmail($email, $password)
                                 <div class="dropdown-content">
                                     <div class="dropdown-option" onclick="changeRole(<?php echo $user['user_id']; ?>, 'admin')">Admin</div>
                                     <div class="dropdown-option" onclick="changeRole(<?php echo $user['user_id']; ?>, 'supervisor')">Supervisor</div>
-                                    <div class="dropdown-option" onclick="changeRole(<?php echo $user['user_id']; ?>, 'Finance')">Finance</div>
+                                    <div class="dropdown-option" onclick="changeRole(<?php echo $user['user_id']; ?>, 'Accounting')">Accounting</div>
                                     <div class="dropdown-option" onclick="changeRole(<?php echo $user['user_id']; ?>, 'user')">User</div>
                                 </div>
                             </div>
@@ -276,8 +259,10 @@ function sendEmail($email, $password)
                     form.submit();
                 }
             </script>
-        <?php endif; ?>
     </div>
+
+<footer>
+<?php include '../footer.php'; ?>
+</footer>
 </body>
 </html>
-

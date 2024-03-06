@@ -45,6 +45,16 @@
     </div>
 
     <div class="banner banner3">
+      <a href="admin/coinexchange.php">
+        <div class="banner-overlay">
+          <h2>Coin Exchange</h2>
+          <i class="fas fa-user-shield" style="font-size: 32px;"></i>
+          <i class="fas fa-arrow-right" style="font-size: 32px;"></i>
+        </div>
+      </a>
+    </div>
+
+    <div class="banner banner3">
       <a href="depositform.php">
         <div class="banner-overlay">
           <h2>Deposit Form</h2>
@@ -63,6 +73,7 @@
         </div>
       </a>
     </div>
+
 
     <div class="banner banner3">
       <a href="/admin/index.php">
