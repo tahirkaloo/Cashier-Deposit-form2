@@ -5,7 +5,7 @@ require_once 'db_connect.php';
 require_once 'log.php';
 
 // Call the logAction() function as needed in your code
-logAction('Verify Submission');
+logAction('Unverify Submission');
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
@@ -25,13 +25,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         echo "Submission ID: " . $submission_id; // Debug statement
         
         // Use prepared statement to verify the submission
-        $sql = "UPDATE cashierdeposit SET verified = 1 WHERE id = ?";
+        $sql = "UPDATE cashierdeposit SET verified = 0 WHERE id = ?";
         $stmt = mysqli_prepare($conn, $sql);
         if ($stmt) {
             mysqli_stmt_bind_param($stmt, "i", $submission_id); // Assuming 'id' is an integer
             if (mysqli_stmt_execute($stmt)) {
                 // Record verified successfully
-                header("Location: supervisor.php");
+                header("Location: history.php");
                 exit;
             } else {
                 echo "Error executing statement: " . mysqli_stmt_error($stmt); // Debug statement

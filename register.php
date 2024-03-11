@@ -11,7 +11,7 @@ error_reporting(E_ALL);
 
 // Check if the user is already logged in
 if (isset($_SESSION['user_id'])) {
-    header("Location: index.html"); // Redirect to the home page or any other desired page
+    header("Location: index.php"); // Redirect to the home page or any other desired page
     exit;
 }
 

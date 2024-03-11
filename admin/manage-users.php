@@ -181,14 +181,15 @@ function getUserEmail($userId)
         <?php
         // Display the new password
         if (isset($newPassword)) {
-            $query = "SELECT name FROM users WHERE user_id = ?";
+            $query = "SELECT * FROM users WHERE user_id = ?";
             $stmt = $conn->prepare($query);
             $stmt->bind_param("i", $userId);
             $stmt->execute();
             $result = $stmt->get_result();
             $row = $result->fetch_assoc();
             $name = $row['name'];
-            echo "New password for the user - ".$name." is: " . $newPassword;
+            $username = $row['username'];
+            echo "New password for the user - ".$name." (".$username.") is: " . $newPassword;
         }
         ?>
         </strong>

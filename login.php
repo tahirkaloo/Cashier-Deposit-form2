@@ -1,6 +1,11 @@
 <?php
 session_start();
 require_once 'db_connect.php';
+// Include the logger.php file
+require_once 'log.php';
+
+// Call the logAction() function as needed in your code
+logAction('User logged in/out'); // Example usage
 
 $conn = mysqli_connect($db_host, $db_user, $db_password, $db_name);
 if (!$conn) {

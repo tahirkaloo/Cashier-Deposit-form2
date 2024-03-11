@@ -142,7 +142,6 @@ if (!$result) {
                     <th>Total Amount</th>
                     <th>Total Count</th>
                     <th>Verified</th>
-                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -169,14 +168,19 @@ if (!$result) {
                         <td><?php echo $row['pre_deposit_count']; ?></td>
                         <td><strong>$<?php echo $row['total_amount']; ?></strong></td>
                         <td><strong><?php echo $row['total_count']; ?></strong></td>
-                        <td><strong><?php echo ($row['verified'] ? '<span style="color: green">Yes</span>' : '<span style="color: red">No</span>'); ?></strong></td> 
-                        <td>
-                        <a href="viewsubmission.php?id=<?php echo $row['id']; ?>" class="btn btn-primary">View</a>
+                        <td><strong><?php echo ($row['verified'] ? '<span style="color: green">Yes</span>' : '<span style="color: red">No</span>'); ?></strong></td>
+                    <tr>
+                        <th>Action</th>
+                        <td><a href="viewsubmission.php?id=<?php echo $row['id']; ?>" class="btn btn-primary">View</a></td>                        
                         <?php if (!$row['verified'] || $isAdmin || $isSupervisor): ?>
-                            <a href="editsubmission.php?id=<?php echo $row['id']; ?>" class="btn btn-secondary">Edit</a>
-                            <a href="deletesubmission.php?id=<?php echo $row['id']; ?>&table=cashierdeposit" class="btn btn-danger">Delete</a>
+                            <?php if ($row['verified']): ?>
+                            <td><a href="unverifysubmission.php?id=<?php echo $row['id']; ?>&table=cashierdeposit" class="btn btn-warning">Unverify</a></td>
+                            <?php endif; ?>
+                            <td><a href="editsubmission.php?id=<?php echo $row['id']; ?>" class="btn btn-secondary">Edit</a></td>
+                            <td><a href="deletesubmission.php?id=<?php echo $row['id']; ?>&table=cashierdeposit" class="btn btn-danger">Delete</a></td>
                         <?php endif; ?>
                         </td>
+                    </tr>
                     </tr>
                 <?php endwhile; ?>
             </tbody>
@@ -190,4 +194,4 @@ if (!$result) {
 
 <?php
 mysqli_close($conn);
-}   
+}

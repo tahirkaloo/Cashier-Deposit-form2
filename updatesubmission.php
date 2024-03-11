@@ -1,6 +1,11 @@
 <?php
 session_start();
 require_once 'db_connect.php';
+// Include the logger.php file
+require_once 'log.php';
+
+// Call the logAction() function as needed in your code
+logAction('Update Submission');
 
 $error_message = ''; // Initialize error message variable
 
