@@ -55,16 +55,29 @@
 }
 
 .banner.banner1 {
-  background-image: url('https://reimbursement-instance-bucket.s3.amazonaws.com/hanover-banner-fuel');
+  background-image: url('/images/cashregister.png');
 }
 
 .banner.banner2 {
-  background-image: url('https://reimbursement-instance-bucket.s3.amazonaws.com/Hanover+hotel+banner.png');
+  background-image: url('/images/history.png');
 }
 
 .banner.banner3 {
-  background-image: url('https://reimbursement-instance-bucket.s3.amazonaws.com/Incentive+banner+logo.png');
+  background-image: url('/images/coinexchange.png');
 }
+
+.banner.banner4 {
+  background-image: url('/images/depositform.png');
+}
+
+.banner.banner5 {
+  background-image: url('/images/supervisor.png');
+}
+
+.banner.banner6 {
+  background-image: url('/images/admin1.png');
+}
+
 
 @media screen and (max-width: 768px) {
   .banner {
@@ -107,11 +120,6 @@
   vertical-align: middle;
   border-bottom: 1px solid #dee2e6;
 }
-
-
-
-
-
 
 
 

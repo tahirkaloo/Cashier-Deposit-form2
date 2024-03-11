@@ -135,12 +135,12 @@ mysqli_close($conn);
 <!-- Filter and search form -->
 <form action="" method="post" class="mb-3" id="filterForm">
     <div class="form-row">
-        <div class="col-md-1">
+        <div class="col-md-2">
             <input type="date" name="date" class="form-control" placeholder="Filter by Date" value="<?php echo isset($_POST['date']) ? htmlspecialchars($_POST['date']) : date('Y-m-d'); ?>">
         </div>
-        <div class="col-md-6">
+        <div class="col-md-5">
             <div class="form-inline">
-                <select name="deposit_type" class="form-control mr-4">
+                <select name="deposit_type" class="form-control mr-4 w-50">
                     <option value="">Filter by Deposit Type</option>
                     <option value="End Of the Day" <?php echo isset($_POST['deposit_type']) && $_POST['deposit_type'] === 'End Of the Day' ? 'selected' : ''; ?>>End Of the Day</option>
                     <option value="Mid day" <?php echo isset($_POST['deposit_type']) && $_POST['deposit_type'] === 'Mid day' ? 'selected' : ''; ?>>Mid Day</option>

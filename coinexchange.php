@@ -33,20 +33,29 @@ $username = $_SESSION['username'];
 
 // Handle form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Validate and sanitize input
-    $date = mysqli_real_escape_string($conn, $_POST['date']);
-    $deposit_type = mysqli_real_escape_string($conn, $_POST['deposit_type']);
-    $bill_amount_exchanged = mysqli_real_escape_string($conn, $_POST['bill_amount_exchanged']);
+  // Validate and sanitize input
+  $date = mysqli_real_escape_string($conn, $_POST['date']);
+  $deposit_type = mysqli_real_escape_string($conn, $_POST['deposit_type']);
+  $bill_amount_exchanged = mysqli_real_escape_string($conn, $_POST['bill_amount_exchanged']);
 
-    // Insert data into the database
-    $sql = "INSERT INTO coinexchange (date, deposit_type, bill_amount_exchanged, name, username) VALUES ('$date', '$deposit_type', '$bill_amount_exchanged', '$name', '$username')";
-    if (mysqli_query($conn, $sql)) {
-         $successMessage = "Coin Exchange recroded successfully";
-        // exit;
-    } else {
-        $errorMessage = "Error: " . $sql . "<br>" . mysqli_error($conn);
-    }
+  // Check if an entry already exists for the given date and deposit type
+  $checkSql = "SELECT * FROM coinexchange WHERE date = '$date' AND deposit_type = '$deposit_type'";
+  $checkResult = mysqli_query($conn, $checkSql);
+
+  if (mysqli_num_rows($checkResult) > 0) {
+      // Entry already exists, show error message
+      $errorMessage = "An entry already exists for the selected date and deposit type.";
+  } else {
+      // Insert data into the database
+      $sql = "INSERT INTO coinexchange (date, deposit_type, bill_amount_exchanged, name, username) VALUES ('$date', '$deposit_type', '$bill_amount_exchanged', '$name', '$username')";
+      if (mysqli_query($conn, $sql)) {
+           $successMessage = "Coin Exchange recorded successfully";
+      } else {
+          $errorMessage = "Error: " . $sql . "<br>" . mysqli_error($conn);
+      }
+  }
 }
+
 
 //Show data in table
 $sql = "SELECT * FROM coinexchange";
@@ -86,6 +95,14 @@ mysqli_close($conn);
 .error-message {
     color: red;
     margin-top: 5px;
+    background-color: #f5f5f5;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 20px;
   }
 </style>
 <body>
@@ -107,7 +124,7 @@ mysqli_close($conn);
         </div>
         <div class="col-md-3">
           <label for="bill_amount_exchanged">Bill Amount:</label>
-          <input type="number" id="bill_amount_exchanged" name="bill_amount_exchanged" class="form-control" required>
+          <input type="number" id="bill_amount_exchanged" name="bill_amount_exchanged" class="form-control" required step="0.01">
         </div>
         <div class="col-md-2">
           <button type="submit" class="btn btn-lg btn-primary mt-md-4">Submit</button>
@@ -117,7 +134,7 @@ mysqli_close($conn);
   </div>
 
   <?php if (!empty($errorMessage)): ?>
-            <div class="error-message"><?php echo $errorMessage; ?></div>
+            <div class="error-message" style="color: red"><?php echo $errorMessage; ?></div>
         <?php endif; ?>
         <?php if (!empty($successMessage)): ?>
             <div class="success-message"><?php echo $successMessage; ?></div>

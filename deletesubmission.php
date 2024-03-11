@@ -8,13 +8,9 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
-// Check if the user is a supervisor or admin
-$isAdmin = ($_SESSION['role'] === 'admin');
-$isSupervisor = ($_SESSION['role'] === 'supervisor');
-
-if (!$isAdmin && !$isSupervisor) {
-    header("Location: accessdenied.html");
-    exit;
+// Check if the table name is provided in the URL
+if (!isset($_GET['table'])) {
+    echo "Table name not provided.";
 }
 
 // Connect to the database

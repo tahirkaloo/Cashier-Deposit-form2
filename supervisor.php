@@ -77,8 +77,9 @@ if (!$result) {
             exit; // Make sure to exit after redirecting
         } else { ?>
             <h2>List of Unverified Submissions:</h2>
-
+            
             <!-- Filter and search form -->
+            <div class="mb-3 bg-light rounded shadow animate__animated animate__fadeIn animate__faster text-dark ">
             <form action="" method="post" class="mb-3">
                 <div class="form-row">
                     <div class="col-md-3">
@@ -109,7 +110,10 @@ if (!$result) {
                     </div>
                 </div>
             </form>
+            </div>
 
+            <!-- Table of unverified submissions -->
+            <div class="table-responsive  mt-5 bg-light rounded shadow animate__animated animate__fadeIn animate__faster text-dark mb-5">
             <table class="table table-striped table-condensed table-bordered table-hover animate__animated animate__fadeIn animate__faster table-responsive">
                 <thead>
                 <tr>
@@ -159,9 +163,9 @@ if (!$result) {
                         <td><?php echo $row['credit_debit_cards_count']; ?></td>
                         <td><?php echo $row['pre_deposit_amount']; ?></td>
                         <td><?php echo $row['pre_deposit_count']; ?></td>
-                        <td><?php echo $row['total_amount']; ?></td>
-                        <td><?php echo $row['total_count']; ?></td>
-                        <td><?php echo ($row['verified'] ? '<span style="color: green">Yes</span>' : '<span style="color: red">No</span>'); ?></td>
+                        <td><strong>$<?php echo $row['total_amount']; ?></strong></td>
+                        <td><strong><?php echo $row['total_count']; ?></strong></td>
+                        <td><strong><?php echo ($row['verified'] ? '<span style="color: green">Yes</span>' : '<span style="color: red">No</span>'); ?></strong></td>
                     </tr>
                     <tr>
                         <td></td>
@@ -198,7 +202,8 @@ if (!$result) {
                 <?php endwhile; ?>
                 </tbody>
             </table>
-        <?php } // End if (!$isAdmin)
+        </div>
+        <?php } 
     }
     mysqli_close($conn);
     ?>

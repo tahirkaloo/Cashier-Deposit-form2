@@ -54,7 +54,7 @@
       </a>
     </div>
 
-    <div class="banner banner3">
+    <div class="banner banner4">
       <a href="depositform.php">
         <div class="banner-overlay">
           <h2>Deposit Form</h2>
@@ -64,7 +64,7 @@
       </a>
     </div>
 
-    <div class="banner banner3">
+    <div class="banner banner5">
       <a href="supervisor.php">
         <div class="banner-overlay">
           <h2>Supervisor</h2>
@@ -75,7 +75,7 @@
     </div>
 
 
-    <div class="banner banner3">
+    <div class="banner banner6">
       <a href="/admin/index.php">
         <div class="banner-overlay">
           <h2>Admin</h2>

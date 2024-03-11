@@ -181,7 +181,14 @@ function getUserEmail($userId)
         <?php
         // Display the new password
         if (isset($newPassword)) {
-            echo "New password for the user with ID " . $userId . " is: " . $newPassword;
+            $query = "SELECT name FROM users WHERE user_id = ?";
+            $stmt = $conn->prepare($query);
+            $stmt->bind_param("i", $userId);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $row = $result->fetch_assoc();
+            $name = $row['name'];
+            echo "New password for the user - ".$name." is: " . $newPassword;
         }
         ?>
         </strong>
@@ -215,12 +222,12 @@ function getUserEmail($userId)
                             </div>
                         </td>
                         <td>
-                            <form method="post" onsubmit="return confirm('Are you sure?');">
+                            <form method="post" onsubmit="return confirm('Reset Password: Are you sure?');">
                                 <input type="hidden" name="userId" value="<?php echo $user['user_id']; ?>">
                                 <input type="hidden" name="action" value="resetPassword">
                                 <button class="btn-action" type="submit">Reset Password</button>
                             </form>
-                            <form method="post" onsubmit="return confirm('Are you sure?');">
+                            <form method="post" onsubmit="return confirm('Delete Account: Are you sure?');">
                                 <input type="hidden" name="userId" value="<?php echo $user['user_id']; ?>">
                                 <input type="hidden" name="action" value="deleteAccount">
                                 <button class="btn-action" type="submit">Delete Account</button>

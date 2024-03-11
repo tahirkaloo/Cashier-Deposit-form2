@@ -167,9 +167,9 @@ if (!$result) {
                         <td><?php echo $row['credit_debit_cards_count']; ?></td>
                         <td><?php echo $row['pre_deposit_amount']; ?></td>
                         <td><?php echo $row['pre_deposit_count']; ?></td>
-                        <td><?php echo $row['total_amount']; ?></td>
-                        <td><?php echo $row['total_count']; ?></td>
-                        <td><?php echo ($row['verified'] ? '<span style="color: green">Yes</span>' : '<span style="color: red">No</span>'); ?></td> 
+                        <td><strong>$<?php echo $row['total_amount']; ?></strong></td>
+                        <td><strong><?php echo $row['total_count']; ?></strong></td>
+                        <td><strong><?php echo ($row['verified'] ? '<span style="color: green">Yes</span>' : '<span style="color: red">No</span>'); ?></strong></td> 
                         <td>
                         <a href="viewsubmission.php?id=<?php echo $row['id']; ?>" class="btn btn-primary">View</a>
                         <?php if (!$row['verified'] || $isAdmin || $isSupervisor): ?>
