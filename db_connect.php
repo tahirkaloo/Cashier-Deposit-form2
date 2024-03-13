@@ -2,7 +2,7 @@
 // Database configuration
 $db_host = "127.0.0.1";
 $db_user = "root";
-$db_password = "11559933tk";
+$db_password = "";
 $db_name = "depositapplicationdb";
 
 try {
