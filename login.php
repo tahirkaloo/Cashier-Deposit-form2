@@ -4,9 +4,6 @@ require_once 'db_connect.php';
 // Include the logger.php file
 require_once 'log.php';
 
-// Call the logAction() function as needed in your code
-logAction('User logged in/out'); // Example usage
-
 $conn = mysqli_connect($db_host, $db_user, $db_password, $db_name);
 if (!$conn) {
     error_log("Failed to connect to MySQL: " . mysqli_connect_error());
@@ -60,6 +57,9 @@ if (isset($_POST['login'])) {
         mysqli_stmt_bind_param($stmt, "s", $username);
         mysqli_stmt_execute($stmt);
         $result = mysqli_stmt_get_result($stmt);
+        // Call the logAction() function to log the action
+        logAction($username . ' ' . $_SESSION['user_id'] . 'logged in');
+
 
         if (mysqli_num_rows($result) == 1) {
             $user = mysqli_fetch_assoc($result);

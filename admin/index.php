@@ -140,11 +140,11 @@ $totalusers = $row['total_users'];
       <h1 class="admin-title">Admin Panel</h1>
     </div>
     <div class="admin-content">
-      <div class="admin-card" onclick="window.location.href='';">
+      <div class="admin-card" onclick="window.location.href='adminlog.php';">
         <div class="card-icon">
           <img src="https://reimbursement-instance-bucket.s3.amazonaws.com/admin-card-localmileageresponses.gif" alt="Mileage Icon">
         </div>
-        <div class="card-title">Mileage Responses</div>
+        <div class="card-title">Logs</div>
       </div>
       <div class="admin-card" onclick="window.location.href='contact_responses.php';">
         <div class="card-icon">

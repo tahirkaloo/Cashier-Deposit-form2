@@ -1,6 +1,10 @@
 <?php
 session_start();
 
+// Include the logger.php file
+require_once 'log.php';
+logAction('logged out');
+
 // Unset all session variables
 session_unset();
 

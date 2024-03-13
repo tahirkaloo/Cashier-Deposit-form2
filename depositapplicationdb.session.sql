@@ -1,1 +1,1 @@
-DELETE FROM cashierdeposit WHERE id = 275
+DESCRIBE cashierdeposit;

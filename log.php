@@ -3,7 +3,7 @@
 
 // Function to log actions
 function logAction($action) {
-    $logFile = 'action_log.txt';
+    $logFile = 'actionlog.txt';
     $timestamp = date('Y-m-d H:i:s');
     $userId = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : 'Unknown'; // Assuming you have user authentication
     $name = isset($_SESSION['name']) ? $_SESSION['name'] : 'Unknown';

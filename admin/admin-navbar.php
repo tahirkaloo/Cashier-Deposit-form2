@@ -55,6 +55,7 @@
                 <li><a href="index.php" class="fa fa-home"> Dashboard</a></li>
                 <li><a href="contact_responses.php" class="fa fa-envelope"> Contact Form Responses</a></li>
                 <li><a href="manage-users.php" class="fa fa-users"> Manage Users</a></li>
+                <li><a href="adminlog.php" class="fa fa-file"> Logs</a></li>
 		        <li><a href="../index.php" class="fa fa-home"> Go back to Website</a></li>
 		        <li><a href="../logout.php" class="fa fa-sign-out"> Logout</a></li>
             </ul>

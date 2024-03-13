@@ -4,8 +4,6 @@ require_once 'db_connect.php';
 // Include the logger.php file
 require_once 'log.php';
 
-// Call the logAction() function as needed in your code
-logAction('Verify Submission');
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
@@ -21,6 +19,7 @@ if (!$conn) {
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if (isset($_GET['id']) && !empty($_GET['id']) && is_numeric($_GET['id'])) {
         $submission_id = $_GET['id'];
+        logAction('Verify Submission ID: ' . $submission_id);
         
         echo "Submission ID: " . $submission_id; // Debug statement
         
