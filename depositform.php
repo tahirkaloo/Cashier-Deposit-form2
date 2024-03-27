@@ -129,11 +129,9 @@ mysqli_close($conn);
 
 <?php include 'navbar.php'; ?>
 <div class="container-fluid bg-light rounded shadow animate__animated animate__fadeIn animate__faster text-dark mb-5">
-<h2>Cashier Deposit Form</h2>
-<h3>Avenity System</h3>
 
 <!-- Filter and search form -->
-<form action="" method="post" class="mb-3" id="filterForm">
+<form action="" method="post" class="mb-3 mt-4" id="filterForm">
     <div class="form-row">
         <div class="col-md-2">
             <input type="date" name="date" class="form-control" placeholder="Filter by Date" value="<?php echo isset($_POST['date']) ? htmlspecialchars($_POST['date']) : date('Y-m-d'); ?>">

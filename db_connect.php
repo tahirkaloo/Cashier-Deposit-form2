@@ -1,9 +1,9 @@
 <?php
 // Database configuration
-$db_host = "127.0.0.1";
+$db_host = "localhost";
 $db_user = "root";
-$db_password = "";
-$db_name = "depositapplicationdb";
+$db_password = "11559933tk";
+$db_name = 'depositapplicationdb';
 
 try {
     // Create a PDO instance

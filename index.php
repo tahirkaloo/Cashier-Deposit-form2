@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Deposit Portal</title>
+  <title>Deposits Portal</title>
   <!-- Add any CSS or Bootstrap here -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
@@ -21,7 +21,7 @@
   </script>
 
   <!-- Main Content -->
-  <h1>Welcome to Deposit Portal</h1>
+  <h1>Welcome to the Deposits Portal</h1>
  
   <div class="banner-container">
     <div class="banner banner1">

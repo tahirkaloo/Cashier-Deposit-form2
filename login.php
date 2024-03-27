@@ -1,4 +1,9 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+
 session_start();
 require_once 'db_connect.php';
 // Include the logger.php file
@@ -57,6 +62,7 @@ if (isset($_POST['login'])) {
         mysqli_stmt_bind_param($stmt, "s", $username);
         mysqli_stmt_execute($stmt);
         $result = mysqli_stmt_get_result($stmt);
+
         // Call the logAction() function to log the action
         logAction($username . ' ' . $_SESSION['user_id'] . 'logged in');
 
@@ -73,6 +79,7 @@ if (isset($_POST['login'])) {
             }
         } else {
             $error = true;
+            logAction('Someone tried to log in, but failed');
             $errorMessage = "Invalid username or password.";
         }
 

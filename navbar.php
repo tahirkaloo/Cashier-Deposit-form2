@@ -18,8 +18,8 @@ $isLoggedIn = isset($_SESSION['user_id']);
 
 
 <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-  <img src="/images/logo/logo-no-background.png" alt="Logo" height="100">
-  <a class="navbar-brand" href="#">Deposit Portal</a>
+  <img src="https://reimbursement-instance-bucket.s3.amazonaws.com/Logo+files/logo-no-background.png" alt="Logo" height="100">
+  <a class="navbar-brand" href="#">Deposits Portal</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>

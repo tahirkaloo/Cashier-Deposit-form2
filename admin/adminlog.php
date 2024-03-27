@@ -7,8 +7,8 @@ $logEntries = explode("\n", $actionLog);
 
 // Sorting options
 $sortingOptions = [
-    'date_asc' => 'Date (Oldest First)',
     'date_desc' => 'Date (Newest First)',
+    'date_asc' => 'Date (Oldest First)',
 ];
 
 // Default sorting option
@@ -31,9 +31,9 @@ if (!empty($filterByAction)) {
 // Apply sorting
 if (isset($_GET['sort']) && array_key_exists($_GET['sort'], $sortingOptions)) {
     $sortOption = $_GET['sort'];
-    if ($sortOption === 'date_asc') {
+    if ($sortOption === 'date_desc') {
         sort($logEntries);
-    } elseif ($sortOption === 'date_desc') {
+    } elseif ($sortOption === 'date_asc') {
         rsort($logEntries);
     }
 }
@@ -72,7 +72,7 @@ if (isset($_GET['sort']) && array_key_exists($_GET['sort'], $sortingOptions)) {
             <form action="" method="get">
                 <label for="action">Search:</label>
                 <input type="text" id="action" name="action" class="form-control" value="<?php echo htmlspecialchars($filterByAction); ?>">
-                <button type="submit" class="btn btn-primary mt-2">Apply Filter</button>
+                <button type="submit" class="btn btn-primary mt-2">Search</button>
             </form>
         </div>
 
