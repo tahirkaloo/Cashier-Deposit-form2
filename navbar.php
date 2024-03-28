@@ -7,6 +7,10 @@ require_once 'log.php';
 
 // Check if the user is logged in
 $isLoggedIn = isset($_SESSION['user_id']);
+
+// Call the logAction() function to log the action when a user opens up current page
+logAction('visited ' . $_SERVER['REQUEST_URI']);
+
 ?>
 
 <!-- JavaScript Bundle with Popper -->
@@ -25,7 +29,7 @@ $isLoggedIn = isset($_SESSION['user_id']);
   </button>
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item <?php if(!$isLoggedIn) echo 'active'; ?>">
+      <li class="nav-item">
         <a class="nav-link" href="index.php">Home</a>
       </li>
       <li class="nav-item">
