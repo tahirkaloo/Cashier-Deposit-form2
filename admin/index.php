@@ -132,15 +132,7 @@ $totalusers = $row['total_users'];
     }
   </style>
 </head>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZG3WQ5G3CH"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
 
-  gtag('config', 'G-ZG3WQ5G3CH');
-</script>
 <body>
   <?php include 'admin-navbar.php'; ?>
 

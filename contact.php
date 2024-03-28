@@ -48,15 +48,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZG3WQ5G3CH"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
 
-  gtag('config', 'G-ZG3WQ5G3CH');
-</script>
 <body>
   <div id="navbar"></div>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
