@@ -74,6 +74,15 @@ if (isset($_POST['register'])) {
     <title>Registration</title>
     <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZG3WQ5G3CH"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-ZG3WQ5G3CH');
+</script>
     <style>
         /* Additional CSS styles for login page */
         body {

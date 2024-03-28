@@ -69,6 +69,15 @@ if (!$result) {
             /* Additional styles can be added here */
         </style>
     </head>
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZG3WQ5G3CH"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-ZG3WQ5G3CH');
+</script>
     <body>
     <!-- Navigation -->
     <?php include "navbar.php"; ?>

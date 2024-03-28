@@ -51,6 +51,15 @@ if (isset($_GET['sort']) && array_key_exists($_GET['sort'], $sortingOptions)) {
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="../styles.css">
 </head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZG3WQ5G3CH"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-ZG3WQ5G3CH');
+</script>
 
 <body>
     <?php include '../admin/admin-navbar.php'; ?>
