@@ -13,16 +13,6 @@ date_default_timezone_set('America/New_York');
 // Do reporting
 error_reporting(E_ALL);
 
-// LogAction function
-function LogAction($action) {
-    $filename = 'actionlog.txt';
-    $file = fopen($filename, 'a');
-    fwrite($file, date('Y-m-d H:i:s') . ' - User ID: ' . $_SESSION['user_id'] . ' - Name: ' . $_SESSION['username'] . ' - Action: ' . $action . "\n");
-    fclose($file);
-    echo "Action logged successfully.";
-    exit;
-}
-
 
 $conn = mysqli_connect($db_host, $db_user, $db_password, $db_name);
 
