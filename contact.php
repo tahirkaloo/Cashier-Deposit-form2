@@ -123,10 +123,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       </div>
       <div class="col-md-6">
         <h3>Visit Us</h3>
-        <p>We are located in Chenault-Weems building. Make sure to enter through the left door and follow the signs. Our customer service agents are dedicated to providing excellent customer service.</p>
-        <p><strong>Address:</strong> 7507 Library Dr, Hanover, VA 230069</p>
-        <p><strong>Phone:</strong> <a href="tel:804-365-6050">804-365-6050</a></p>
-        <p><strong>Email:</strong> <a href="mailto:Treasurer@hanovercounty.gov">Treasurer@hanovercounty.gov</a></p>
+        <p>We are located at:</p><p>--------</p>
+        <p><strong>Address:</strong> ABC Street, City, VA 123456</p>
+        <p><strong>Phone:</strong> <a href="tel:804-307-4180">804-307-4180</a></p>
+        <p><strong>Email:</strong> <a href="mailto:admin@depositsportal.com">admin@depositsportal.com</a></p>
       </div>
     </div>
   </div>
