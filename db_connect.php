@@ -1,9 +1,10 @@
 <?php
-// Database configuration
-$db_host = "localhost";
-$db_user = "root";
-$db_password = "11559933tk";
-$db_name = 'depositapplicationdb';
+
+// Database configuration (use environment variables)
+$db_host = $_ENV['DB_HOST'];
+$db_user = $_ENV['DB_USER'];
+$db_password = $_ENV['DB_PASSWORD'];
+$db_name = $_ENV['DB_NAME'];
 
 try {
     // Create a PDO instance
