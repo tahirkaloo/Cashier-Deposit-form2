@@ -1,4 +1,0 @@
-SetEnv DB_HOST localhost
-SetEnv DB_USER root
-SetEnv DB_PASSWORD 11559933tk
-SetEnv DB_NAME depositapplicationdb
