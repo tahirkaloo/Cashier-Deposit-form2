@@ -10,8 +10,6 @@ if (!$conn) {
     error_log("Connected to MySQL successfully");
 }
 
-
-
 // Handle form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Validate form data
@@ -20,9 +18,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $message = $_POST['message'];
 
     // Insert form data into the contactresponses table
-    $sql = "INSERT INTO contactresponses (username, name, email, message) VALUES (?, ?, ?, ?)";
+    $sql = "INSERT INTO contactresponses (name, email, message) VALUES (?, ?, ?)";
     $stmt = mysqli_prepare($conn, $sql);
-    mysqli_stmt_bind_param($stmt, "ssss", $_SESSION['username'], $name, $email, $message);
+    mysqli_stmt_bind_param($stmt, "sss", $name, $email, $message);
 
     if (mysqli_stmt_execute($stmt)) {
         // Form submission successful
