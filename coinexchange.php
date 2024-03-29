@@ -162,7 +162,8 @@ mysqli_close($conn);
             echo "<td>" . $row['username'] . "</td>";
             echo "<td>" . $row['deposit_type'] . "</td>";
             echo "<td>" . $row['bill_amount_exchanged'] . "</td>";
-            echo "<td><a href='deletesubmission.php?id=" . $row['id'] . "&table=coinexchange' class='btn btn-danger'>Delete</a></td>";            echo "</tr>";
+            echo "<td><a href='deletesubmission.php?id=" . $row['id'] . "&table=coinexchange' class='btn btn-danger'>Delete</a></td>";
+            echo "</tr>";
         }
         ?>
       </tbody>
