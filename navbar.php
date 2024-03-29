@@ -22,7 +22,7 @@ logAction('visited ' . $_SERVER['REQUEST_URI']);
 
 
 <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-  <img src="https://reimbursement-instance-bucket.s3.amazonaws.com/Logo+files/logo-no-background.png" alt="Logo" height="100">
+  <img src="images/Logo/logo-no-background.png" alt="Logo" height="100" width="100">
   <a class="navbar-brand" href="#">Deposits Portal</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>

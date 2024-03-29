@@ -29,8 +29,11 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
 
 
 
-// Simulated total response counts for demonstration
-$totalMileageResponses = 10;
+//Get the total number of logs from the database
+$sql = "SELECT COUNT(*) as total_logs FROM logs";
+$result = mysqli_query($conn, $sql);
+$row = mysqli_fetch_assoc($result);
+$totalLogs = $row['total_logs'];
 
 //Get the total number of contact form responses from the database
 $sql = "SELECT COUNT(*) as total_contact_responses FROM contactresponses";
@@ -143,19 +146,19 @@ $totalusers = $row['total_users'];
     <div class="admin-content">
       <div class="admin-card" onclick="window.location.href='adminlog.php';">
         <div class="card-icon">
-          <img src="https://reimbursement-instance-bucket.s3.amazonaws.com/admin-card-localmileageresponses.gif" alt="Mileage Icon">
+          <img src="../images/AWS images/adminmileage.gif" alt="Mileage Icon">
         </div>
         <div class="card-title">Logs</div>
       </div>
       <div class="admin-card" onclick="window.location.href='contact_responses.php';">
         <div class="card-icon">
-          <img src="https://reimbursement-instance-bucket.s3.amazonaws.com/Admin+Contact+Us+index.gif" alt="Contact Icon">
+          <img src="../images/AWS images/admincontactus.gif" alt="Contact Icon">
         </div>
-        <div class="card-title">Contact Form Responses</div>
+        <div class="card-title">Contact Responses</div>
       </div>
       <div class="admin-card" onclick="window.location.href='manage-users.php';">
         <div class="card-icon">
-          <img src="https://reimbursement-instance-bucket.s3.amazonaws.com/Admin+manage+users.gif" alt="Manage Users Icon">
+          <img src="../images/AWS images/adminmanageusers.gif" alt="Manage Users Icon">
         </div>
         <div class="card-title">Manage Users</div>
       </div>
@@ -163,8 +166,8 @@ $totalusers = $row['total_users'];
 
     <div class="admin-metrics">
       <div class="admin-metric">
-        <p class="admin-metric-label">Mileage Responses</p>
-        <p class="admin-metric-value"><?php echo $totalMileageResponses; ?></p>
+        <p class="admin-metric-label">Total logs</p>
+        <p class="admin-metric-value"><?php echo $totalLogs; ?></p>
       </div>
       <div class="admin-metric">
         <p class="admin-metric-label">Contact Form Responses</p>
