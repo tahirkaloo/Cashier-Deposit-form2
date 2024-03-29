@@ -6,10 +6,13 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 // Function to retrieve logs from the database
-function getLogs($conn, $filterByAction = '', $sortOption = 'date_desc') {
+function getLogs($conn, $filterByAction = '', $sortOption = 'date_desc', $page = 1, $perPage = 10) {
     $logs = [];
     
-    // Prepare SQL query based on filter and sorting options
+    // Calculate offset based on page number and number of logs per page
+    $offset = ($page - 1) * $perPage;
+    
+    // Prepare SQL query based on filter, sorting, and pagination options
     $sql = "SELECT * FROM logs";
     if (!empty($filterByAction)) {
         $sql .= " WHERE action LIKE ?";
@@ -19,12 +22,15 @@ function getLogs($conn, $filterByAction = '', $sortOption = 'date_desc') {
     } else {
         $sql .= " ORDER BY created_at DESC"; // Using 'created_at' column for descending order
     }
+    $sql .= " LIMIT ?, ?";
     
     // Prepare and execute the query
     $stmt = $conn->prepare($sql);
     if (!empty($filterByAction)) {
         $filterByAction = "%$filterByAction%";
-        $stmt->bind_param("s", $filterByAction);
+        $stmt->bind_param("sii", $filterByAction, $offset, $perPage);
+    } else {
+        $stmt->bind_param("ii", $offset, $perPage);
     }
     $stmt->execute();
     $result = $stmt->get_result();
@@ -36,8 +42,6 @@ function getLogs($conn, $filterByAction = '', $sortOption = 'date_desc') {
     
     return $logs;
 }
-
-
 
 // Database connection
 $conn = mysqli_connect($db_host, $db_user, $db_password, $db_name);
@@ -61,8 +65,12 @@ $filterByAction = isset($_GET['action']) ? $_GET['action'] : '';
 // Apply sorting
 $sortOption = isset($_GET['sort']) && array_key_exists($_GET['sort'], $sortingOptions) ? $_GET['sort'] : $defaultSorting;
 
+// Pagination
+$page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
+$perPage = 10; // Number of logs per page
+
 // Retrieve logs from the database
-$logEntries = getLogs($conn, $filterByAction, $sortOption);
+$logEntries = getLogs($conn, $filterByAction, $sortOption, $page, $perPage);
 ?>
 
 <!DOCTYPE html>
@@ -102,7 +110,7 @@ $logEntries = getLogs($conn, $filterByAction, $sortOption);
             </form>
         </div>
 
-        <div class="container my-5 animate__animated animate__fadeIn animate__faster shadow rounded">
+        <div class="container my-3 animate__animated animate__fadeIn animate__faster shadow rounded">
             <div class="table-responsive bg-light rounded shadow">
                 <?php if (!empty($logEntries)) : ?>
                     <table class="table table-striped">
@@ -125,6 +133,25 @@ $logEntries = getLogs($conn, $filterByAction, $sortOption);
                             <?php endforeach; ?>
                         </tbody>
                     </table>
+                    <!-- Pagination -->
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination justify-content-center">
+                            <?php if ($page > 1) : ?>
+                                <li class="page-item">
+                                    <a class="page-link" href="?page=<?php echo $page - 1; ?><?php echo !empty($filterByAction) ? '&action=' . htmlspecialchars($filterByAction) : ''; ?><?php echo !empty($sortOption) ? '&sort=' . htmlspecialchars($sortOption) : ''; ?>" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo; Previous</span>
+                                    </a>
+                                </li>
+                            <?php endif; ?>
+                            <?php if (count($logEntries) === $perPage) : ?>
+                                <li class="page-item">
+                                    <a class="page-link" href="?page=<?php echo $page + 1; ?><?php echo !empty($filterByAction) ? '&action=' . htmlspecialchars($filterByAction) : ''; ?><?php echo !empty($sortOption) ? '&sort=' . htmlspecialchars($sortOption) : ''; ?>" aria-label="Next">
+                                        <span aria-hidden="true"> Next &raquo;</span>
+                                    </a>
+                                </li>
+                            <?php endif; ?>
+                        </ul>
+                    </nav>
                 <?php else : ?>
                     <p>No logs found.</p>
                 <?php endif; ?>
