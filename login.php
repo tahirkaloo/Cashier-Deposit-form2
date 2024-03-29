@@ -64,7 +64,7 @@ if (isset($_POST['login'])) {
         $result = mysqli_stmt_get_result($stmt);
 
         // Call the logAction() function to log the action
-        logAction($username . ' ' . $_SESSION['user_id'] . 'logged in');
+        logAction($username.' ' . $_SESSION['user_id'] . 'logged in');
 
 
         if (mysqli_num_rows($result) == 1) {

@@ -31,11 +31,12 @@ function getLogs($conn, $filterByAction = '', $sortOption = 'date_desc') {
     
     // Fetch logs
     while ($row = $result->fetch_assoc()) {
-        $logs[] = $row['created_at'] . ' - User ID: ' . $row['user_id'] . ' - Name: ' . $row['name'] . ' - Action: ' . $row['action'];
+        $logs[] = $row; // Store each row as an associative array
     }
     
     return $logs;
 }
+
 
 
 // Database connection
@@ -101,14 +102,29 @@ $logEntries = getLogs($conn, $filterByAction, $sortOption);
             </form>
         </div>
 
-        <div class="card">
-            <div class="card-body">
+        <div class="container my-5 animate__animated animate__fadeIn animate__faster shadow rounded">
+            <div class="table-responsive bg-light rounded shadow">
                 <?php if (!empty($logEntries)) : ?>
-                    <ul class="list-group">
-                        <?php foreach ($logEntries as $entry) : ?>
-                            <li class="list-group-item"><?php echo htmlspecialchars($entry); ?></li>
-                        <?php endforeach; ?>
-                    </ul>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>User ID</th>
+                                <th>Name</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($logEntries as $entry) : ?>
+                                <tr>
+                                    <td><?php echo htmlspecialchars($entry['created_at']); ?></td>
+                                    <td><?php echo ($entry['user_id']); ?></td>
+                                    <td><?php echo ($entry['name']); ?></td>
+                                    <td><?php echo htmlspecialchars($entry['action']); ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
                 <?php else : ?>
                     <p>No logs found.</p>
                 <?php endif; ?>
