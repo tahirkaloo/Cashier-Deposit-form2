@@ -1,44 +1,29 @@
 <?php
-// log.php
+// Include database connection parameters
+require_once 'db_connect.php';
 
 // Function to log actions
 function logAction($action) {
-//Define the log file path
-$logFile = '/var/www/html/actionlog.txt';
+    global $pdo; // Access the PDO connection object defined in db_connect.php
     
-// Check if the session is active
-if (session_status() === PHP_SESSION_NONE) {
-session_start();
+    // Check if the session is active
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+
+    try {
+        // Get user ID and name from session
+        $userId = $_SESSION['user_id'] ?? null;
+        $name = $_SESSION['name'] ?? 'Unknown';
+        
+        // Prepare SQL statement
+        $stmt = $pdo->prepare("INSERT INTO logs (user_id, name, action, created_at) VALUES (?, ?, ?, CURRENT_TIMESTAMP)");
+        
+        // Bind parameters and execute
+        $stmt->execute([$userId, $name, $action]);
+    } catch(PDOException $e) {
+        // If connection fails, display error message
+        error_log("Connection failed: " . $e->getMessage());
+    }
 }
-    
-// Check if user ID and name are set in session
-$userId = $_SESSION['user_id'] ?? 'Unknown';
-$name = $_SESSION['name'] ?? 'Unknown';
-    
-// Get the current timestamp
-$timestamp = date('Y-m-d H:i:s');
-    
-// Format the log entry
-$logEntry = "{$timestamp} - User ID: {$userId} - Name: {$name} - Action: {$action}\n";
-    
-// Open or create the log file
-$fileHandle = fopen($logFile, 'a');
-    
-// Check if fopen was successful
-if ($fileHandle === false) {
-// Log an error if fopen failed
-error_log('Failed to open actionlog.txt for writing.');
-return;
-}
-    
-// Write the log entry to the file
-$writeResult = fwrite($fileHandle, $logEntry);
-    
-// Check if fwrite was successful
-if ($writeResult === false) {
-error_log("Failed to write to actionlog.txt: {$logEntry}");
-}
-    
-// Close the file
-fclose($fileHandle);
-}
+?>

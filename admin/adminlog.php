@@ -1,9 +1,49 @@
 <?php
-// Read the contents of the action log file
-$actionLog = file_get_contents('../actionlog.txt');
+// Include database connection parameters
+require_once '../db_connect.php';
 
-// Explode the contents into an array of log entries
-$logEntries = explode("\n", $actionLog);
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+// Function to retrieve logs from the database
+function getLogs($conn, $filterByAction = '', $sortOption = 'date_desc') {
+    $logs = [];
+    
+    // Prepare SQL query based on filter and sorting options
+    $sql = "SELECT * FROM logs";
+    if (!empty($filterByAction)) {
+        $sql .= " WHERE action LIKE ?";
+    }
+    if ($sortOption === 'date_asc') {
+        $sql .= " ORDER BY created_at ASC"; // Using 'created_at' column for ascending order
+    } else {
+        $sql .= " ORDER BY created_at DESC"; // Using 'created_at' column for descending order
+    }
+    
+    // Prepare and execute the query
+    $stmt = $conn->prepare($sql);
+    if (!empty($filterByAction)) {
+        $filterByAction = "%$filterByAction%";
+        $stmt->bind_param("s", $filterByAction);
+    }
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    // Fetch logs
+    while ($row = $result->fetch_assoc()) {
+        $logs[] = $row['created_at'] . ' - User ID: ' . $row['user_id'] . ' - Name: ' . $row['name'] . ' - Action: ' . $row['action'];
+    }
+    
+    return $logs;
+}
+
+
+// Database connection
+$conn = mysqli_connect($db_host, $db_user, $db_password, $db_name);
+if (!$conn) {
+    error_log("Failed to connect to MySQL: " . mysqli_connect_error());
+    exit; // Exit if connection fails
+}
 
 // Sorting options
 $sortingOptions = [
@@ -17,26 +57,11 @@ $defaultSorting = 'date_desc';
 // Filter by action
 $filterByAction = isset($_GET['action']) ? $_GET['action'] : '';
 
-// Apply filter
-if (!empty($filterByAction)) {
-    $filteredEntries = [];
-    foreach ($logEntries as $entry) {
-        if (strpos($entry, $filterByAction) !== false) {
-            $filteredEntries[] = $entry;
-        }
-    }
-    $logEntries = $filteredEntries;
-}
-
 // Apply sorting
-if (isset($_GET['sort']) && array_key_exists($_GET['sort'], $sortingOptions)) {
-    $sortOption = $_GET['sort'];
-    if ($sortOption === 'date_desc') {
-        sort($logEntries);
-    } elseif ($sortOption === 'date_asc') {
-        rsort($logEntries);
-    }
-}
+$sortOption = isset($_GET['sort']) && array_key_exists($_GET['sort'], $sortingOptions) ? $_GET['sort'] : $defaultSorting;
+
+// Retrieve logs from the database
+$logEntries = getLogs($conn, $filterByAction, $sortOption);
 ?>
 
 <!DOCTYPE html>
@@ -51,7 +76,6 @@ if (isset($_GET['sort']) && array_key_exists($_GET['sort'], $sortingOptions)) {
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="../styles.css">
 </head>
-
 
 <body>
     <?php include '../admin/admin-navbar.php'; ?>
