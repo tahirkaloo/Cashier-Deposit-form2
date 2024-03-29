@@ -1,8 +1,5 @@
 <?php
 
-// var_dump($_ENV); // Check if environment variables are populated
-
-
 // Database configuration (use environment variables)
 $db_host = getenv('DB_HOST');
 $db_user = getenv('DB_USER');
