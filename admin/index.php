@@ -8,8 +8,6 @@ if (!$conn) {
   die("Connection failed: " . mysqli_connect_error());
 }
 
-
-
 // Check if the user is not logged in
 if (!isset($_SESSION['user_id'])) {
   header("Location: ../login.php"); // Redirect to the login page
@@ -26,7 +24,6 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
   header("Location: ../accessdenied.html");
   exit;
 }
-
 
 
 //Get the total number of logs from the database
@@ -50,137 +47,164 @@ $totalusers = $row['total_users'];
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-  <title>Admin Panel</title>
-  <link rel="stylesheet" href="../styles.css">
-  <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <style>
-    /* Customize admin panel styles */
-    .admin-container {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 20px;
-      text-align: center;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css">
+    <!-- Font Awesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Customize admin panel styles */
+        body {
+            background-color: #f8f9fa;
+        }
 
-    .admin-header {
-      margin-bottom: 30px;
-    }
+        .admin-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
 
-    .admin-title {
-      font-size: 24px;
-      font-weight: bold;
-    }
+        .admin-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
 
-    .admin-content {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 20px;
-    }
+        .admin-title {
+            font-size: 36px;
+            font-weight: bold;
+            color: #333;
+        }
 
-    .admin-card {
-      width: 200px;
-      height: 200px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-      background-color: #f0f0f0;
-      border-radius: 8px;
-      cursor: pointer;
-    }
+        .admin-cards {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-bottom: 50px;
+        }
 
-    .admin-card:hover {
-      background-color: #e0e0e0;
-    }
+        .admin-card {
+            width: 300px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
 
-    .card-icon img {
-      max-width: 100px;
-      max-height: 100px;
-    }
+        .admin-card:hover {
+            transform: translateY(-5px);
+        }
 
-    .card-title {
-      margin-top: 10px;
-      font-size: 16px;
-      font-weight: bold;
-    }
+        .card-icon {
+            text-align: center;
+            margin-bottom: 20px;
+        }
 
-    .admin-metrics {
-      margin-top: 30px;
-      display: flex;
-      justify-content: center;
-      gap: 30px;
-    }
+        .card-icon img {
+            max-width: 150px;
+        }
 
-    .admin-metric {
-      padding: 10px 20px;
-      background-color: #f0f0f0;
-      border-radius: 8px;
-    }
+        .card-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
 
-    .admin-metric-label {
-      font-size: 14px;
-      font-weight: bold;
-    }
+        .admin-card-link {
+            display: block;
+            text-align: center;
+            text-decoration: none;
+            color: #007bff;
+            font-weight: bold;
+        }
 
-    .admin-metric-value {
-      font-size: 24px;
-      font-weight: bold;
-    }
-  </style>
+        .admin-metrics {
+            display: flex;
+            justify-content: space-around;
+            gap: 30px;
+        }
+
+        .admin-metric {
+            flex: 1;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .admin-metric:hover {
+            transform: translateY(-5px);
+        }
+
+        .admin-metric-label {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .admin-metric-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+    </style>
 </head>
 
 <body>
-  <?php include 'admin-navbar.php'; ?>
+    <?php include 'admin-navbar.php'; ?>
 
-  <div class="admin-container">
-    <div class="admin-header">
-      <h1 class="admin-title">Admin Panel</h1>
+    <div class="admin-container">
+        <div class="admin-header">
+            <h1 class="admin-title">Welcome to Admin Panel</h1>
+        </div>
+        <div class="admin-cards">
+            <a href="adminlog.php" class="admin-card">
+                <div class="card-icon">
+                    <img src="../images/AWS images/adminmileage.gif" alt="Logs Icon">
+                </div>
+                <div class="card-title">View Logs</div>
+            </a>
+            <a href="contact_responses.php" class="admin-card">
+                <div class="card-icon">
+                    <img src="../images/AWS images/admincontactus.gif" alt="Contact Icon">
+                </div>
+                <div class="card-title">Contact Responses</div>
+            </a>
+            <a href="manage-users.php" class="admin-card">
+                <div class="card-icon">
+                    <img src="../images/AWS images/adminmanageusers.gif" alt="Manage Users Icon">
+                </div>
+                <div class="card-title">Manage Users</div>
+            </a>
+      </div>
+        <div class="admin-metrics">
+            <div class="admin-metric">
+                <p class="admin-metric-label">Total Logs</p>
+                <p class="admin-metric-value"><?php echo $totalLogs; ?></p>
+            </div>
+            <div class="admin-metric">
+                <p class="admin-metric-label">Contact Form Responses</p>
+                <p class="admin-metric-value"><?php echo $totalContactResponses; ?></p>
+            </div>
+            <div class="admin-metric">
+                <p class="admin-metric-label">Total Users</p>
+                <p class="admin-metric-value"><?php echo $totalusers; ?></p>
+            </div>
+        </div>
     </div>
-    <div class="admin-content">
-      <div class="admin-card" onclick="window.location.href='adminlog.php';">
-        <div class="card-icon">
-          <img src="../images/AWS images/adminmileage.gif" alt="Mileage Icon">
-        </div>
-        <div class="card-title">Logs</div>
-      </div>
-      <div class="admin-card" onclick="window.location.href='contact_responses.php';">
-        <div class="card-icon">
-          <img src="../images/AWS images/admincontactus.gif" alt="Contact Icon">
-        </div>
-        <div class="card-title">Contact Responses</div>
-      </div>
-      <div class="admin-card" onclick="window.location.href='manage-users.php';">
-        <div class="card-icon">
-          <img src="../images/AWS images/adminmanageusers.gif" alt="Manage Users Icon">
-        </div>
-        <div class="card-title">Manage Users</div>
-      </div>
-      <!-- Add more cards for other response pages -->
-
-    <div class="admin-metrics">
-      <div class="admin-metric">
-        <p class="admin-metric-label">Total logs</p>
-        <p class="admin-metric-value"><?php echo $totalLogs; ?></p>
-      </div>
-      <div class="admin-metric">
-        <p class="admin-metric-label">Contact Form Responses</p>
-        <p class="admin-metric-value"><?php echo $totalContactResponses; ?></p>
-      </div>
-      <div class="admin-metric">
-        <p class="admin-metric-label">Total Users</p>
-        <p class="admin-metric-value"><?php echo $totalusers; ?></p>
-      </div>
-      <!-- Add more metrics for other response pages -->
-    </div>
-  </div>
-  </div>
 </body>
+
 </html>
 
