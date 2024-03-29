@@ -1,10 +1,13 @@
 <?php
 
+// var_dump($_ENV); // Check if environment variables are populated
+
+
 // Database configuration (use environment variables)
-$db_host = $_ENV['DB_HOST'];
-$db_user = $_ENV['DB_USER'];
-$db_password = $_ENV['DB_PASSWORD'];
-$db_name = $_ENV['DB_NAME'];
+$db_host = getenv('DB_HOST');
+$db_user = getenv('DB_USER');
+$db_password = getenv('DB_PASSWORD');
+$db_name = getenv('DB_NAME');
 
 try {
     // Create a PDO instance
@@ -15,4 +18,4 @@ try {
     // If connection fails, display error message
     echo "Connection failed: " . $e->getMessage();
 }
-
+?>
