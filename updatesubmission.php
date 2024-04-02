@@ -53,6 +53,7 @@ if (!isset($_SESSION['user_id'])) {
 
     if (mysqli_stmt_execute($stmt)) {
         // Submission updated successfully
+        logAction('Update Submission ID: ' . $id . ' with Total Amount: ' . $totalAmount . ' and Total Count: ' . $totalCount);
         header("Location: viewsubmission.php?id=$id"); // Redirect to a page to view submissions
         exit();
     } else {
