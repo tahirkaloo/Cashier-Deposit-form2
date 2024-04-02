@@ -56,7 +56,7 @@ mysqli_close($conn);
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <title>Contact Responses</title>
   <link rel="stylesheet" type="text/css" href="styles.css">

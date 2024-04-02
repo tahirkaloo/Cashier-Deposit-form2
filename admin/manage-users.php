@@ -108,7 +108,7 @@ function getUserEmail($userId)
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <title>Manage Users</title>
     <link rel="stylesheet" type="text/css" href="styles.css">

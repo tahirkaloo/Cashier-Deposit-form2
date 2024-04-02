@@ -72,7 +72,7 @@ mysqli_close($conn);
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <title>Coin Exchange</title>
   <!-- Add any CSS or Bootstrap here -->

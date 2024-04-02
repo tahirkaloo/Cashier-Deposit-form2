@@ -13,7 +13,7 @@ $name = $_SESSION['name'];
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <title>Cashier Deposit</title>
     <!-- CSS -->

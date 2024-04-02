@@ -159,14 +159,14 @@ mysqli_close($conn);
     <table id="cashierDepositTable" class="table table-striped table-condensed table-hover animate__animated animate__fadeIn animate__faster table-responsive">
         <thead>
             <tr>
-                <th>Date</th>
-                <th>Deposit Type</th>
-                <th>Cashier</th>
-                <th>Coin Amount</th>
-                <th>Bill Amount</th>
-                <th>Cash Amount</th>
-                <th>Check Amount</th>
-                <th>Total Deposit</th>
+                <th id="date">Date</th>
+                <th id="depositType">Deposit Type</th>
+                <th id="name">Cashier</th>
+                <th id="coinAmount">Coin Amount</th>
+                <th id="billAmount">Bill Amount</th>
+                <th id="cashAmount">Cash Amount</th>
+                <th id="checkAmount">Check Amount</th>
+                <th id="totalAmount">Total Deposit</th>
             </tr>
         </thead>
         <tbody>
@@ -185,7 +185,7 @@ mysqli_close($conn);
         </tbody>
         <tfoot>
             <tr>
-                <th>Coin Exchange</th>
+                <th id="Coin Exchange">Coin Exchange</th>
                 <td></td>
                 <td></td>
                 <td><?php
@@ -200,7 +200,7 @@ mysqli_close($conn);
                 <td></td>
             </tr>
             <tr>
-                <th>Total</th>
+                <th id="Total">Total</th>
                     <td><?php echo isset($deposit_type) ? $deposit_type : ''; ?></td>
                     <td>Supervisor: <?php echo isset($name) ? $name : ''; ?></td>
                     <td>
@@ -273,7 +273,7 @@ mysqli_close($conn);
                     </td>
             </tr>
             <tr>
-                <th>Deposit Bag Number</th>
+                <th id="Deposit Bag Number">Deposit Bag Number</th>
                 <td><input type="number" id="bagNumber" name="bagNumber" value="559168" class="form-control"></td>
         </tfoot>
     </table>
@@ -288,27 +288,27 @@ mysqli_close($conn);
     <table id="dailyCStable" class="table table-striped table-condensed table-hover animate__animated animate__fadeIn animate__faster table-responsive">
         <thead>
             <tr>
-                <th>Cashier</th>
-                <th>Date/time</th>
-                <th>Cash Amount</th>
-                <th>Check 21 - Item Count</th>
-                <th>Check 21 - Deposit Amount</th>
-                <th>CEO Deposit Amount</th>
-                <th>Manual Deposit Amount</th>
-                <th>Grand Total Deposit Amount</th>
-                <th>Money Order</th>
-                <th>Total of Cash & Check</th>
-                <th>Credit Card (Credit Cards + Debit Cards)</th>
-                <th>Deposit Ticket (Pre-Deposited Funds)</th>
-                <th>Total Deposit</th>
+                <th id="Cashier">Cashier</th>
+                <th id="Date/time">Date/time</th>
+                <th id="CashAmount">Cash Amount</th>
+                <th id="Check21DepositCount">Check 21 - Item Count</th>
+                <th id="Check21DepositAmount">Check 21 - Deposit Amount</th>
+                <th id="CEODepositAmount">CEO Deposit Amount</th>
+                <th id="ManualDepositAmount">Manual Deposit Amount</th>
+                <th id="GrandTotalDepositAmount">Grand Total Deposit Amount</th>
+                <th id="MoneyOrder">Money Order</th>
+                <th id="Total of Cash & Check">Total of Cash & Check</th>
+                <th id="CreditCard">Credit Card (Credit Cards + Debit Cards)</th>
+                <th id="DepositTicket">Deposit Ticket (Pre-Deposited Funds)</th>
+                <th id="TotalDeposit">Total Deposit</th>
             </tr>
         </thead>
         <tbody>
             <?php while ($row = mysqli_fetch_assoc($resultdcs)) : ?>
                 <tr>
-                    <td><?php echo $row['name']; ?></td>
-                    <td><?php echo $row['created_at']; ?></td>
-                    <td id="cashAmountdcs"><?php echo $row['cash_amount']; ?></td>
+                    <td id="cashierdcs"><?php echo $row['name']; ?></td>
+                    <td id="datetimedcs"><?php echo $row['created_at']; ?></td>
+                    <td id="cashamountdcs"><?php echo $row['cash_amount']; ?></td>
                     <td id="check21depositcountdcs"><?php echo $row['check21_deposit_count']; ?></td>
                     <td id="check21depositamountdcs"><?php echo $row['check21_deposit_amount']; ?></td>
                     <td id="ceocheckdepositamountdcs"><?php echo $row['ceo_check_deposit_amount']; ?></td>
