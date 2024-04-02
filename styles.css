@@ -88,6 +88,13 @@
 }
 
 
+@media (max-width: 480px) {
+  .banner {
+      width: calc(100% - 20px);
+  }
+
+}
+
 @media print {
     @page {
         size: auto; /* Enable layout option */

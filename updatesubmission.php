@@ -13,7 +13,7 @@ $error_message = ''; // Initialize error message variable
 if (!isset($_SESSION['user_id'])) {
     // User is not logged in
     $error_message = "You need to login to update submissions.";
-} elseif ($_SESSION['role'] !== 'supervisor' && $_SESSION['role'] !== 'admin') {
+} elseif ($_SESSION['role'] !== 'supervisor' && $_SESSION['role'] !== 'admin' && $_SESSION['role'] !== 'user') {
     // User is not a supervisor or admin
     $error_message = "You are not authorized to update submissions.";
 } elseif ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -65,5 +65,10 @@ if (!isset($_SESSION['user_id'])) {
 
 // If there's an error message, display it
 if (!empty($error_message)) {
-    echo "<p>Error: $error_message</p>";
+    echo "<div style='text-align: center; margin-top: 50px; margin-bottom: 50px;'>";
+    echo "<p style='color: red; font-weight: bold; font-size: 24px; font-family: Arial, sans-serif;'>";
+    echo "Error: $error_message";
+    echo "</p>";
+    echo "</div>";
 }
+?>

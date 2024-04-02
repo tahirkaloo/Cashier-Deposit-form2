@@ -4,15 +4,12 @@ require_once 'db_connect.php';
 
 $error_message = ''; // Initialize error message variable
 
-// Check if the user is logged in and is a supervisor or admin
+// Check if the user is logged in
 if (!isset($_SESSION['user_id'])) {
     // User is not logged in
     $error_message = "You need to login to edit submissions.";
-} elseif ($_SESSION['role'] !== 'supervisor' && $_SESSION['role'] !== 'admin') {
-    // User is not a supervisor or admin
-    $error_message = "You are not authorized to edit submissions.";
 } else {
-    // User is authorized, proceed with database connection and submission editing
+    // User is logged in, proceed with database connection and submission editing
     $conn = mysqli_connect($db_host, $db_user, $db_password, $db_name);
 
     if (!$conn) {
@@ -38,23 +35,29 @@ if (!isset($_SESSION['user_id'])) {
 
         $row = mysqli_fetch_assoc($result);
 
-        // Check if the record is verified
-        if ($row['verified'] == 1 && $_SESSION['role'] !== 'supervisor' && $_SESSION['role'] !== 'admin') {
-            // Record is verified, only supervisors or admins can edit verified records
-            $error_message = "You are not authorized to edit verified submissions.";
+        // Check if the record exists and user is authorized to edit
+        if ($row) {
+            if ($_SESSION['role'] === 'supervisor' || $_SESSION['role'] === 'admin') {
+                // User is supervisor or admin, no need to check verification status
+                // Proceed to display the form for editing
+            } else {
+                // User is not supervisor or admin, check if the record is verified
+                if ($row['verified'] == 1) {
+                    // Record is verified, only supervisors or admins can edit verified records
+                    $error_message = "You are not authorized to edit verified submissions.";
+                } else {
+                    // No error, proceed to display the form for editing
+                }
+            }
         } else {
-            // No error, proceed to display the form for editing
-            mysqli_stmt_close($stmt);
+            // Submission with the provided ID does not exist
+            $error_message = "Submission not found.";
         }
+
+        // Close statement and database connection
+        mysqli_stmt_close($stmt);
+        mysqli_close($conn);
     }
-
-    // Close the database connection
-    mysqli_close($conn);
-}
-
-// If there's an error message, display it
-if (!empty($error_message)) {
-    echo "<p>Error: $error_message</p>";
 }
 ?>
 
@@ -73,12 +76,12 @@ if (!empty($error_message)) {
 <div class="container">
     <h1>Edit Submission</h1>
     <form action="updatesubmission.php" method="post">
-    <div class="container">
+    <div class="container my-5 shadow rounded bg-light">
         <!-- Display the error message if it's present -->
-        <?php if (isset($_GET['error_message'])): ?>
+        <?php if (!empty($error_message)) : ?>
             <div class="alert alert-danger" role="alert">
-                <?php echo htmlspecialchars($_GET['error_message']); ?>
-            </div>
+                <?php echo $error_message; ?>
+            </div>        
         <?php endif; ?>
 
         <!-- Your form and other content here -->
