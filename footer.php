@@ -4,7 +4,7 @@
         <p>
             <a href="termsandconditions.php">Terms and Conditions</a>
             | <a href="contact.php">Contact us</a> 
-            | <a href="about.php">About us</a>
+            | <a href="about.html">About us</a>
         </p> 
     </div>
 </footer>
