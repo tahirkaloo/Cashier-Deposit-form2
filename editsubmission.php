@@ -86,7 +86,7 @@ if (!isset($_SESSION['user_id'])) {
 
         <!-- Your form and other content here -->
     </div>
-        <input type="hidden" name="id" value="<?php echo $id; ?>">
+        <input type="hidden" name="id" value="<?php echo htmlspecialchars($id); ?>">
         <!-- Display existing data for editing -->
         <table class="table">
             <thead class="thead-light">
