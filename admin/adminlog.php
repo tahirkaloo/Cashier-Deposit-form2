@@ -2,9 +2,6 @@
 // Include database connection parameters
 require_once '../db_connect.php';
 
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
 // Function to retrieve logs from the database
 function getLogs($conn, $filterByAction = '', $sortOption = 'date_desc', $page = 1, $perPage = 10) {
     $logs = [];

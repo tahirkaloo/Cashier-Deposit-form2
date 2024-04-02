@@ -15,12 +15,12 @@ $errorMessage = '';
 $successMessage = '';
 
 function sendResetEmail($email, $resetToken) {
-    $resetLink = "http://tahirkaloo.tk/reset-password.php?token=" . $resetToken; // Update with your actual reset-password.php URL
+    $resetLink = "https://depositsportal.com/reset-password.php?token=" . $resetToken; // Update with your actual reset-password.php URL
     $emailSubject = "Password Reset";
     $emailBody = "Hi,\n\nYou have requested to reset your password. Click the link below to reset your password:\n\n$resetLink\n\nIf you did not request a password reset, please ignore this email.\n\nBest regards,\nThe Website Team";
 
     // Send the email using AWS CLI
-    $awsCliCommand = "aws ses send-email --from 'admin@tahirkaloo.tk' --to '$email' --subject '$emailSubject' --text '$emailBody'";
+    $awsCliCommand = "aws ses send-email --from 'admin@depositsportal.com' --to '$email' --subject '$emailSubject' --text '$emailBody'";
     exec($awsCliCommand, $output, $returnValue);
 
     if ($returnValue === 0) {
@@ -51,9 +51,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Send the verification email
         $subject = "Account Verification";
-        $verificationLink = "http://tahirkaloo.tk/login.php?token=" . urlencode($verificationToken);
+        $verificationLink = "https://tahirkaloo.tk/login.php?token=" . urlencode($verificationToken);
         $message = "Please click the following link to verify your email: " . $verificationLink;
-        $command = 'aws ses send-email --region us-east-1 --from admin@tahirkaloo.tk --to ' . $email . ' --subject "' . $subject . '" --text "' . $message . '"';
+        $command = 'aws ses send-email --region us-east-1 --from admin@depositsportal.com --to ' . $email . ' --subject "' . $subject . '" --text "' . $message . '"';
         exec($command);
 
         // Display success message
