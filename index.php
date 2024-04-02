@@ -10,15 +10,9 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="styles.css">
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-  <div id="navbar"></div>
-  <script>
-    $(function(){
-      $("#navbar").load("navbar.php");
-    });
-  </script>
+  <?php include "navbar.php"; ?>
 
   <!-- Main Content -->
   <h1>Welcome to the Deposits Portal</h1>
@@ -73,8 +67,6 @@
         </div>
       </a>
     </div>
-
-
     <div class="banner banner6">
       <a href="/admin/index.php">
         <div class="banner-overlay">
