@@ -85,8 +85,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if ($email) {
                     // Check if the reset token is not expired
                     if (strtotime($resetTokenExpiration) >= time()) {
-                        // Hash the new password using MD5 (Note: MD5 is not considered secure for password hashing)
-                        $hashedPassword = md5($password);
+                        // Hash the new password 
+                        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
                         // Update the user's password in the database
                         $updateQuery = "UPDATE users SET password = ? WHERE email = ?";

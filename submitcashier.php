@@ -10,9 +10,9 @@ if (!isset($_SESSION['user_id']) || !isset($_SESSION['username'])) {
 // Set the timezone
 date_default_timezone_set('America/New_York');
 
-// Do reporting
-error_reporting(E_ALL);
-
+// Set a safe error reporting configuration for the logger
+// Limit error reporting to critical errors and warnings
+error_reporting(E_ERROR | E_WARNING);
 
 $conn = mysqli_connect($db_host, $db_user, $db_password, $db_name);
 

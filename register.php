@@ -6,8 +6,10 @@ require_once 'db_connect.php';
 date_default_timezone_set('UTC');
 
 // Do reporting
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
+// Limit error reporting to critical errors
+// Set the flag to report only critical errors, such as E_ERROR and E_USER_ERROR
+// Do not expose potential security vulnerabilities or sensitive information
+error_reporting(E_ERROR | E_PARSE);
 
 // Check if the user is already logged in
 if (isset($_SESSION['user_id'])) {
@@ -74,7 +76,6 @@ if (isset($_POST['register'])) {
     <title>Registration</title>
     <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
-
     <style>
         /* Additional CSS styles for login page */
         body {
@@ -217,17 +218,12 @@ if (isset($_POST['register'])) {
             font-size: 16px;
             margin-bottom: 20px;
         }
-
-
     </style>
 <body>
-
-
 <div class="navbar">
     <a href="index.php">Home</a>
     <a href="register.php">Register</a>
 </div>
-
     <div class="container">
         <h2>Registration</h2>
         <?php if (!empty($errorMessage)): ?>
@@ -267,6 +263,5 @@ if (isset($_POST['register'])) {
 
         </form>
     </div>
-
 </body>
 </html>

@@ -4,7 +4,7 @@
 if (PHP_SAPI !== 'cli' && !in_array($_SERVER['REMOTE_ADDR'], array('127.0.0.1', '::1'), true)) {
     ini_set('display_errors', 0);
 }
-ini_set('display_startup_errors', 1);
+ini_set('display_startup_errors', 0);
 
 session_start();
 require_once 'db_connect.php';
@@ -20,10 +20,6 @@ if (!$conn) {
 
 // Set the timezone
 date_default_timezone_set('UTC');
-
-// Do reporting
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
 
 // Check if the user is already logged in
 if (isset($_SESSION['user_id'])) {
