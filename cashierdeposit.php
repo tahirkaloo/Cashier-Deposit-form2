@@ -46,11 +46,6 @@ $name = $_SESSION['name'];
             <label for="name">Name</label>
             <input type="text" class="form-control" id="name" name="name" readonly value="<?php echo $name; ?>">
         </div>
-
-
-
-
-
         <table class="table">
             <thead class="thead-light">
                 <tr>
@@ -118,76 +113,6 @@ $name = $_SESSION['name'];
                 </tr>
             </tfoot>
         </table>
-
-
-
-
-
-        <!-- <table class="table">
-            <thead class="thead-light">
-                <tr>
-                    <th>Item</th>
-                    <th>Amount</th>
-                    <th>Item Count</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Deposit type</td>
-                    <td>
-                        <select name="DepositType" class="form-control">
-                        <option value="End of the day">End of Day</option>
-                        <option value="Mid day">Mid Day</option>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Drawer Number</td>
-                    <td><input type="text" pattern="\d{4}" title="Please enter your 4-digit drawer number from RevenueOne" name="DrawerNumber" class="form-control" required></td>
-                </tr>
-                <tr>
-                    <td>Cash</td>
-                    <td><input type="number" name="Cash" class="form-control amount" step="0.01"></td>
-                </tr>
-                <tr>
-                    <td>Check 21 - Deposit</td>
-                    <td><input type="number" name="Check21DepositAmount" class="form-control amount" step="0.01"></td>
-                    <td><input type="number" name="Check21DepositCount" class="form-control count" step="1"></td>
-                </tr>
-                <tr>
-                    <td>CEO Check Deposit</td>
-                    <td><input type="number" name="CEOCheckDepositAmount" class="form-control amount" step="0.01"></td>
-                    <td><input type="number" name="CEOCheckDepositCount" class="form-control count" step="1"></td>
-                </tr>
-                <tr>
-                    <td>Manual Check Deposit</td>
-                    <td><input type="number" name="ManualCheckDepositAmount" class="form-control amount" step="0.01"></td>
-                    <td><input type="number" name="ManualCheckDepositCount" class="form-control count" step="1"></td>
-                </tr>
-                <tr>
-                    <td>Money Order</td>
-                    <td><input type="number" name="MoneyOrderAmount" class="form-control amount" step="0.01"></td>
-                    <td><input type="number" name="MoneyOrderCount" class="form-control count" step="1"></td>
-                </tr>
-                <tr>
-                    <td>Credit and Debit Cards</td>
-                    <td><input type="number" name="CreditDebitCardsAmount" class="form-control amount" step="0.01"></td>
-                    <td><input type="number" name="CreditDebitCardsCount" class="form-control count" step="1"></td>
-                </tr>
-                <tr>
-                    <td>Pre-Deposits</td>
-                    <td><input type="number" name="PreDepositsAmount" class="form-control amount" step="0.01"></td>
-                    <td><input type="number" name="PreDepositsCount" class="form-control count" step="1"></td>
-                </tr>
-            </tbody>
-            <tfoot>
-                <tr class="total">
-                    <td>Total</td>
-                    <td><span id="totalAmount">$0.00</span>
-                    <td><span id="totalCount">0</span>
-                </td>
-                </tr>
-            </tfoot>
-        </table> -->
         <button type="submit" class="btn btn-lg btn-primary btn-block">Submit</button>
     </form>
 </div>
