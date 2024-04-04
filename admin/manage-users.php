@@ -84,14 +84,14 @@ function generateRandomPassword()
     $length = 8;
     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $password = '';
-    for ($i = 0; $i < $length; $i++) {
-    $bytes = random_bytes($length); // Use random_bytes for cryptographically secure random numbers
     $password = '';
-    foreach (str_split($bytes, 1) as $byte) {
-        $password .= $characters[ord($byte) % strlen($characters)];
+    for ($i = 0; $i < $length; $i += 16) { // Generate 16 characters at a time for better performance
+        $bytes = random_bytes(min(16, $length - $i)); // Use random_bytes for cryptographically secure random numbers
+        foreach (str_split($bytes, 1) as $byte) {
+            $password .= $characters[ord($byte) % strlen($characters)];
+        }
     }
     return $password;
-}
 }
 
 // Helper function to retrieve the user's email
