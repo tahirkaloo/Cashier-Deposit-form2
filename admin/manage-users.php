@@ -85,9 +85,13 @@ function generateRandomPassword()
     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $password = '';
     for ($i = 0; $i < $length; $i++) {
-        $password .= $characters[rand(0, strlen($characters) - 1)];
+    $bytes = random_bytes($length); // Use random_bytes for cryptographically secure random numbers
+    $password = '';
+    foreach (str_split($bytes, 1) as $byte) {
+        $password .= $characters[ord($byte) % strlen($characters)];
     }
     return $password;
+}
 }
 
 // Helper function to retrieve the user's email
