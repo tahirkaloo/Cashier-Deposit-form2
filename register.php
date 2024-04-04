@@ -5,12 +5,6 @@ require_once 'db_connect.php';
 // Set the timezone
 date_default_timezone_set('UTC');
 
-// Do reporting
-// Limit error reporting to critical errors
-// Set the flag to report only critical errors, such as E_ERROR and E_USER_ERROR
-// Do not expose potential security vulnerabilities or sensitive information
-error_reporting(E_ERROR | E_PARSE);
-
 // Check if the user is already logged in
 if (isset($_SESSION['user_id'])) {
     header("Location: index.php"); // Redirect to the home page or any other desired page
