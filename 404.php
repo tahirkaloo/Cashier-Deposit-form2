@@ -13,12 +13,7 @@
 <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-        <div id="navbar"></div>
-        <script>
-        $(function(){
-          $("#navbar").load("navbar.php");
-        });
-        </script>
+  <?php include "navbar.php"; ?>
 
     <div class="jumbotron">
       <h1 class="display-4">404 - Page Not Found</h1>
@@ -30,5 +25,4 @@
     </div>
   </div>
 </body>
-
 </html>
