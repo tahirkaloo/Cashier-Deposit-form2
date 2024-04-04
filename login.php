@@ -235,7 +235,7 @@ if (isset($_POST['login'])) {
     </div>
     <div class="container">
         <div class="logo">
-            <img src="https://reimbursement-instance-bucket.s3.amazonaws.com/Logo+files/logo-black.png" alt="Logo">
+            <img src="image.php?image=logo-black.png" alt="Logo">
         </div>
         <h2 style="text-align: center; color: #6c63ff;">Login</h2>
         <?php
