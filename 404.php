@@ -13,7 +13,7 @@
 <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-  <?php include "navbar_once.php"; ?>
+  <?php include_once "navbar.php"; ?>
 
     <div class="jumbotron">
       <h1 class="display-4">404 - Page Not Found</h1>
