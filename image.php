@@ -1,6 +1,6 @@
 <?php
 // Get the requested image file name from the URL
-$image = isset($_GET['image']) ? $_GET['image'] : ''; // Make sure $image is set
+$image = isset($_GET['image']) ? basename($_GET['image']) : ''; // Extract the basename to avoid directory traversal
 
 // Define the fixed path to the images folder
 $imageFolder = 'images/';
