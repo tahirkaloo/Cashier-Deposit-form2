@@ -110,6 +110,7 @@ $logEntries = getLogs($conn, $filterByAction, $sortOption, $page, $perPage);
             <div class="table-responsive bg-light rounded shadow">
                 <?php if (!empty($logEntries)) : ?>
                     <table class="table table-striped">
+                        <caption class="text-center">Showing logs from page <?php echo $page; ?> of <?php echo ceil(count($logEntries) / $perPage); ?></caption>
                         <thead>
                             <tr>
                                 <th>Date</th>
