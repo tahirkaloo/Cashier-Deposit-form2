@@ -172,7 +172,7 @@ $totalusers = $row['total_users'];
         <div class="admin-cards">
             <a href="adminlog.php" class="admin-card">
                 <div class="card-icon">
-                    <img src="../images/AWS images/adminmileage.gif" alt="Logs Icon">
+                    <img src="adminmileage.gif" alt="Logs Icon">
                 </div>
                 <div class="card-title">View Logs</div>
             </a>
