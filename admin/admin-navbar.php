@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="../styles.css">
+    <link rel="stylesheet" type="text/css" href="styles.css">
     <style>
         /* CSS styles for the admin navbar */
         .admin-navbar {
@@ -47,7 +48,7 @@
     <div class="admin-navbar">
         <div class="logo">
             <a href="../index.html">
-                <img src="../images/Logo/logo-no-background.png" alt="Logo">
+                <img src="../image.php?image=logo-no-background.png" alt="Logo">
             </a>
         </div>
         <div class="menu">
