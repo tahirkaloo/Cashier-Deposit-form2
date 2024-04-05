@@ -64,7 +64,7 @@ $sortOption = isset($_GET['sort']) && array_key_exists($_GET['sort'], $sortingOp
 
 // Pagination
 $page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
-$perPage = 10; // Number of logs per page
+$perPage = 20; // Number of logs per page
 
 // Retrieve logs from the database
 $logEntries = getLogs($conn, $filterByAction, $sortOption, $page, $perPage);
@@ -122,7 +122,7 @@ $logEntries = getLogs($conn, $filterByAction, $sortOption, $page, $perPage);
                         <tbody>
                             <?php foreach ($logEntries as $entry) : ?>
                                 <tr>
-                                    <td><?php echo htmlspecialchars($entry['created_at']); ?></td>
+                                    <td><?php echo date('Y-m-d h:i:s A', strtotime($entry['created_at'])); ?></td>
                                     <td><?php echo ($entry['user_id']); ?></td>
                                     <td><?php echo ($entry['name']); ?></td>
                                     <td><?php echo htmlspecialchars($entry['action']); ?></td>
