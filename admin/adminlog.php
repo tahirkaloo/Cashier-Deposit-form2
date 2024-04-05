@@ -133,6 +133,15 @@ $logEntries = getLogs($conn, $filterByAction, $sortOption, $page, $perPage);
                     <!-- Pagination -->
                     <nav aria-label="Page navigation">
                         <ul class="pagination justify-content-center">
+                            <?php if ($page >= 1) : ?>
+                                <li class="page-number"
+                                    aria-current="page"
+                                    class="page-item active">
+                                    <span class="page-link">
+                                        <?php "Page number: " . $page; echo $page; ?>
+                                    </span>
+                                </li>
+                            <?php endif; ?>
                             <?php if ($page > 1) : ?>
                                 <li class="page-item">
                                     <a class="page-link" href="?page=<?php echo $page - 1; ?><?php echo !empty($filterByAction) ? '&action=' . htmlspecialchars($filterByAction) : ''; ?><?php echo !empty($sortOption) ? '&sort=' . htmlspecialchars($sortOption) : ''; ?>" aria-label="Previous">
