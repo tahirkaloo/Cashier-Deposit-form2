@@ -49,12 +49,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <body>
   <div id="navbar"></div>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script>
-    $(function(){
-      $("#navbar").load("navbar.php");
-    });
-
+  <?php include "navbar.php"; ?>
+ <script>
     $(document).ready(function() {
       $('#contact-form').submit(function(e) {
         e.preventDefault(); // Prevent form submission
@@ -122,14 +118,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       <div class="col-md-6">
         <h3>Visit Us</h3>
         <p>We are located at:</p><p>--------</p>
-        <p><strong>Address:</strong> ABC Street, City, VA 123456</p>
-        <p><strong>Phone:</strong> <a href="tel:804-307-4180">804-307-4180</a></p>
+        <p><strong>Address:</strong> ABC Street, City, XX 123456</p>
+        <p><strong>Phone:</strong> <a href="tel:xxx-xxx-xxxx">xxx-xxx-xxxx</a></p>
         <p><strong>Email:</strong> <a href="mailto:admin@depositsportal.com">admin@depositsportal.com</a></p>
       </div>
     </div>
   </div>
-
-  <!-- Include Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

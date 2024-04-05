@@ -11,11 +11,7 @@
 <body>
     <!-- Navbar -->
     <div id="navbar"></div>
-    <script>
-        $(function(){
-            $("#navbar").load("navbar.php");
-        });
-    </script>
+    <?php include "navbar.php"; ?>
     <!-- Content -->
     <div class="container my-5">
         <div class="row">
