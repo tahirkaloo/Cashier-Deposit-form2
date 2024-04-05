@@ -72,10 +72,7 @@ mysqli_close($conn);
             <label for="name">Name</label>
             <input type="text" class="form-control" id="name" name="name" readonly value="<?php echo htmlspecialchars($name); ?>">
         </div>
-
-
-
-
+        
     <table class="table table-striped">
         <thead class="thead-light">
             <tr>
@@ -147,119 +144,6 @@ mysqli_close($conn);
             </tr>
         </tbody>
     </table>
-
-
-    <!-- <table class="table table-striped">
-    <thead class="thead-light">
-                <tr>
-                    <th>Item Name</th>
-                    <th>Amount</th>
-                    <th>Item Count</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Submission ID</td>
-                    <td>
-                        <?php echo isset($row['id']) ? htmlspecialchars($row['id']) : ''; ?>
-                    </td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>Date/time</td>
-                    <td>
-                        <?php echo isset($row['created_at']) ? htmlspecialchars($row['created_at']) : ''; ?>
-                    </td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>Deposit type</td>
-                    <td>
-                        <?php echo isset($row['deposit_type']) ? htmlspecialchars($row['deposit_type']) : ''; ?>
-                    </td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>Drawer Number</td>
-                    <td>
-                        <?php echo isset($row['drawer_number']) ? htmlspecialchars($row['drawer_number']) : ''; ?>
-                    </td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>Cash</td>
-                    <td>
-                        <?php echo isset($row['cash_amount']) ? htmlspecialchars($row['cash_amount']) : ''; ?>
-                    </td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>Check 21 - Deposit</td>
-                    <td>
-                        <?php echo isset($row['check21_deposit_amount']) ? htmlspecialchars($row['check21_deposit_amount']) : ''; ?>
-                    </td>
-                    <td>
-                        <?php echo isset($row['check21_deposit_count']) ? htmlspecialchars($row['check21_deposit_count']) : ''; ?>
-                    </td>
-                </tr>
-                <tr>
-                    <td>CEO Check Deposit</td>
-                    <td>
-                        <?php echo isset($row['ceo_check_deposit_amount']) ? htmlspecialchars($row['ceo_check_deposit_amount']) : ''; ?>
-                    </td>
-                    <td>
-                        <?php echo isset($row['ceo_check_deposit_count']) ? htmlspecialchars($row['ceo_check_deposit_count']) : ''; ?>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Manual Check Deposit</td>
-                    <td>
-                        <?php echo isset($row['manual_check_deposit_amount']) ? htmlspecialchars($row['manual_check_deposit_amount']) : ''; ?>
-                    </td>
-                    <td>
-                        <?php echo isset($row['manual_check_deposit_count']) ? htmlspecialchars($row['manual_check_deposit_count']) : ''; ?>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>Money Order</td>
-                    <td>
-                        <?php echo isset($row['money_order_deposit_amount']) ? htmlspecialchars($row['money_order_deposit_amount']) : ''; ?>
-                    </td>
-                    <td>
-                        <?php echo isset($row['money_order_deposit_count']) ? htmlspecialchars($row['money_order_deposit_count']) : ''; ?>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Credit and Debit Cards</td>
-                    <td>
-                        <?php echo isset($row['credit_debit_cards_amount']) ? htmlspecialchars($row['credit_debit_cards_amount']) : ''; ?>
-                    </td>
-                    <td>
-                        <?php echo isset($row['credit_debit_cards_count']) ? htmlspecialchars($row['credit_debit_cards_count']) : ''; ?>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Pre-Deposits</td>
-                    <td>
-                        <?php echo isset($row['pre_deposit_amount']) ? htmlspecialchars($row['pre_deposit_amount']) : ''; ?>
-                    </td>
-                    <td>
-                        <?php echo isset($row['pre_deposit_count']) ? htmlspecialchars($row['pre_deposit_count']) : ''; ?>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td><strong>Total</strong></td>
-                    <td>
-                        <strong><?php echo isset($row['total_amount']) ? htmlspecialchars($row['total_amount']) : ''; ?></strong>
-                    </td>
-                    <td>
-                        <strong><?php echo isset($row['total_count']) ? htmlspecialchars($row['total_count']) : ''; ?></strong>
-                    </td>
-                </tr>
-            </tbody>
-    </table> -->
             <!-- Print Button -->
             <button type="button" onclick="printForm()" class="btn btn-lg btn-primary btn-block" id="printButton">Print Form</button>
             <!-- Open history button -->
@@ -287,11 +171,6 @@ mysqli_close($conn);
         openHistoryButton.style.display = 'block';
     }
 </script>
-
-<!-- JavaScript -->
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 </body>
 <?php include "footer.php"; ?>
 </html>

@@ -9,17 +9,13 @@ require_once 'log.php';
 $isLoggedIn = isset($_SESSION['user_id']);
 
 // Call the logAction() function to log the action when a user opens up current page
-logAction('visited ' . $_SERVER['REQUEST_URI']);
+logAction('visited ' . $_SERVER['REQUEST_URI'] . $_SERVER['QUERY_STRING']);
 
 ?>
 
 <!-- JavaScript Bundle with Popper -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <link rel="stylesheet" href="styles.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-
 
 <nav class="navbar navbar-expand-md navbar-dark bg-dark">
   <img src="image.php?image=logo-no-background.png" alt="Logo" height="100" width="100">
@@ -48,7 +44,7 @@ logAction('visited ' . $_SERVER['REQUEST_URI']);
         <a class="nav-link" href="depositform.php">Deposit Forms</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="about.html">About</a>
+        <a class="nav-link" href="about.php">About</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="contact.php">Contact</a>
@@ -76,7 +72,6 @@ logAction('visited ' . $_SERVER['REQUEST_URI']);
             <a class="nav-link" href="register.php">Register</a>
           </li>
       <?php } ?>
-
     </ul>
   </div>
 </nav>
