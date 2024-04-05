@@ -43,7 +43,7 @@
 
             </div>
             <div class="col-md-6">
-                <img src="https://reimbursement-instance-bucket.s3.amazonaws.com/about-img.png" class="img-fluid" alt="About Us Image">
+                <img src="image.php?image=about-us.png" class="img-fluid" alt="About Us Image">
             </div>
         </div>
     </div>
