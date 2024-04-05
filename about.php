@@ -11,7 +11,7 @@
 <body>
     <!-- Navbar -->
     <div id="navbar"></div>
-    <?php include "navbar.php"; ?>
+    <?php include_once "navbar.php"; ?>
     <!-- Content -->
     <div class="container my-5">
         <div class="row">
@@ -48,6 +48,6 @@
         </div>
     </div>
     <!-- Footer -->
-    <?php include 'footer.php'; ?>
+    <?php include_once 'footer.php'; ?>
 </body>
 </html>
