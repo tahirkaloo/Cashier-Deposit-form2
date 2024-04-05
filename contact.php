@@ -49,7 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <body>
   <div id="navbar"></div>
-  <?php include "navbar.php"; ?>
+  <?php include_once "navbar.php"; ?>
  <script>
     $(document).ready(function() {
       $('#contact-form').submit(function(e) {
