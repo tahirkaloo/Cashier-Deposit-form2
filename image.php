@@ -20,4 +20,3 @@ if (!empty($image) && file_exists($imageFolder . $image) && is_file($imageFolder
     header("HTTP/1.0 404 Not Found");
     echo "404 Not Found";
 }
-?>

@@ -138,7 +138,7 @@ $logEntries = getLogs($conn, $filterByAction, $sortOption, $page, $perPage);
                                     aria-current="page"
                                     class="page-item active">
                                     <span class="page-link">
-                                        <?php "Page number: " . $page; echo $page; ?>
+                                        <?php echo $page; ?>
                                     </span>
                                 </li>
                             <?php endif; ?>
