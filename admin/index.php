@@ -172,19 +172,19 @@ $totalusers = $row['total_users'];
         <div class="admin-cards">
             <a href="adminlog.php" class="admin-card">
                 <div class="card-icon">
-                    <img src="adminmileage.gif" alt="Logs Icon">
+                    <img src="../image.php?src=../images/AWS images/adminmileage.gif" alt="Logs Icon">
                 </div>
                 <div class="card-title">View Logs</div>
             </a>
             <a href="contact_responses.php" class="admin-card">
                 <div class="card-icon">
-                    <img src="../images/AWS images/admincontactus.gif" alt="Contact Icon">
+                    <img src="../image.php?src=../images/AWS images/admincontactus.gif" alt="Contact Icon">
                 </div>
                 <div class="card-title">Contact Responses</div>
             </a>
             <a href="manage-users.php" class="admin-card">
                 <div class="card-icon">
-                    <img src="../images/AWS images/adminmanageusers.gif" alt="Manage Users Icon">
+                    <img src="../image.php?src=../images/AWS images/adminmanageusers.gif" alt="Manage Users Icon">
                 </div>
                 <div class="card-title">Manage Users</div>
             </a>
