@@ -8,16 +8,9 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
-// Connect to the database
-$conn = mysqli_connect($db_host, $db_user, $db_password, $db_name);
-
-if (!$conn) {
-    die("Connection failed: " . mysqli_connect_error());
-}
-
 // Check if the user is a supervisor or admin and redirect accordingly
-$isAdmin = ($_SESSION['role'] === 'admin');
-$isSupervisor = ($_SESSION['role'] === 'supervisor');
+$isAdmin = (isset($_SESSION['role']) && $_SESSION['role'] === 'admin');
+$isSupervisor = (isset($_SESSION['role']) && $_SESSION['role'] === 'supervisor');
 
 if (!$isAdmin && !$isSupervisor) {
     header("Location: accessdenied.html");
@@ -25,93 +18,120 @@ if (!$isAdmin && !$isSupervisor) {
 }
 
 // If the user is logged in, retrieve the name from the session
-$username = $_SESSION['username'];
-$name = $_SESSION['name'];
+$username = isset($_SESSION['username']) ? $_SESSION['username'] : 'Unknown';
+$name = isset($_SESSION['name']) ? $_SESSION['name'] : 'Unknown';
 
-// Initialize SQL query
-$sql = "SELECT * FROM cashierdeposit WHERE 1=1";
+// Initialize data arrays
+$cashierDeposits = [];
+$dailyCSData = [];
+$coinExchangeData = [];
 
-// Handle form submission
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Handle date filter
-    if (isset($_POST['date']) && !empty($_POST['date'])) {
-        $date = mysqli_real_escape_string($conn, $_POST['date']);
-        $sql .= " AND DATE(created_at) = '$date'";
+// Determine filters
+$filterDate = isset($_POST['date']) && !empty($_POST['date']) ? $_POST['date'] : date('Y-m-d');
+$filterDepositType = isset($_POST['deposit_type']) ? $_POST['deposit_type'] : '';
+
+// --- DATA FETCHING ---
+
+if (defined('DEMO_MODE') && DEMO_MODE) {
+    // --- DEMO MODE MOCK DATA ---
+    $cashierDeposits = [
+        [
+            'created_at' => date('Y-m-d H:i:s'),
+            'deposit_type' => 'End Of the Day',
+            'name' => 'demo_user',
+            'cash_amount' => 150.50,
+            'check21_deposit_amount' => 50.00
+        ],
+        [
+            'created_at' => date('Y-m-d H:i:s', strtotime('-2 hours')),
+            'deposit_type' => 'Mid day',
+            'name' => 'Jane Doe',
+            'cash_amount' => 200.00,
+            'check21_deposit_amount' => 75.25
+        ]
+    ];
+
+    // Filter Mock Data roughly based on inputs to simulate functionality
+    if ($filterDepositType) {
+        $cashierDeposits = array_filter($cashierDeposits, function($row) use ($filterDepositType) {
+            return $row['deposit_type'] === $filterDepositType;
+        });
     }
 
-    // Handle Deposit type filter
-    if (isset($_POST['deposit_type']) && !empty($_POST['deposit_type'])) {
-        $deposit_type = mysqli_real_escape_string($conn, $_POST['deposit_type']);
-        $sql .= " AND deposit_type = '$deposit_type'";
+    $dailyCSData = [
+         [
+            'name' => 'demo_user',
+            'created_at' => date('Y-m-d H:i:s'),
+            'cash_amount' => 150.50,
+            'check21_deposit_count' => 2,
+            'check21_deposit_amount' => 50.00,
+            'ceo_check_deposit_amount' => 0,
+            'manual_check_deposit_amount' => 0,
+            'money_order_deposit_amount' => 0,
+            'credit_debit_cards_amount' => 120.00,
+            'pre_deposit_amount' => 0,
+            'total_amount' => 320.50
+        ]
+    ];
+
+    $coinExchangeData = [
+        ['bill_amount_exchanged' => 20]
+    ];
+
+} else {
+    // --- REAL DATABASE LOGIC ---
+    $conn = mysqli_connect($db_host, $db_user, $db_password, $db_name);
+
+    if (!$conn) {
+        die("Connection failed: " . mysqli_connect_error());
     }
+
+    // Build Query for Cashier Deposits
+    $sql = "SELECT * FROM cashierdeposit WHERE 1=1";
+
+    // Date Filter
+    $safeDate = mysqli_real_escape_string($conn, $filterDate);
+    $sql .= " AND DATE(created_at) = '$safeDate'";
+
+    // Deposit Type Filter
+    if (!empty($filterDepositType)) {
+        $safeType = mysqli_real_escape_string($conn, $filterDepositType);
+        $sql .= " AND deposit_type = '$safeType'";
+    }
+
+    $result = mysqli_query($conn, $sql);
+    if ($result) {
+        while ($row = mysqli_fetch_assoc($result)) {
+            $cashierDeposits[] = $row;
+        }
+    } else {
+        echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+    }
+
+    // Clone data for Daily CS (Logic in original file seemed to imply they are the same query source)
+    $dailyCSData = $cashierDeposits;
+
+    // Coin Exchange Query
+    // Logic from original: defaults to 'End of the Day' if not set
+    $ceType = !empty($filterDepositType) ? $filterDepositType : 'End of the Day';
+    $safeCeType = mysqli_real_escape_string($conn, $ceType);
+
+    // Note: Original code used 'date' column for coinexchange, but 'created_at' for cashierdeposit.
+    // Assuming 'date' column exists in coinexchange.
+    $sqlce = "SELECT * FROM coinexchange WHERE deposit_type = '$safeCeType' AND DATE(date) = '$safeDate'";
+
+    $resultce = mysqli_query($conn, $sqlce);
+    if ($resultce) {
+        while ($row = mysqli_fetch_assoc($resultce)) {
+            $coinExchangeData[] = $row;
+        }
+    } else {
+        // echo "Error: " . $sqlce . "<br>" . mysqli_error($conn);
+    }
+
+    mysqli_close($conn);
 }
-
-// Default filter: Today's date
-if (!isset($_POST['date']) || empty($_POST['date'])) {
-    $date = date('Y-m-d');
-    $sql .= " AND DATE(created_at) = '$date'";
-}
-
-$result = mysqli_query($conn, $sql);
-
-if (!$result) {
-    echo "Error: " . $sql . "<br>" . mysqli_error($conn);
-    exit;
-}
-
-// Fetch data for the second table
-$sql_dcs = $sql . ";"; // Clone the original query for the second table
-$resultdcs = mysqli_query($conn, $sql_dcs);
-
-if (!$resultdcs) {
-    echo "Error: " . $sql_dcs . "<br>" . mysqli_error($conn);
-    exit;
-}
-
-// Handle deposit type filter
-$deposit_type = '';
-if (isset($_POST['deposit_type']) && !empty($_POST['deposit_type'])) {
-    $deposit_type = mysqli_real_escape_string($conn, $_POST['deposit_type']);
-    $sql .= " AND deposit_type = '$deposit_type'";
-    $sql_dcs .= " AND deposit_type = '$deposit_type'";
-} else {
-    $deposit_type = 'End of the Day';
-    $sql .= " AND deposit_type = 'End of the Day'";
-    $sql_dcs .= " AND deposit_type = 'End of the Day'";
-}
-
-//Handle date filter
-if (isset($_POST['date']) && !empty($_POST['date'])) {
-    $date = mysqli_real_escape_string($conn, $_POST['date']);
-    $sql .= " AND DATE(date) = '$date'";
-    $sql_dcs .= " AND DATE(date) = '$date'"; 
-} else {
-    $date = date('Y-m-d');
-    $sql .= " AND DATE(date) = '$date'";
-    $sql_dcs .= " AND DATE(date) = '$date'";
-}
-
-// Fetch data for the third table
-$sqlce = "SELECT * FROM coinexchange WHERE deposit_type = '$deposit_type' AND DATE(date) = '$date'";
-
-
-$resultce = mysqli_query($conn, $sqlce);
-
-if (!$resultce) {
-    echo "Error: " . $sqlce . "<br>" . mysqli_error($conn);
-    exit;
-}
-
-
-mysqli_close($conn);
 ?>
-
-<!-- Your HTML code for displaying the tables... -->
-
-
-<!-- Your HTML code for displaying the tables... -->
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -129,20 +149,28 @@ mysqli_close($conn);
 
 <body>
 <?php include 'navbar.php'; ?>
+
+<!-- Demo Mode Warning -->
+<?php if (defined('DEMO_MODE') && DEMO_MODE): ?>
+<div class="alert alert-warning text-center fw-bold" role="alert">
+    <i class="fa fa-exclamation-triangle"></i> Demo Mode: Database Connection Failed. Showing Mock Data.
+</div>
+<?php endif; ?>
+
 <div class="container-fluid bg-light rounded shadow animate__animated animate__fadeIn animate__faster text-dark mb-5">
 
 <!-- Filter and search form -->
 <form action="" method="post" class="mb-3 mt-4" id="filterForm">
     <div class="form-row">
         <div class="col-md-2">
-            <input type="date" name="date" class="form-control" placeholder="Filter by Date" value="<?php echo isset($_POST['date']) ? htmlspecialchars($_POST['date']) : date('Y-m-d'); ?>">
+            <input type="date" name="date" class="form-control" placeholder="Filter by Date" value="<?php echo htmlspecialchars($filterDate); ?>">
         </div>
         <div class="col-md-5">
             <div class="form-inline">
                 <select name="deposit_type" class="form-control mr-4 w-50">
                     <option value="">Filter by Deposit Type</option>
-                    <option value="End Of the Day" <?php echo isset($_POST['deposit_type']) && $_POST['deposit_type'] === 'End Of the Day' ? 'selected' : ''; ?>>End Of the Day</option>
-                    <option value="Mid day" <?php echo isset($_POST['deposit_type']) && $_POST['deposit_type'] === 'Mid day' ? 'selected' : ''; ?>>Mid Day</option>
+                    <option value="End Of the Day" <?php echo $filterDepositType === 'End Of the Day' ? 'selected' : ''; ?>>End Of the Day</option>
+                    <option value="Mid day" <?php echo $filterDepositType === 'Mid day' ? 'selected' : ''; ?>>Mid Day</option>
                 </select>
                 <button type="submit" class="btn btn-primary mr-2">Apply Filters</button>
                 <a href="depositform.php" class="btn btn-secondary">Reset Filters</a>
@@ -151,7 +179,7 @@ mysqli_close($conn);
     </div>
 </form>
 
-<?php if (mysqli_num_rows($result) > 0) : ?>
+<?php if (!empty($cashierDeposits)) : ?>
 <div id="cashierDepositTableDiv">
     <h2>Cashier Deposit Form</h2>
 
@@ -170,18 +198,18 @@ mysqli_close($conn);
             </tr>
         </thead>
         <tbody>
-            <?php while ($cashierRow = mysqli_fetch_assoc($result)) : ?>
+            <?php foreach ($cashierDeposits as $cashierRow) : ?>
                 <tr>
                     <td><?php echo $cashierRow['created_at']; ?></td>
                     <td><?php echo $cashierRow['deposit_type']; ?></td>
                     <td><?php echo $cashierRow['name']; ?></td>
-                    <td id="coinAmountcdt"><?php echo '.' . explode('.', number_format($cashierRow['cash_amount'], 2))[1]; ?></td>
+                    <td id="coinAmountcdt"><?php echo '.' . (isset(explode('.', number_format($cashierRow['cash_amount'], 2))[1]) ? explode('.', number_format($cashierRow['cash_amount'], 2))[1] : '00'); ?></td>
                     <td id="billAmountcdt"><?php echo floor($cashierRow['cash_amount']); ?></td>
                     <td id="cashAmountcdt"><?php echo $cashierRow['cash_amount']; ?></td>
                     <td id="checkAmountcdt"><?php echo $cashierRow['check21_deposit_amount']; ?></td>
                     <td id="totalamountcdt"><?php echo $cashierRow['cash_amount'] + $cashierRow['check21_deposit_amount']; ?></td>
                 </tr>
-            <?php endwhile; ?>
+            <?php endforeach; ?>
         </tbody>
         <tfoot>
             <tr>
@@ -190,8 +218,7 @@ mysqli_close($conn);
                 <td></td>
                 <td><?php
                         $totalbillamountexchanged = 0;
-                        mysqli_data_seek($resultce, 0); // Reset result pointer
-                        while ($row = mysqli_fetch_assoc($resultce)) {
+                        foreach ($coinExchangeData as $row) {
                             $totalbillamountexchanged += $row['bill_amount_exchanged'];
                         }
                         echo $totalbillamountexchanged;
@@ -201,26 +228,26 @@ mysqli_close($conn);
             </tr>
             <tr>
                 <th id="Total">Total</th>
-                    <td><?php echo isset($deposit_type) ? $deposit_type : ''; ?></td>
+                    <td><?php echo isset($filterDepositType) && !empty($filterDepositType) ? $filterDepositType : 'End of the Day'; ?></td>
                     <td>Supervisor: <?php echo isset($name) ? $name : ''; ?></td>
                     <td>
                         <?php
                         $totalCoinAmount = 0;
-                        mysqli_data_seek($result, 0); // Reset result pointer
-                        while ($row = mysqli_fetch_assoc($result)) {
+                        foreach ($cashierDeposits as $row) {
                             // Extract the cents part from the cash amount and add it to the total coin amount
-                            $cents = explode('.', number_format($row['cash_amount'], 2))[1];
+                            $parts = explode('.', number_format($row['cash_amount'], 2));
+                            $cents = isset($parts[1]) ? $parts[1] : 0;
                             $totalCoinAmount += $cents;
                         }
-                        
+
                         // Convert the total coin amount to dollars and cents
                         $totalCoinAmountInDollars = $totalCoinAmount / 100; // Convert cents to dollars
-                        
+
                         // Calculate the total amount of coins exchanged in dollars and cents
                         $totalCoinAmountExchanged = $totalCoinAmountInDollars - $totalbillamountexchanged;
 
                         // Display the result in dollars and cents format
-                        echo number_format($totalCoinAmountExchanged, 2); // Format the result to display dollars and cents
+                        echo number_format($totalCoinAmountExchanged, 2);
                         ?>
                     </td>
 
@@ -228,13 +255,12 @@ mysqli_close($conn);
                     <td>
                         <?php
                             $totalBillAmount = 0;
-                            mysqli_data_seek($result, 0); // Reset result pointer
-                            while ($row = mysqli_fetch_assoc($result)) {
+                            foreach ($cashierDeposits as $row) {
                                 if (!empty($row['cash_amount'])) {
                                     $totalBillAmount += floor($row['cash_amount']);
                                 }
                             }
-                            
+
                             $totalba = $totalBillAmount + $totalbillamountexchanged;
 
                             echo $totalba;
@@ -244,18 +270,16 @@ mysqli_close($conn);
                     <td>
                         <?php
                             $totalCashAmount = 0;
-                            mysqli_data_seek($result, 0); // Reset result pointer
-                            while ($row = mysqli_fetch_assoc($result)) {
+                            foreach ($cashierDeposits as $row) {
                                 $totalCashAmount += $row['cash_amount'];
                             }
                             echo $totalCashAmount;
                         ?>
                     </td>
-                    <td>    
+                    <td>
                         <?php
                             $totalCheckAmount = 0;
-                            mysqli_data_seek($result, 0); // Reset result pointer
-                            while ($row = mysqli_fetch_assoc($result)) {
+                            foreach ($cashierDeposits as $row) {
                                 $totalCheckAmount += $row['check21_deposit_amount'];
                             }
                             echo $totalCheckAmount;
@@ -264,8 +288,7 @@ mysqli_close($conn);
                     <td>
                         <?php
                             $totalAmount = 0;
-                            mysqli_data_seek($result, 0); // Reset result pointer
-                            while ($row = mysqli_fetch_assoc($result)) {
+                            foreach ($cashierDeposits as $row) {
                                 $totalAmount += $row['cash_amount'] + $row['check21_deposit_amount'];
                             }
                             echo $totalAmount;
@@ -304,22 +327,23 @@ mysqli_close($conn);
             </tr>
         </thead>
         <tbody>
-            <?php while ($row = mysqli_fetch_assoc($resultdcs)) : ?>
+            <?php foreach ($dailyCSData as $row) : ?>
                 <tr>
                     <td id="cashierdcs"><?php echo $row['name']; ?></td>
                     <td id="datetimedcs"><?php echo $row['created_at']; ?></td>
                     <td id="cashamountdcs"><?php echo $row['cash_amount']; ?></td>
-                    <td id="check21depositcountdcs"><?php echo $row['check21_deposit_count']; ?></td>
-                    <td id="check21depositamountdcs"><?php echo $row['check21_deposit_amount']; ?></td>
-                    <td id="ceocheckdepositamountdcs"><?php echo $row['ceo_check_deposit_amount']; ?></td>
-                    <td id="manualcheckdepositamountdcs"><?php echo $row['manual_check_deposit_amount']; ?></td>
-                    <td id="totalamountdcs"><?php echo ($row['cash_amount'] ?? 0) + ($row['check21_deposit_amount'] ?? 0) + ($row['ceo_check_deposit_amount'] ?? 0) + ($row['manual_check_deposit_amount'] ?? 0);?></td>                    <td id="moneyorderdepositamountdcs"><?php echo $row['money_order_deposit_amount']; ?></td>
-                    <td id="totalcashandcheckdcs"><?php echo $row['cash_amount'] + $row['check21_deposit_amount']; ?></td>
-                    <td id="creditcarddepositamountdcs"><?php echo $row['credit_debit_cards_amount']; ?></td>
-                    <td id="predepositamountdcs"><?php echo $row['pre_deposit_amount']; ?></td>
-                    <td id="grandtotalamountdcs"><?php echo $row['total_amount']; ?></td>
+                    <td id="check21depositcountdcs"><?php echo isset($row['check21_deposit_count']) ? $row['check21_deposit_count'] : 0; ?></td>
+                    <td id="check21depositamountdcs"><?php echo isset($row['check21_deposit_amount']) ? $row['check21_deposit_amount'] : 0; ?></td>
+                    <td id="ceocheckdepositamountdcs"><?php echo isset($row['ceo_check_deposit_amount']) ? $row['ceo_check_deposit_amount'] : 0; ?></td>
+                    <td id="manualcheckdepositamountdcs"><?php echo isset($row['manual_check_deposit_amount']) ? $row['manual_check_deposit_amount'] : 0; ?></td>
+                    <td id="totalamountdcs"><?php echo ($row['cash_amount'] ?? 0) + ($row['check21_deposit_amount'] ?? 0) + ($row['ceo_check_deposit_amount'] ?? 0) + ($row['manual_check_deposit_amount'] ?? 0);?></td>
+                    <td id="moneyorderdepositamountdcs"><?php echo isset($row['money_order_deposit_amount']) ? $row['money_order_deposit_amount'] : 0; ?></td>
+                    <td id="totalcashandcheckdcs"><?php echo ($row['cash_amount'] ?? 0) + ($row['check21_deposit_amount'] ?? 0); ?></td>
+                    <td id="creditcarddepositamountdcs"><?php echo isset($row['credit_debit_cards_amount']) ? $row['credit_debit_cards_amount'] : 0; ?></td>
+                    <td id="predepositamountdcs"><?php echo isset($row['pre_deposit_amount']) ? $row['pre_deposit_amount'] : 0; ?></td>
+                    <td id="grandtotalamountdcs"><?php echo isset($row['total_amount']) ? $row['total_amount'] : 0; ?></td>
                 </tr>
-            <?php endwhile; ?>
+            <?php endforeach; ?>
         </tbody>
         <tfoot>
             <tr>
@@ -328,8 +352,7 @@ mysqli_close($conn);
                 <td>
                     <?php
                         $totalCashAmount = 0;
-                        mysqli_data_seek($resultdcs, 0); // Reset result pointer
-                        while ($row = mysqli_fetch_assoc($resultdcs)) {
+                        foreach ($dailyCSData as $row) {
                             $totalCashAmount += $row['cash_amount'];
                         }
                         echo $totalCashAmount;
@@ -338,9 +361,8 @@ mysqli_close($conn);
                 <td>
                     <?php
                         $totalCheckDepositCount = 0;
-                        mysqli_data_seek($resultdcs, 0); // Reset result pointer
-                        while ($row = mysqli_fetch_assoc($resultdcs)) {
-                            $totalCheckDepositCount += $row['check21_deposit_count'];
+                        foreach ($dailyCSData as $row) {
+                            $totalCheckDepositCount += isset($row['check21_deposit_count']) ? $row['check21_deposit_count'] : 0;
                         }
                         echo $totalCheckDepositCount;
                     ?>
@@ -348,9 +370,8 @@ mysqli_close($conn);
                 <td>
                     <?php
                         $totalCheckDepositAmount = 0;
-                        mysqli_data_seek($resultdcs, 0); // Reset result pointer
-                        while ($row = mysqli_fetch_assoc($resultdcs)) {
-                            $totalCheckDepositAmount += $row['check21_deposit_amount'];
+                        foreach ($dailyCSData as $row) {
+                            $totalCheckDepositAmount += isset($row['check21_deposit_amount']) ? $row['check21_deposit_amount'] : 0;
                         }
                         echo $totalCheckDepositAmount;
                     ?>
@@ -358,9 +379,8 @@ mysqli_close($conn);
                 <td>
                     <?php
                         $totalCEODepositAmount = 0;
-                        mysqli_data_seek($resultdcs, 0); // Reset result pointer
-                        while ($row = mysqli_fetch_assoc($resultdcs)) {
-                            $totalCEODepositAmount += $row['ceo_check_deposit_amount'];
+                        foreach ($dailyCSData as $row) {
+                            $totalCEODepositAmount += isset($row['ceo_check_deposit_amount']) ? $row['ceo_check_deposit_amount'] : 0;
                         }
                         echo $totalCEODepositAmount;
                     ?>
@@ -368,9 +388,8 @@ mysqli_close($conn);
                 <td>
                     <?php
                         $totalManualDepositAmount = 0;
-                        mysqli_data_seek($resultdcs, 0); // Reset result pointer
-                        while ($row = mysqli_fetch_assoc($resultdcs)) {
-                            $totalManualDepositAmount += $row['manual_check_deposit_amount'];
+                        foreach ($dailyCSData as $row) {
+                            $totalManualDepositAmount += isset($row['manual_check_deposit_amount']) ? $row['manual_check_deposit_amount'] : 0;
                         }
                         echo $totalManualDepositAmount;
                     ?>
@@ -378,9 +397,8 @@ mysqli_close($conn);
                 <td>
                     <?php
                         $totalTotalAmount = 0;
-                        mysqli_data_seek($resultdcs, 0); // Reset result pointer
-                        while ($row = mysqli_fetch_assoc($resultdcs)) {
-                            $totalTotalAmount += $row['cash_amount'] + $row['check21_deposit_amount'] + $row['ceo_check_deposit_amount'] + $row['manual_check_deposit_amount'];
+                        foreach ($dailyCSData as $row) {
+                            $totalTotalAmount += ($row['cash_amount'] ?? 0) + ($row['check21_deposit_amount'] ?? 0) + ($row['ceo_check_deposit_amount'] ?? 0) + ($row['manual_check_deposit_amount'] ?? 0);
                         }
                         echo $totalTotalAmount;
                     ?>
@@ -388,9 +406,8 @@ mysqli_close($conn);
                 <td>
                     <?php
                         $totalMoneyOrderDepositAmount = 0;
-                        mysqli_data_seek($resultdcs, 0); // Reset result pointer
-                        while ($row = mysqli_fetch_assoc($resultdcs)) {
-                            $totalMoneyOrderDepositAmount += $row['money_order_deposit_amount'];
+                        foreach ($dailyCSData as $row) {
+                            $totalMoneyOrderDepositAmount += isset($row['money_order_deposit_amount']) ? $row['money_order_deposit_amount'] : 0;
                         }
                         echo $totalMoneyOrderDepositAmount;
                     ?>
@@ -398,9 +415,8 @@ mysqli_close($conn);
                 <td>
                     <?php
                         $totalTotalCashAndCheck = 0;
-                        mysqli_data_seek($resultdcs, 0); // Reset result pointer
-                        while ($row = mysqli_fetch_assoc($resultdcs)) {
-                            $totalTotalCashAndCheck += $row['cash_amount'] + $row['check21_deposit_amount'];
+                        foreach ($dailyCSData as $row) {
+                            $totalTotalCashAndCheck += ($row['cash_amount'] ?? 0) + ($row['check21_deposit_amount'] ?? 0);
                         }
                         echo $totalTotalCashAndCheck;
                     ?>
@@ -408,9 +424,8 @@ mysqli_close($conn);
                 <td>
                     <?php
                         $totalCreditCardDepositAmount = 0;
-                        mysqli_data_seek($resultdcs, 0); // Reset result pointer
-                        while ($row = mysqli_fetch_assoc($resultdcs)) {
-                            $totalCreditCardDepositAmount += $row['credit_debit_cards_amount'];
+                        foreach ($dailyCSData as $row) {
+                            $totalCreditCardDepositAmount += isset($row['credit_debit_cards_amount']) ? $row['credit_debit_cards_amount'] : 0;
                         }
                         echo $totalCreditCardDepositAmount;
                     ?>
@@ -418,9 +433,8 @@ mysqli_close($conn);
                 <td>
                     <?php
                         $totalPreDepositAmount = 0;
-                        mysqli_data_seek($resultdcs, 0); // Reset result pointer
-                        while ($row = mysqli_fetch_assoc($resultdcs)) {
-                            $totalPreDepositAmount += $row['pre_deposit_amount'];
+                        foreach ($dailyCSData as $row) {
+                            $totalPreDepositAmount += isset($row['pre_deposit_amount']) ? $row['pre_deposit_amount'] : 0;
                         }
                         echo $totalPreDepositAmount;
                     ?>
@@ -428,9 +442,8 @@ mysqli_close($conn);
                 <td>
                     <?php
                         $totalDeposit = 0;
-                        mysqli_data_seek($resultdcs, 0); // Reset result pointer
-                        while ($row = mysqli_fetch_assoc($resultdcs)) {
-                            $totalDeposit += $row['total_amount'];
+                        foreach ($dailyCSData as $row) {
+                            $totalDeposit += isset($row['total_amount']) ? $row['total_amount'] : 0;
                         }
                         echo $totalDeposit;
                     ?>
@@ -443,7 +456,6 @@ mysqli_close($conn);
 </div>
 <?php endif; ?>
 </div>
-</body>
 <!-- Footer -->
 <?php include 'footer.php'; ?>
 
@@ -479,4 +491,5 @@ mysqli_close($conn);
 </script>
 
 
+</body>
 </html>

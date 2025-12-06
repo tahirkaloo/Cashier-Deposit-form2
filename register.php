@@ -33,27 +33,32 @@ if (isset($_POST['register'])) {
             $error = true;
             $errorMessage = "Passwords do not match.";
         } else {
-            // Check if the username or the email already exists in the database
-            $checkStmt = $pdo->prepare("SELECT 1 FROM users WHERE username = ? OR email = ?");
-            $checkStmt->execute([$username, $email]);
-
-            if ($checkStmt->rowCount() > 0) {
-                $error = true;
-                $errorMessage = "Username or email already exists.";
+            if (defined('DEMO_MODE') && DEMO_MODE) {
+                 // Simulate successful registration in Demo Mode
+                 $successMessage = "Demo Mode: Registration simulated. You can now login with any username/password.";
             } else {
-                // Hash the password using password_hash()
-                $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+                // Check if the username or the email already exists in the database
+                $checkStmt = $pdo->prepare("SELECT 1 FROM users WHERE username = ? OR email = ?");
+                $checkStmt->execute([$username, $email]);
 
-                // Insert the user into the database
-                $stmt = $pdo->prepare("INSERT INTO users (name, username, email, password) VALUES (?, ?, ?, ?)");
-
-                if ($stmt->execute([$name, $username, $email, $hashedPassword])) {
-                    $successMessage = "Registration successful. You can now login.";
-
-                    // Optionally, you can redirect the user to the login page here
+                if ($checkStmt->rowCount() > 0) {
+                    $error = true;
+                    $errorMessage = "Username or email already exists.";
                 } else {
-                    $errorMessage = "Something went wrong. Please try again later.";
-                    error_log("Error executing prepared statement: " . json_encode($stmt->errorInfo()));
+                    // Hash the password using password_hash()
+                    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+                    // Insert the user into the database
+                    $stmt = $pdo->prepare("INSERT INTO users (name, username, email, password) VALUES (?, ?, ?, ?)");
+
+                    if ($stmt->execute([$name, $username, $email, $hashedPassword])) {
+                        $successMessage = "Registration successful. You can now login.";
+
+                        // Optionally, you can redirect the user to the login page here
+                    } else {
+                        $errorMessage = "Something went wrong. Please try again later.";
+                        error_log("Error executing prepared statement: " . json_encode($stmt->errorInfo()));
+                    }
                 }
             }
         }
