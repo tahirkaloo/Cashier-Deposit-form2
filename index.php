@@ -1,4 +1,5 @@
 <?php
+session_start();
 // Initialize config to check for DEMO_MODE
 require_once 'config.php';
 ?>
