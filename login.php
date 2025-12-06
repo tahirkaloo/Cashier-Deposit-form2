@@ -12,15 +12,18 @@ require_once 'db_connect.php';
 require_once 'log.php';
 
 // Try to connect using mysqli for this specific file, handling error gracefully
-try {
-    $conn = @mysqli_connect($db_host, $db_user, $db_password, $db_name);
-} catch (Exception $e) {
-    $conn = false;
+$conn = false;
+if (!DEMO_MODE) {
+    try {
+        $conn = @mysqli_connect($db_host, $db_user, $db_password, $db_name);
+    } catch (Exception $e) {
+        $conn = false;
+    }
 }
 
-if (!$conn) {
+if (!$conn && !DEMO_MODE) {
     error_log("Failed to connect to MySQL: " . mysqli_connect_error());
-} else {
+} elseif (!DEMO_MODE) {
     error_log("Connected to MySQL successfully");
 }
 
@@ -40,6 +43,7 @@ $errorMessage = '';
 function loginUser($user)
 {
     // Set session variables
+    $_SESSION['loggedin'] = true;
     $_SESSION['user_id'] = $user['user_id'];
     $_SESSION['username'] = $user['username'];
     $_SESSION['name'] = $user['name'];
@@ -52,7 +56,28 @@ function loginUser($user)
 
 // Check if the login form is submitted
 if (isset($_POST['login'])) {
-    if (!$conn) {
+
+    // DEMO MODE LOGIN
+    if (DEMO_MODE) {
+        $username = $_POST['username'];
+        $password = $_POST['password'];
+
+        if (!empty($username) && !empty($password)) {
+            // Mock Login Success
+            $mockUser = [
+                'user_id' => 999,
+                'username' => $username,
+                'name' => 'Demo User',
+                'role' => ($username === 'admin') ? 'admin' : 'user'
+            ];
+            loginUser($mockUser);
+        } else {
+             $error = true;
+             $errorMessage = "All fields are required.";
+        }
+    }
+    // REAL DB LOGIN
+    else if (!$conn) {
          $error = true;
          $errorMessage = "Database connection unavailable.";
     } else {
@@ -112,6 +137,7 @@ if (isset($_POST['login'])) {
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <?php showDemoBanner(); ?>
 
     <div class="auth-wrapper">
         <div class="glass-panel auth-box animate-fade-up">

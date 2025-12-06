@@ -4,41 +4,50 @@ require_once 'db_connect.php';
 // Include the logger.php file
 require_once 'log.php';
 
-
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit;
 }
 
-$conn = mysqli_connect($db_host, $db_user, $db_password, $db_name);
-
-if (!$conn) {
-    die("Connection failed: " . mysqli_connect_error());
-}
-
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if (isset($_GET['id']) && !empty($_GET['id']) && is_numeric($_GET['id'])) {
         $submission_id = $_GET['id'];
-        logAction('Unverify Submission ID: ' . $submission_id);
-        
-        echo "Submission ID: " . $submission_id; // Debug statement
-        
-        // Use prepared statement to verify the submission
-        $sql = "UPDATE cashierdeposit SET verified = 0 WHERE id = ?";
-        $stmt = mysqli_prepare($conn, $sql);
-        if ($stmt) {
-            mysqli_stmt_bind_param($stmt, "i", $submission_id); // Assuming 'id' is an integer
-            if (mysqli_stmt_execute($stmt)) {
-                // Record verified successfully
-                header("Location: history.php");
-                exit;
-            } else {
-                echo "Error executing statement: " . mysqli_stmt_error($stmt); // Debug statement
-            }
+
+        if (defined('DEMO_MODE') && DEMO_MODE) {
+             // Mock Unverification
+             logAction('Unverify Submission ID (Demo): ' . $submission_id);
+             sleep(1);
+             header("Location: history.php");
+             exit;
         } else {
-            echo "Error preparing statement: " . mysqli_error($conn); // Debug statement
+            $conn = mysqli_connect($db_host, $db_user, $db_password, $db_name);
+
+            if (!$conn) {
+                die("Connection failed: " . mysqli_connect_error());
+            }
+
+            logAction('Unverify Submission ID: ' . $submission_id);
+
+            // Use prepared statement to verify the submission
+            $sql = "UPDATE cashierdeposit SET verified = 0 WHERE id = ?";
+            $stmt = mysqli_prepare($conn, $sql);
+            if ($stmt) {
+                mysqli_stmt_bind_param($stmt, "i", $submission_id); // Assuming 'id' is an integer
+                if (mysqli_stmt_execute($stmt)) {
+                    mysqli_stmt_close($stmt);
+                    mysqli_close($conn);
+                    // Record verified successfully
+                    header("Location: history.php");
+                    exit;
+                } else {
+                    echo "Error executing statement: " . mysqli_stmt_error($stmt); // Debug statement
+                }
+            } else {
+                echo "Error preparing statement: " . mysqli_error($conn); // Debug statement
+            }
         }
     } else {
         echo "Invalid submission ID.";
     }
 }
+?>

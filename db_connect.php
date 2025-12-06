@@ -1,20 +1,20 @@
 <?php
+require_once 'config.php';
 
-// Database configuration (use environment variables)
-$db_host = getenv('DB_HOST') ?: 'localhost';
-$db_user = getenv('DB_USER') ?: 'root';
-$db_password = getenv('DB_PASSWORD') ?: '';
-$db_name = getenv('DB_NAME') ?: 'deposits_portal';
-
-try {
-    // Create a PDO instance
-    $pdo = new PDO("mysql:host=$db_host;dbname=$db_name", $db_user, $db_password);
-    // Set PDO error mode to exception
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch(PDOException $e) {
-    // If connection fails, allow execution to continue so UI can be viewed (for verification)
-    // In production, you might want to die() here, but for now we log it.
-    error_log("Connection failed: " . $e->getMessage());
-    // Do not echo the error to avoid breaking HTML output if it happens before header
+// If we are NOT in demo mode, establish the connections normally
+if (!DEMO_MODE) {
+    try {
+        // Create a PDO instance
+        $pdo = new PDO("mysql:host=$db_host;dbname=$db_name", $db_user, $db_password);
+        // Set PDO error mode to exception
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    } catch(PDOException $e) {
+        // This shouldn't happen if config.php check passed, but just in case
+        error_log("Connection failed: " . $e->getMessage());
+    }
+} else {
+    // In Demo Mode, $pdo is null or a dummy if needed.
+    // We will handle checks in individual files.
+    $pdo = null;
 }
 ?>

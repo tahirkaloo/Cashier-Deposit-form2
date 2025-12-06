@@ -1,3 +1,7 @@
+<?php
+// Initialize config to check for DEMO_MODE
+require_once 'config.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,10 +15,13 @@
   <!-- Custom CSS -->
   <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100">
+
+  <?php showDemoBanner(); ?>
+
   <?php include "navbar.php"; ?>
 
-  <div class="container mt-5">
+  <div class="container mt-5 mb-5">
     <!-- Hero Section -->
     <div class="hero-section">
       <h1 class="hero-title">Welcome Back</h1>
