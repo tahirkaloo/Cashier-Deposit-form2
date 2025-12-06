@@ -12,109 +12,150 @@ $username = $_SESSION['username'];
 $name = $_SESSION['name'];
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>Cashier Deposit</title>
-    <!-- CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="styles.css">
-    <style>
-        /* Additional styles can be added here */
-        .total {
-            font-weight: bold;
-        }
-    </style>
-</head>
+<?php include "header.php"; ?>
 
-<body>
 <!-- Navigation -->
 <?php include "navbar.php"; ?>
 
 <!-- Content -->
-<div class="container bg-light rounded shadow animate__animated animate__fadeIn animate__faster text-dark mt-2">
-    <h1>Cashier Form</h1>
-    <form action="submitcashier.php" method="post">
-        <div class="form-group">
-            <label for="username">Username</label>
-            <input type="text" class="form-control" id="username" name="username" readonly value="<?php echo $username; ?>">
+<div class="container mt-5 mb-5">
+    <div class="glass-panel p-4 animate-fade-up">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="mb-0"><i class="fas fa-cash-register me-2 text-primary"></i>Cashier Form</h2>
+            <span class="badge bg-primary"><?php echo date('Y-m-d'); ?></span>
         </div>
-        <div class="form-group">
-            <label for="name">Name</label>
-            <input type="text" class="form-control" id="name" name="name" readonly value="<?php echo $name; ?>">
-        </div>
-        <table class="table">
-            <thead class="thead-light">
-                <tr>
-                    <th>Item</th>
-                    <th>Item Count</th> 
-                    <th>Amount</th> 
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Deposit type</td>
-                    <td>
-                        <select name="DepositType" class="form-control">
-                            <option value="End of the day">End of Day</option>
-                            <option value="Mid day">Mid Day</option>
-                        </select>
-                    </td>
-                    <td></td> 
-                </tr>
-                <tr>
-                    <td>Drawer Number</td>
-                    <td><input type="text" pattern="\d{4}" title="Please enter your 4-digit drawer number from RevenueOne" name="DrawerNumber" class="form-control" required></td>
-                </tr>
-                <tr>
-                    <td>Cash</td>
-                    <td></td> 
-                    <td><input type="number" name="Cash" class="form-control amount" step="0.01"></td>
-                </tr>
-                <tr>
-                    <td>Check 21 - Deposit</td>
-                    <td><input type="number" name="Check21DepositCount" class="form-control count" step="1"></td> 
-                    <td><input type="number" name="Check21DepositAmount" class="form-control amount" step="0.01"></td> 
-                </tr>
-                <tr>
-                    <td>CEO Check Deposit</td>
-                    <td><input type="number" name="CEOCheckDepositCount" class="form-control count" step="1"></td> 
-                    <td><input type="number" name="CEOCheckDepositAmount" class="form-control amount" step="0.01"></td> 
-                </tr>
-                <tr>
-                    <td>Manual Check Deposit</td>
-                    <td><input type="number" name="ManualCheckDepositCount" class="form-control count" step="1"></td> 
-                    <td><input type="number" name="ManualCheckDepositAmount" class="form-control amount" step="0.01"></td> 
-                </tr>
-                <tr>
-                    <td>Money Order</td>
-                    <td><input type="number" name="MoneyOrderCount" class="form-control count" step="1"></td> 
-                    <td><input type="number" name="MoneyOrderAmount" class="form-control amount" step="0.01"></td> 
-                </tr>
-                <tr>
-                    <td>Credit and Debit Cards</td>
-                    <td><input type="number" name="CreditDebitCardsCount" class="form-control count" step="1"></td> 
-                    <td><input type="number" name="CreditDebitCardsAmount" class="form-control amount" step="0.01"></td> 
-                </tr>
-                <tr>
-                    <td>Pre-Deposits</td>
-                    <td><input type="number" name="PreDepositsCount" class="form-control count" step="1"></td> 
-                    <td><input type="number" name="PreDepositsAmount" class="form-control amount" step="0.01"></td> 
-                </tr>
-            </tbody>
-            <tfoot>
-                <tr class="total">
-                    <td>Total</td>
-                    <td><span id="totalCount">0</span></td> 
-                    <td><span id="totalAmount">$0.00</span></td> 
-                </tr>
-            </tfoot>
-        </table>
-        <button type="submit" class="btn btn-lg btn-primary btn-block">Submit</button>
-    </form>
+
+        <form action="submitcashier.php" method="post">
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <div class="form-floating form-floating-custom">
+                        <input type="text" class="form-control" id="username" name="username" readonly value="<?php echo htmlspecialchars($username); ?>">
+                        <label for="username">Username</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                     <div class="form-floating form-floating-custom">
+                        <input type="text" class="form-control" id="name" name="name" readonly value="<?php echo htmlspecialchars($name); ?>">
+                        <label for="name">Name</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-responsive table-custom mb-4">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>Item Count</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Deposit Type</td>
+                            <td>
+                                <select name="DepositType" class="form-select">
+                                    <option value="End of the day">End of Day</option>
+                                    <option value="Mid day">Mid Day</option>
+                                </select>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>Drawer Number</td>
+                            <td><input type="text" pattern="\d{4}" title="Please enter your 4-digit drawer number from RevenueOne" name="DrawerNumber" class="form-control" placeholder="4 Digits" required></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>Cash</td>
+                            <td></td>
+                            <td>
+                                <div class="input-group">
+                                    <span class="input-group-text">$</span>
+                                    <input type="number" name="Cash" class="form-control amount" step="0.01" placeholder="0.00">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Check 21 - Deposit</td>
+                            <td><input type="number" name="Check21DepositCount" class="form-control count" step="1" placeholder="0"></td>
+                            <td>
+                                <div class="input-group">
+                                    <span class="input-group-text">$</span>
+                                    <input type="number" name="Check21DepositAmount" class="form-control amount" step="0.01" placeholder="0.00">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>CEO Check Deposit</td>
+                            <td><input type="number" name="CEOCheckDepositCount" class="form-control count" step="1" placeholder="0"></td>
+                            <td>
+                                <div class="input-group">
+                                    <span class="input-group-text">$</span>
+                                    <input type="number" name="CEOCheckDepositAmount" class="form-control amount" step="0.01" placeholder="0.00">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Manual Check Deposit</td>
+                            <td><input type="number" name="ManualCheckDepositCount" class="form-control count" step="1" placeholder="0"></td>
+                            <td>
+                                <div class="input-group">
+                                    <span class="input-group-text">$</span>
+                                    <input type="number" name="ManualCheckDepositAmount" class="form-control amount" step="0.01" placeholder="0.00">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Money Order</td>
+                            <td><input type="number" name="MoneyOrderCount" class="form-control count" step="1" placeholder="0"></td>
+                            <td>
+                                <div class="input-group">
+                                    <span class="input-group-text">$</span>
+                                    <input type="number" name="MoneyOrderAmount" class="form-control amount" step="0.01" placeholder="0.00">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Credit and Debit Cards</td>
+                            <td><input type="number" name="CreditDebitCardsCount" class="form-control count" step="1" placeholder="0"></td>
+                            <td>
+                                <div class="input-group">
+                                    <span class="input-group-text">$</span>
+                                    <input type="number" name="CreditDebitCardsAmount" class="form-control amount" step="0.01" placeholder="0.00">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Pre-Deposits</td>
+                            <td><input type="number" name="PreDepositsCount" class="form-control count" step="1" placeholder="0"></td>
+                            <td>
+                                <div class="input-group">
+                                    <span class="input-group-text">$</span>
+                                    <input type="number" name="PreDepositsAmount" class="form-control amount" step="0.01" placeholder="0.00">
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot class="bg-light fw-bold">
+                        <tr>
+                            <td>Total</td>
+                            <td><span id="totalCount">0</span></td>
+                            <td><span id="totalAmount">$0.00</span></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+            <button type="submit" class="btn btn-gradient btn-lg w-100">Submit Deposit <i class="fas fa-paper-plane ms-2"></i></button>
+        </form>
+    </div>
 </div>
 
 <!-- JavaScript -->
+<!-- Bootstrap 5 JS Bundle -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function(){
         $('.amount, .count').on('input', function() {
@@ -153,44 +194,44 @@ $name = $_SESSION['name'];
         var moneyOrderAmount = parseFloat($('input[name="MoneyOrderAmount"]').val());
         var creditDebitAmount = parseFloat($('input[name="CreditDebitCardsAmount"]').val());
         var preDepositsAmount = parseFloat($('input[name="PreDepositsAmount"]').val());
-        
+
         var check21CountInput = $('input[name="Check21DepositCount"]');
         var ceoCountInput = $('input[name="CEOCheckDepositCount"]');
         var manualCountInput = $('input[name="ManualCheckDepositCount"]');
         var moneyOrderCountInput = $('input[name="MoneyOrderCount"]');
         var creditDebitCountInput = $('input[name="CreditDebitCardsCount"]');
         var preDepositsCountInput = $('input[name="PreDepositsCount"]');
-        
+
         if (!isNaN(check21Amount)) {
             check21CountInput.attr('required', 'required');
         } else {
             check21CountInput.removeAttr('required');
         }
-        
+
         if (!isNaN(ceoAmount)) {
             ceoCountInput.attr('required', 'required');
         } else {
             ceoCountInput.removeAttr('required');
         }
-        
+
         if (!isNaN(manualAmount)) {
             manualCountInput.attr('required', 'required');
         } else {
             manualCountInput.removeAttr('required');
         }
-        
+
         if (!isNaN(moneyOrderAmount)) {
             moneyOrderCountInput.attr('required', 'required');
         } else {
             moneyOrderCountInput.removeAttr('required');
         }
-        
+
         if (!isNaN(creditDebitAmount)) {
             creditDebitCountInput.attr('required', 'required');
         } else {
             creditDebitCountInput.removeAttr('required');
         }
-        
+
         if (!isNaN(preDepositsAmount)) {
             preDepositsCountInput.attr('required', 'required');
         } else {
@@ -209,44 +250,44 @@ $(document).ready(function(){
         var moneyOrderAmountInput = $('input[name="MoneyOrderAmount"]');
         var creditDebitAmountInput = $('input[name="CreditDebitCardsAmount"]');
         var preDepositsAmountInput = $('input[name="PreDepositsAmount"]');
-        
+
         var check21Count = parseInt($('input[name="Check21DepositCount"]').val());
         var ceoCount = parseInt($('input[name="CEOCheckDepositCount"]').val());
         var manualCount = parseInt($('input[name="ManualCheckDepositCount"]').val());
         var moneyOrderCount = parseInt($('input[name="MoneyOrderCount"]').val());
         var creditDebitCount = parseInt($('input[name="CreditDebitCardsCount"]').val());
         var preDepositsCount = parseInt($('input[name="PreDepositsCount"]').val());
-        
+
         if (!isNaN(check21Count) && check21Count > 0) {
             check21AmountInput.attr('required', 'required');
         } else {
             check21AmountInput.removeAttr('required');
         }
-        
+
         if (!isNaN(ceoCount) && ceoCount > 0) {
             ceoAmountInput.attr('required', 'required');
         } else {
             ceoAmountInput.removeAttr('required');
         }
-        
+
         if (!isNaN(manualCount) && manualCount > 0) {
             manualAmountInput.attr('required', 'required');
         } else {
             manualAmountInput.removeAttr('required');
         }
-        
+
         if (!isNaN(moneyOrderCount) && moneyOrderCount > 0) {
             moneyOrderAmountInput.attr('required', 'required');
         } else {
             moneyOrderAmountInput.removeAttr('required');
         }
-        
+
         if (!isNaN(creditDebitCount) && creditDebitCount > 0) {
             creditDebitAmountInput.attr('required', 'required');
         } else {
             creditDebitAmountInput.removeAttr('required');
         }
-        
+
         if (!isNaN(preDepositsCount) && preDepositsCount > 0) {
             preDepositsAmountInput.attr('required', 'required');
         } else {
