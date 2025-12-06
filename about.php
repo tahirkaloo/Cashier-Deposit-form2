@@ -3,51 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Us - Deposits Portal</title>
-    <!-- CSS -->
+    <title>About Us | Deposits Portal</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <!-- Custom CSS -->
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-    <!-- Navbar -->
-    <div id="navbar"></div>
     <?php include_once "navbar.php"; ?>
-    <!-- Content -->
-    <div class="container my-5">
-        <div class="row">
-            <div class="col-md-6">
-                <h1>About Us</h1>
-                <p>Welcome to Deposits Portal, your one-stop destination for managing all your deposit transactions efficiently and securely. At Deposits Portal, we understand the importance of streamlined deposit management for businesses and organizations of all sizes. Whether you're handling cash, checks, credit/debit card transactions, or other forms of deposits, our platform is designed to simplify your processes and enhance your financial operations.</p>
-                <p><strong>Our Mission:</strong><br>At Deposits Portal, our mission is to provide innovative solutions that empower businesses to manage their deposit activities with ease and confidence. We strive to deliver a user-friendly platform that offers comprehensive features, robust security measures, and exceptional customer support.</p>
-                <p><strong>Key Features:</strong></p>
-                <ul>
-                    <li>Effortless Deposit Tracking: Keep track of all your deposit transactions in one centralized platform. Monitor deposits in real-time, view transaction history, and access detailed reports for better insights into your financial activities.</li>
-                    <li>Customizable Deposit Forms: Tailor deposit forms to suit your specific requirements. Customize fields, add validation rules, and streamline data entry for faster and more accurate processing.</li>
-                    <li>Role-Based Access Control: Maintain control over access to sensitive financial data with role-based permissions. Assign different levels of access to users based on their roles within your organization, ensuring data security and compliance.</li>
-                    <li>Secure Data Encryption: Rest assured that your financial data is safe and secure with advanced encryption techniques. We prioritize the protection of your information and adhere to industry-leading security standards.</li>
-                    <li>Seamless Integration: Integrate Deposits Portal with your existing accounting software, banking systems, and other third-party tools for seamless data synchronization and workflow automation.</li>
-                    <li>Responsive Customer Support: Our dedicated support team is available to assist you with any questions or concerns you may have. Whether you need technical assistance or guidance on using our platform effectively, we're here to help.</li>
-                </ul>
-                <p><strong>Why Choose Deposits Portal?</strong></p>
-                <ul>
-                    <li>Simplify deposit management processes and minimize manual errors.</li>
-                    <li>Improve efficiency and productivity with automated workflows.</li>
-                    <li>Enhance transparency and accountability in financial operations.</li>
-                    <li>Ensure compliance with regulatory requirements and industry standards.</li>
-                    <li>Gain valuable insights into deposit trends and patterns for informed decision-making.</li>
-                </ul>
-                <p>Experience the convenience and efficiency of modern deposit management with Deposits Portal. Join us today and take control of your deposit transactions with confidence.</p>
-                
-                <h3>Terms and Conditions</h3>
-                <p>By using Deposits Portal, you acknowledge that you have read and agreed to our <a href="termsandconditions.php">Terms and Conditions</a>. If you do not agree with any of the terms, please do not use Deposits Portal.</p>
 
+    <div class="container mt-5 mb-5">
+        <div class="glass-panel p-5 animate-fade-up">
+            <div class="row align-items-center">
+                <div class="col-lg-6 mb-4 mb-lg-0">
+                    <span class="badge bg-primary mb-3 px-3 py-2 rounded-pill">About Us</span>
+                    <h1 class="display-4 fw-bold mb-4">Empowering Financial <span class="text-primary">Clarity</span></h1>
+                    <p class="lead text-muted mb-4">
+                        Welcome to Deposits Portal, your one-stop destination for managing all your deposit transactions efficiently and securely.
+                    </p>
+                    <p class="mb-4">
+                        At Deposits Portal, we understand the importance of streamlined deposit management for businesses and organizations of all sizes. Whether you're handling cash, checks, credit/debit card transactions, or other forms of deposits, our platform is designed to simplify your processes and enhance your financial operations.
+                    </p>
+                    <div class="d-flex gap-3">
+                        <a href="contact.php" class="btn btn-gradient">Contact Us</a>
+                        <a href="termsandconditions.php" class="btn btn-outline-primary rounded-pill px-4">Our Terms</a>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="position-relative">
+                        <!-- Abstract decoration -->
+                        <div class="bg-primary position-absolute rounded-circle" style="width: 300px; height: 300px; opacity: 0.1; top: -50px; right: -50px; z-index: 0;"></div>
+                        <img src="images/about-img.png" class="img-fluid rounded-3 shadow-lg position-relative" alt="About Us" style="z-index: 1;">
+                        <!-- Check if image exists, otherwise fallback or handle nicely. The original code referenced image.php?image=about-us.png which seemed to be a wrapper.
+                             I saw 'about-img.png' in the file list earlier. I'll use that. -->
+                    </div>
+                </div>
             </div>
-            <div class="col-md-6">
-                <img src="image.php?image=about-us.png" class="img-fluid" alt="About Us Image">
+
+            <div class="row mt-5 pt-5">
+                <div class="col-12 text-center mb-5">
+                    <h2 class="fw-bold">Why Choose Us?</h2>
+                    <p class="text-muted">We provide features that matter.</p>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="p-4 bg-white rounded-3 shadow-sm h-100 text-center card-hover-effect">
+                        <div class="mb-3 text-primary">
+                            <i class="fas fa-chart-line fa-3x"></i>
+                        </div>
+                        <h5>Effortless Tracking</h5>
+                        <p class="text-muted small">Keep track of all your deposit transactions in one centralized platform with real-time monitoring.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="p-4 bg-white rounded-3 shadow-sm h-100 text-center card-hover-effect">
+                        <div class="mb-3 text-success">
+                            <i class="fas fa-shield-alt fa-3x"></i>
+                        </div>
+                        <h5>Secure & Encrypted</h5>
+                        <p class="text-muted small">Rest assured that your financial data is safe with our advanced encryption and security standards.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="p-4 bg-white rounded-3 shadow-sm h-100 text-center card-hover-effect">
+                        <div class="mb-3 text-info">
+                            <i class="fas fa-sliders-h fa-3x"></i>
+                        </div>
+                        <h5>Customizable</h5>
+                        <p class="text-muted small">Tailor deposit forms to suit your specific requirements with customizable fields and validation rules.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-5 p-4 bg-light rounded-3">
+                 <h4 class="fw-bold mb-3">Our Mission</h4>
+                 <p class="mb-0">
+                     To provide innovative solutions that empower businesses to manage their deposit activities with ease and confidence. We strive to deliver a user-friendly platform that offers comprehensive features, robust security measures, and exceptional customer support.
+                 </p>
             </div>
         </div>
     </div>
+
     <!-- Footer -->
     <?php include_once 'footer.php'; ?>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
