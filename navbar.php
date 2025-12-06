@@ -1,15 +1,12 @@
 <?php
-if (session_status() == PHP_SESSION_NONE) {
-  session_start();
-}
-
 require_once 'log.php';
 
 // Check if the user is logged in
 $isLoggedIn = isset($_SESSION['user_id']);
 
 // Call the logAction() function to log the action when a user opens up current page
-logAction('visited ' . $_SERVER['REQUEST_URI'] . $_SERVER['QUERY_STRING']);
+$queryString = isset($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING'] : '';
+logAction('visited ' . $_SERVER['REQUEST_URI'] . $queryString);
 ?>
 
 <nav class="navbar navbar-expand-lg sticky-top">
