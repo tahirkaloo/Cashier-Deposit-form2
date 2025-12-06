@@ -11,7 +11,13 @@ require_once 'db_connect.php';
 // Include the logger.php file
 require_once 'log.php';
 
-$conn = mysqli_connect($db_host, $db_user, $db_password, $db_name);
+// Try to connect using mysqli for this specific file, handling error gracefully
+try {
+    $conn = @mysqli_connect($db_host, $db_user, $db_password, $db_name);
+} catch (Exception $e) {
+    $conn = false;
+}
+
 if (!$conn) {
     error_log("Failed to connect to MySQL: " . mysqli_connect_error());
 } else {
@@ -46,222 +52,105 @@ function loginUser($user)
 
 // Check if the login form is submitted
 if (isset($_POST['login'])) {
-    // Get the form inputs
-    $username = $_POST['username'];
-    $password = $_POST['password'];
-
-    // Validate the form inputs
-    if (empty($username) || empty($password)) {
-        $error = true;
-        $errorMessage = "All fields are required.";
+    if (!$conn) {
+         $error = true;
+         $errorMessage = "Database connection unavailable.";
     } else {
-        // Check if the user exists in the database
-        $stmt = mysqli_prepare($conn, "SELECT * FROM users WHERE username = ?");
-        mysqli_stmt_bind_param($stmt, "s", $username);
-        mysqli_stmt_execute($stmt);
-        $result = mysqli_stmt_get_result($stmt);
+        // Get the form inputs
+        $username = $_POST['username'];
+        $password = $_POST['password'];
 
-        // Call the logAction() function to log the action
-        logAction($username.' ' . $_SESSION['user_id'] . 'logged in');
+        // Validate the form inputs
+        if (empty($username) || empty($password)) {
+            $error = true;
+            $errorMessage = "All fields are required.";
+        } else {
+            // Check if the user exists in the database
+            $stmt = mysqli_prepare($conn, "SELECT * FROM users WHERE username = ?");
+            mysqli_stmt_bind_param($stmt, "s", $username);
+            mysqli_stmt_execute($stmt);
+            $result = mysqli_stmt_get_result($stmt);
+
+            // Call the logAction() function to log the action
+            logAction($username.' ' . $_SESSION['user_id'] . 'logged in');
 
 
-        if (mysqli_num_rows($result) == 1) {
-            $user = mysqli_fetch_assoc($result);
+            if (mysqli_num_rows($result) == 1) {
+                $user = mysqli_fetch_assoc($result);
 
-            // Check if the password is correct
-            if (password_verify($password, $user['password'])) {
-                loginUser($user);
+                // Check if the password is correct
+                if (password_verify($password, $user['password'])) {
+                    loginUser($user);
+                } else {
+                    $error = true;
+                    $errorMessage = "Invalid username or password.";
+                }
             } else {
                 $error = true;
+                logAction('Someone tried to log in, but failed');
                 $errorMessage = "Invalid username or password.";
             }
-        } else {
-            $error = true;
-            logAction('Someone tried to log in, but failed');
-            $errorMessage = "Invalid username or password.";
-        }
 
-        // Close the statement
-        mysqli_stmt_close($stmt);
+            // Close the statement
+            mysqli_stmt_close($stmt);
+        }
     }
 }
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
-    <title>Login</title>
-    <link rel="stylesheet" type="text/css" href="styles.css">
-    <style>
-        /* Additional CSS styles for login page */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f2f2f2;
-        }
-
-        .navbar {
-            background-color: #333;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 20px;
-            color: #fff;
-        }
-
-        .navbar a {
-            color: #fff;
-            text-decoration: none;
-            margin-left: 10px;
-        }
-
-        .navbar a:first-child {
-            margin-left: 0;
-        }
-
-        .container {
-            max-width: 400px;
-            margin: 0 auto;
-            padding: 40px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-            background-color: #fff;
-        }
-
-        .logo {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .logo img {
-            width: 100px;
-            height: auto;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 5px;
-            color: #555;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            background-color: #f5f5f5;
-        }
-
-        .form-group input:focus {
-            outline: none;
-            background-color: #e1e1e1;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-        }
-
-        .error-message {
-            color: red;
-            margin-top: 5px;
-        }
-
-        .login-button {
-            display: block;
-            width: 100%;
-            padding: 12px 0;
-            margin-top: 20px;
-            background-color: #6c63ff;
-            color: #fff;
-            text-align: center;
-            text-decoration: none;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-        }
-
-        .login-button:hover {
-            background-color: #524bc7;
-            cursor: pointer;
-            box-shadow: 0 0 20px #6c63ff;
-        }
-
-        .login-button:not(:hover) {
-            background-color: #6c63ff; /* Change the background color when not hovering */
-        }
-
-        .resetpassword-button {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .resetpassword-button a {
-            color: #6c63ff;
-            text-decoration: none;
-        }
-
-        .resetpassword-button a:hover {
-            text-decoration: underline;
-            text-shadow: 0 0 20px #6c63ff;
-        }
-
-        .register-button {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .register-button a {
-            color: #6c63ff;
-            text-decoration: none;
-        }
-
-        .register-button a:hover {
-            text-decoration: underline;
-            text-shadow: 0 0 20px #6c63ff;
-        }
-
-
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Deposits Portal</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="navbar">
-        <a href="index.php">Home</a>
-        <a href="register.php">Register</a>
+
+    <div class="auth-wrapper">
+        <div class="glass-panel auth-box animate-fade-up">
+            <a href="index.php">
+                <img src="images/logo-no-background.png" alt="Logo" class="auth-logo">
+            </a>
+            <h2 class="mb-4">Welcome Back</h2>
+            <p class="text-muted mb-4">Please sign in to your account</p>
+
+            <?php if ($error): ?>
+                <div class="alert alert-danger alert-custom" role="alert">
+                    <i class="fas fa-exclamation-circle me-2"></i> <?php echo $errorMessage; ?>
+                </div>
+            <?php endif; ?>
+
+            <form method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
+                <div class="form-floating form-floating-custom mb-3">
+                    <input type="text" class="form-control" id="username" name="username" placeholder="Username" autocomplete="username" required maxlength="5">
+                    <label for="username">Username</label>
+                </div>
+
+                <div class="form-floating form-floating-custom mb-4">
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Password" autocomplete="current-password" required>
+                    <label for="password">Password</label>
+                </div>
+
+                <button type="submit" name="login" class="btn btn-gradient btn-lg mb-4">
+                    Sign In <i class="fas fa-arrow-right ms-2"></i>
+                </button>
+            </form>
+
+            <div class="d-flex justify-content-between align-items-center mt-3">
+                <a href="reset-password.php" class="btn-link-custom small">Forgot Password?</a>
+                <a href="register.php" class="btn-link-custom small">Create Account</a>
+            </div>
+        </div>
     </div>
-    <div class="container">
-        <div class="logo">
-            <img src="image.php?image=logo-black.png" alt="Logo">
-        </div>
-        <h2 style="text-align: center; color: #6c63ff;">Login</h2>
-        <?php
-        if ($error) {
-            echo '<div class="error-message">' . $errorMessage . '</div>';
-        }
-        ?>
-        <form method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
-            <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" id="username" name="username" placeholder="Enter your username" autocomplete="username" required maxlength="5">
-            </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" placeholder="Enter your password" autocomplete="current-password" required>
-            </div>
-            <div class="form-group">
-                <input type="submit" name="login" value="Login" class="login-button">
-            </div>
-        </form>
-        <div class="resetpassword-button">
-            <a href="reset-password.php">Forgot Password? Reset it here</a>
-        </div>
-        <div class="register-button">
-            <a href="register.php">Don't have an account? Register here</a>
-        </div>
-    </div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
